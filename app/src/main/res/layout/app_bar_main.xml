@@ -26,9 +26,11 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Toolbar Title"
+                    android:text="@string/app_bar_name"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/spirax"
                     android:textSize="30sp"
+                    android:textStyle="bold"
                     android:id="@+id/toolbar_title" android:background="#002C2C2C" android:textColor="#FF9800"
                     android:backgroundTint="#00FFFFFF"/>
         </androidx.appcompat.widget.Toolbar>
