@@ -28,10 +28,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_bar_name"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/spirax"
+                    android:fontFamily="@font/arapey_italic"
                     android:textSize="30sp"
                     android:textStyle="bold"
-                    android:id="@+id/toolbar_title" android:background="#002C2C2C" android:textColor="#FF9800"
+                    android:id="@+id/toolbar_title" android:background="#002C2C2C" android:textColor="#BBAE86"
                     android:backgroundTint="#00FFFFFF"/>
         </androidx.appcompat.widget.Toolbar>
 

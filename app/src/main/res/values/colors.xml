@@ -13,4 +13,5 @@
     <color name="nav_bottom_color">#071825</color>
     <color name="icon_color">#BBAE86</color>
     <color name="icon_selected_color">#FFD554</color>
+    <color name="none">#00000000</color>
 </resources>

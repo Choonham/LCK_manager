@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/almendra_display</item>
-        <item>@font/cherry_cream_soda</item>
-        <item>@font/spirax</item>
+
+        <item>@font/arapey_italic</item>
     </array>
 </resources>
