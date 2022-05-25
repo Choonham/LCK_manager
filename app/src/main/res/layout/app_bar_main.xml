@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:background="#00191919"
+>
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/Theme.LCK_manager.AppBarOverlay">
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/Theme.LCK_manager.AppBarOverlay"
+            android:backgroundTint="#00FFFFFF" android:hapticFeedbackEnabled="false" android:background="#00FFFFFF"
+            android:outlineAmbientShadowColor="#00FFFFFF" android:outlineSpotShadowColor="#00FFFFFF">
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/Theme.LCK_manager.PopupOverlay"
-                android:gravity="center"
-                app:navigationIcon="@drawable/ic_launcher_foreground"/>
+                android:background="#00FFFFFF"
+                app:popupTheme="@style/Theme.LCK_manager.PopupOverlay" android:backgroundTint="#00FFFFFF"
+                android:outlineSpotShadowColor="#00000000" android:outlineAmbientShadowColor="#00FFFFFF">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Toolbar Title"
+                    android:layout_gravity="center"
+                    android:textSize="30sp"
+                    android:id="@+id/toolbar_title" android:background="#002C2C2C" android:textColor="#FF9800"
+                    android:backgroundTint="#00FFFFFF"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

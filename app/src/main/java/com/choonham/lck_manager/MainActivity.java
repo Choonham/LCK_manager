@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
-import com.choonham.lck_manager.ui.slideshow.SlideshowFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ViewPager2 pager;
-    SlideshowFragment slideshowFragment;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
 
@@ -25,18 +23,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         );
+
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         pager = findViewById(R.id.pager);
         pager.setOffscreenPageLimit(5);
@@ -91,6 +90,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 return false;
+            }
+        });
+
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        bottomNavigation.setSelectedItemId(R.id.tab1);
+                        break;
+
+                    case 1:
+                        bottomNavigation.setSelectedItemId(R.id.tab2);
+                        break;
+
+                    case 2:
+                        bottomNavigation.setSelectedItemId(R.id.tab3);
+                        break;
+
+                    case 3:
+                        bottomNavigation.setSelectedItemId(R.id.tab4);
+                        break;
+
+                    case 4:
+                        bottomNavigation.setSelectedItemId(R.id.tab5);
+                        break;
+                }
             }
         });
     }

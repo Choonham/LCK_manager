@@ -10,4 +10,7 @@
     <color name="colorPrimary">#9cbee2</color>
     <color name="colorDarkBlue">#00008B</color>
     <color name="colorAccent">#6bb2ff</color>
+    <color name="nav_bottom_color">#071825</color>
+    <color name="icon_color">#BBAE86</color>
+    <color name="icon_selected_color">#FFD554</color>
 </resources>
