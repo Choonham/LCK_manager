@@ -15,4 +15,7 @@
     <color name="icon_selected_color">#FFD554</color>
     <color name="none">#00000000</color>
     <color name="text_color">#BBAE86</color>
+    <color name="list_view_select_color">#E4C87F00</color>
+    <color name="calender_select_color">#0E2F48</color>
+    <color name="interface_purple">#673AB7</color>
 </resources>

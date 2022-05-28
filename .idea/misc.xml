@@ -20,9 +20,16 @@
         <entry key="..\:/LCK/app/src/main/res/menu/main_activity2.xml" value="0.2864583333333333" />
         <entry key="..\:/LCK/app/src/main/res/menu/menu_bottom.xml" value="0.36041666666666666" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/background_color.xml" value="0.31666666666666665" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/calendar_not_select_backgorund.xml" value="0.1453125" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/calendar_select_background.xml" value="0.1453125" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/calender_select_border.xml" value="0.2013888888888889" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/calender_selector.xml" value="0.2013888888888889" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/day_schedule_border.xml" value="0.30562770562770564" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2898148148148148" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/list_view_select_border.xml" value="0.20921052631578949" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/main_roster_border.xml" value="0.30562770562770564" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/main_roster_divider.xml" value="0.18771929824561404" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/main_roster_header_view.xml" value="0.23593073593073594" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/menu_selector_color.xml" value="0.18802083333333333" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/news_issue_border.xml" value="0.31666666666666665" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/side_nav_bar.xml" value="0.209375" />
@@ -32,16 +39,22 @@
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/activity_main2.xml" value="0.33" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/app_bar_main.xml" value="0.328125" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/app_bar_main2.xml" value="0.32916666666666666" />
-        <entry key="..\:/LCK_Manager/app/src/main/res/layout/content_main.xml" value="0.32916666666666666" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/content_main.xml" value="0.22" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/fragment_gallery.xml" value="0.3515625" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/fragment_home.xml" value="0.3515625" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/fragment_slideshow.xml" value="0.3515625" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/league_ranking.xml" value="0.35052083333333334" />
-        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_roster_list_view.xml" value="0.29605263157894735" />
-        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_view.xml" value="0.25" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/league_schedule.xml" value="0.174609375" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_roster_header_view.xml" value="0.22631578947368422" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_roster_list_view.xml" value="0.25" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_view.xml" value="0.16" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/match_schedule_list.xml" value="0.173828125" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/match_schedule_list_item.xml" value="0.211328125" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/nav_header_main.xml" value="0.2578125" />
-        <entry key="..\:/LCK_Manager/app/src/main/res/layout/team_roster.xml" value="0.29605263157894735" />
-        <entry key="..\:/LCK_Manager/app/src/main/res/layout/transfer_window.xml" value="0.35052083333333334" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/player_status_for_list.xml" value="0.174609375" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/player_status_for_list_header.xml" value="0.174609375" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/team_roster.xml" value="0.18" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/transfer_window.xml" value="0.18" />
         <entry key="..\:/LCK_Manager/app/src/main/res/menu/activity_main_drawer.xml" value="0.34322916666666664" />
         <entry key="..\:/LCK_Manager/app/src/main/res/menu/main_activity2.xml" value="0.2796875" />
         <entry key="..\:/LCK_Manager/app/src/main/res/menu/menu_bottom.xml" value="0.36614583333333334" />

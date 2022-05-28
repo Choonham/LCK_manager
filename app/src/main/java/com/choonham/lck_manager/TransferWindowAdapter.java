@@ -1,7 +1,6 @@
 package com.choonham.lck_manager;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,28 +8,28 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainRosterAdapter extends BaseAdapter {
-
+public class TransferWindowAdapter extends BaseAdapter {
     Context context;
-    String[] mainRosterList;
+    String[] transferWindowPlayerList;
     int[] positionIconList;
-    float[] mainRosterAvgList;
-    float[] mainRosterStabilityList;
+    float[] transferWindowAvgList;
+    float[] transferWindowStabilityList;
 
     LayoutInflater inflater;
 
-    public MainRosterAdapter(Context applicationContext, String[] mainRosterList, int[] positionIconList, float[] mainRosterAvgList, float[] mainRosterStabilityList) {
-        this.context = applicationContext;
-        this.mainRosterList = mainRosterList;
+    public TransferWindowAdapter(Context context, String[] transferWindowPlayerList, int[] positionIconList, float[] transferWindowAvgList, float[] transferWindowStabilityList) {
+        this.context = context;
+        this.transferWindowPlayerList = transferWindowPlayerList;
         this.positionIconList = positionIconList;
-        this.mainRosterAvgList = mainRosterAvgList;
-        this.mainRosterStabilityList = mainRosterStabilityList;
+        this.transferWindowAvgList = transferWindowAvgList;
+        this.transferWindowStabilityList = transferWindowStabilityList;
 
-        inflater = (LayoutInflater.from(applicationContext));
+        inflater = (LayoutInflater.from(context));
     }
+
     @Override
     public int getCount() {
-        return mainRosterList.length;
+        return transferWindowPlayerList.length;
     }
 
     @Override
@@ -45,7 +44,10 @@ public class MainRosterAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.player_status_for_list, viewGroup, false);
+
+        if(context != null) {
+            view = inflater.inflate(R.layout.player_status_for_list, viewGroup, false);
+        }
 
         TextView mainRosterSeason = view.findViewById(R.id.player_season_for_list);
         TextView mainRosterPlayerName = view.findViewById(R.id.player_name_for_list);
@@ -55,14 +57,12 @@ public class MainRosterAdapter extends BaseAdapter {
         ImageView positionIcon = view.findViewById(R.id.main_roster_position_icon);
 
         mainRosterSeason.setText("22 SPR");
-        mainRosterPlayerName.setText(mainRosterList[i]);
-        mainRosterAvg.setText(Float.toString(mainRosterAvgList[i]));
-        mainRosterStability.setText(Float.toString(mainRosterStabilityList[i]));
+        mainRosterPlayerName.setText(transferWindowPlayerList[i]);
+        mainRosterAvg.setText(Float.toString(transferWindowAvgList[i]));
+        mainRosterStability.setText(Float.toString(transferWindowStabilityList[i]));
 
         positionIcon.setImageResource(positionIconList[i]);
 
-
         return view;
     }
-
 }

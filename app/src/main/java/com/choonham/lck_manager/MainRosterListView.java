@@ -8,6 +8,6 @@ public class MainRosterListView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_roster_list_view);
+        setContentView(R.layout.player_status_for_list);
     }
 }

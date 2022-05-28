@@ -8,27 +8,32 @@
 
 
     <ImageView
+            android:padding="5dp"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/position_top_icon"
+            android:layout_height="40dp" app:srcCompat="@drawable/position_top_icon"
             android:id="@+id/main_roster_position_icon" android:layout_weight="0.1"/>
     <TextView
+            android:textColor="@color/text_color"
             android:text="22 SPR"
             android:layout_width="0dp"
             android:gravity="center"
-            android:layout_height="match_parent" android:id="@+id/main_roster_season" android:layout_weight="0.15"/>
+            android:layout_height="40dp" android:id="@+id/player_season_for_list" android:layout_weight="0.15"/>
     <TextView
+            android:textColor="@color/text_color"
             android:text="Doran"
             android:layout_width="0dp"
             android:gravity="center"
-            android:layout_height="match_parent" android:id="@+id/main_roster_player_name" android:layout_weight="0.35"/>
+            android:layout_height="40dp" android:id="@+id/player_name_for_list" android:layout_weight="0.35"/>
     <TextView
+            android:textColor="@color/text_color"
             android:text="112.3"
             android:layout_width="0dp"
             android:gravity="center"
-            android:layout_height="match_parent" android:id="@+id/main_roster_avg" android:layout_weight="0.2"/>
+            android:layout_height="40dp" android:id="@+id/player_avg_for_list" android:layout_weight="0.2"/>
     <TextView
+            android:textColor="@color/text_color"
             android:text="5.1"
             android:layout_width="0dp"
             android:gravity="center"
-            android:layout_height="match_parent" android:id="@+id/main_roster_stability" android:layout_weight="0.2"/>
+            android:layout_height="40dp" android:id="@+id/player_stability_for_list" android:layout_weight="0.2"/>
 </LinearLayout>
