@@ -20,14 +20,14 @@
             android:layout_height="455dp"
             app:layout_constraintTop_toBottomOf="@+id/transfer_window_title" android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/main_roster_border"
+            android:background="@drawable/box_border"
             android:id="@+id/linearLayout">
         <TextView
                 android:text="1st week of March"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/week_title"
                 android:textColor="@color/text_color"
-                android:background="@drawable/news_issue_border"
+                android:background="@drawable/transfer_window_week_border"
                 android:textSize="20sp"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
@@ -43,9 +43,11 @@
                 android:layout_height="40dp"/>
 
         <ListView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:id="@+id/weekly_transfer_window_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="365dp"
+                android:layout_height="357dp"
                 android:headerDividersEnabled="true"
                 android:divider="@drawable/main_roster_divider"
                 android:listSelector="@drawable/list_view_select_border"
@@ -70,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.052" app:layout_constraintHorizontal_bias="0.52"
-            android:background="@drawable/main_roster_border"
+            android:background="@drawable/box_border"
     >
 
         <TextView

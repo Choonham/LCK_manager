@@ -2,13 +2,135 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                                                    android:layout_height="match_parent">
-
     <TextView
-            android:text="league_ranking"
+            android:text="League Ranking"
+            android:textColor="@color/text_color"
+            android:textSize="25sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView"
+            android:layout_height="wrap_content" android:id="@+id/league_ranking_title"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.498" app:layout_constraintBottom_toBottomOf="parent"/>
-
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="15dp"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/box_border"
+            android:layout_width="374dp"
+            android:layout_height="334dp"
+            app:layout_constraintTop_toBottomOf="@+id/league_ranking_title" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:id="@+id/linearLayout4"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.487">
+        <LinearLayout
+                android:background="@drawable/transfer_window_week_border"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_marginLeft="30dp"
+                    android:text="Team"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/league_ranking_list_team" android:layout_weight="0.4"/>
+            <TextView
+                    android:text="승"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView6" android:layout_weight="0.1"/>
+            <TextView
+                    android:text="패"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView7" android:layout_weight="0.1"/>
+            <TextView
+                    android:text="승률"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView8" android:layout_weight="0.15"/>
+            <TextView
+                    android:text="승점"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView9" android:layout_weight="0.15"/>
+        </LinearLayout>
+        <ListView
+                android:id="@+id/league_ranking_list_view"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_width="360dp"
+                android:layout_height="293dp"/>
+    </LinearLayout>
+    <TextView
+            android:text="POG point"
+            android:textColor="@color/text_color"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/league_ranking_pog_point"
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/box_border"
+            android:layout_width="380dp"
+            android:layout_height="236dp" android:layout_marginTop="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/league_ranking_pog_point" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.486" app:layout_constraintVertical_bias="0.0">
+        <LinearLayout
+                android:background="@drawable/transfer_window_week_border"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView10" android:layout_weight="0.2"/>
+            <TextView
+                    android:text="Season"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView11" android:layout_weight="0.2"/>
+            <TextView
+                    android:text="Nickname"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView12" android:layout_weight="0.4"/>
+            <TextView
+                    android:text="point"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView13" android:layout_weight="0.2"/>
+        </LinearLayout>
+        <ListView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/pog_point_list_view"
+        />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

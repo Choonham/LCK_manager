@@ -18,4 +18,6 @@
     <color name="list_view_select_color">#E4C87F00</color>
     <color name="calender_select_color">#0E2F48</color>
     <color name="interface_purple">#673AB7</color>
+    <color name="line_color">#85857A</color>
+
 </resources>

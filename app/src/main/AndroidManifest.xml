@@ -8,7 +8,8 @@
             android:label="@string/app_bar_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.LCK_manager">
+            android:theme="@style/Theme.LCK_manager"
+            android:largeHeap="true">
         <activity
                 android:name=".MainRosterListView"
                 android:exported="true"/>
