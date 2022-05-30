@@ -24,16 +24,13 @@
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/news_issue_border"
                 android:layout_width="182dp"
-                android:gravity="center"
-
-                android:textColor="@color/icon_color"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textStyle="bold"
                 android:layout_height="32dp" android:id="@+id/today_news"/>
         <TextView
                 android:text="@string/temp_news"
                 android:textSize="15sp"
-                android:textColor="@color/icon_color"
-                android:layout_gravity="center"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:layout_margin="15dp"
                 android:layout_width="352dp"
                 android:layout_height="137dp" android:id="@+id/news_content"/>
@@ -45,20 +42,19 @@
             app:layout_constraintTop_toBottomOf="@+id/news" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
             app:layout_constraintHorizontal_bias="0.333" android:id="@+id/linearLayout2">
+
         <TextView
                 android:layout_marginBottom="5dp"
                 android:paddingBottom="4dp"
                 android:text="2022 LCK Spring"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/match_schedule_season"
-                android:gravity="center"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textSize="22sp"
-                android:textColor="@color/text_color"
                 android:background="@drawable/tomo_match_border"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-        />
-
+                android:fontFamily="@font/germania_one"/>
         <ListView
                 android:id="@+id/match_schedule_list_view"
                 android:layout_width="match_parent"

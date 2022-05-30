@@ -1,9 +1,11 @@
 package com.choonham.lck_manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
@@ -23,6 +25,15 @@ public class MainView extends Fragment {
         matchScheduleListView = view.findViewById(R.id.match_schedule_list_view);
 
         matchScheduleListView.setAdapter(matchScheduleAdapter);
+
+        LinearLayout newsLayout = view.findViewById(R.id.news);
+        newsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), NewsPopUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

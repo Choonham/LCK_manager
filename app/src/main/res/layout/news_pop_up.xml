@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/popup_background"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".NewsPopUpActivity" android:orientation="vertical">
+
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:src="@drawable/news_popup_icon"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:id="@+id/news_popup_icon" android:layout_weight="0.1"/>
+        <TextView
+                android:layout_margin="3dp"
+                android:text="22 SPR Doran"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:textSize="23sp"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:id="@+id/issued_player" android:layout_weight="0.8"/>
+        <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/down_arrow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:id="@+id/issue_effect_icon" android:layout_weight="0.1"/>
+    </LinearLayout>
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="126dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:text="Gen.G 소속 탑 라이너 “Doran” 솔로 랭크에서 중국인 유저를 향해 욕설 논란, 3 경기 출전 정지 징계 처분"
+                    android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                    android:gravity="left"
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/news_detail_content"/>
+        </LinearLayout>
+    </ScrollView>
+    <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="78dp"
+            android:id="@+id/issue_effect_list_view"
+    />
+</LinearLayout>

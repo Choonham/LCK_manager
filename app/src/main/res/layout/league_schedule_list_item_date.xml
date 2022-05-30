@@ -8,6 +8,7 @@
             android:layout_width="wrap_content"
             android:textSize="15sp"
             android:gravity="center"
+            android:fontFamily="@font/germania_one"
             android:textColor="@color/calender_select_color"
             android:background="@drawable/day_schedule_border"
             android:layout_height="wrap_content" android:id="@+id/league_schedule_match_date" android:layout_weight="1"/>

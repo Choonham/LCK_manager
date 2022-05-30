@@ -6,10 +6,14 @@
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_bar_name"
+            android:largeHeap="true"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.LCK_manager"
-            android:largeHeap="true">
+            android:theme="@style/Theme.LCK_manager">
+        <activity
+                android:name=".NewsPopUpActivity"
+                android:theme="@android:style/Theme.Dialog"
+                android:exported="true"/>
         <activity
                 android:name=".MainRosterListView"
                 android:exported="true"/>

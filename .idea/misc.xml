@@ -32,6 +32,7 @@
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/main_roster_header_view.xml" value="0.23593073593073594" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/menu_selector_color.xml" value="0.18802083333333333" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/news_issue_border.xml" value="0.31666666666666665" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/drawable/popup_background.xml" value="0.1859375" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/side_nav_bar.xml" value="0.209375" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/today_match_border.xml" value="0.2100877192982456" />
         <entry key="..\:/LCK_Manager/app/src/main/res/drawable/tomo_match_border.xml" value="0.2100877192982456" />
@@ -44,6 +45,7 @@
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/fragment_gallery.xml" value="0.3515625" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/fragment_home.xml" value="0.3515625" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/fragment_slideshow.xml" value="0.3515625" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/issue_effect_list_item.xml" value="0.200390625" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/league_ranking.xml" value="0.2" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/league_ranking_list_item.xml" value="0.203125" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/league_schedule.xml" value="0.22" />
@@ -51,10 +53,11 @@
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/league_schedule_list_item_match_info.xml" value="0.25" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_roster_header_view.xml" value="0.22631578947368422" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_roster_list_view.xml" value="0.25" />
-        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_view.xml" value="0.16" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/main_view.xml" value="0.25" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/match_schedule_list.xml" value="0.173828125" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/match_schedule_list_item.xml" value="0.211328125" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/nav_header_main.xml" value="0.2578125" />
+        <entry key="..\:/LCK_Manager/app/src/main/res/layout/news_pop_up.xml" value="0.201171875" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/player_status_for_list.xml" value="0.174609375" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/player_status_for_list_header.xml" value="0.174609375" />
         <entry key="..\:/LCK_Manager/app/src/main/res/layout/pog_point_list_item.xml" value="0.203125" />

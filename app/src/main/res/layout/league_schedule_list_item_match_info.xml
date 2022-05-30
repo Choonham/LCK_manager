@@ -6,6 +6,7 @@
     <TextView
             android:text="match 1"
             android:background="@color/calender_select_color"
+            android:fontFamily="@font/germania_one"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:gravity="center"
@@ -13,6 +14,7 @@
             android:layout_height="match_parent" android:id="@+id/league_schedule_match_num" android:layout_weight="0.2"/>
     <TextView
             android:text="1"
+            android:fontFamily="@font/germania_one"
             android:textColor="@color/calender_select_color"
             android:textSize="20sp"
             android:gravity="right"
@@ -20,6 +22,7 @@
             android:layout_height="wrap_content" android:id="@+id/league_schedule_score_a" android:layout_weight="0.05"/>
     <TextView
             android:text="T1"
+            android:fontFamily="@font/germania_one"
             android:textStyle="bold"
             android:textColor="@color/calender_select_color"
             android:textSize="20sp"
@@ -28,6 +31,7 @@
             android:layout_height="wrap_content" android:id="@+id/league_schedule_team_a" android:layout_weight="0.325"/>
     <TextView
             android:text="vs"
+            android:fontFamily="@font/germania_one"
             android:textColor="@color/calender_select_color"
             android:textSize="13sp"
             android:gravity="center"
@@ -35,6 +39,7 @@
             android:layout_height="match_parent" android:layout_weight="0.05"/>
     <TextView
             android:text="Gen.G"
+            android:fontFamily="@font/germania_one"
             android:textStyle="bold"
             android:textColor="@color/calender_select_color"
             android:textSize="20sp"
@@ -43,6 +48,7 @@
             android:layout_height="wrap_content" android:id="@+id/league_schedule_team_b" android:layout_weight="0.325"/>
     <TextView
             android:text="2"
+            android:fontFamily="@font/germania_one"
             android:textColor="@color/calender_select_color"
             android:textSize="20sp"
             android:gravity="left"

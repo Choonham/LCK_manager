@@ -3,35 +3,31 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <TextView
-            android:textColor="@color/text_color"
+            android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/main_roster_position_icon_header"
             android:layout_weight="0.1"/>
     <TextView
             android:text="Season"
-            android:gravity="center"
-            android:textColor="@color/text_color"
+            android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/main_roster_season_header"
             android:layout_weight="0.15"/>
     <TextView
             android:text="Nickname"
-            android:gravity="center"
-            android:textColor="@color/text_color"
+            android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/main_roster_player_name_header"
             android:layout_weight="0.35"/>
     <TextView
             android:text="Avg"
-            android:gravity="center"
-            android:textColor="@color/text_color"
+            android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/main_roster_avg_header"
             android:layout_weight="0.2"/>
     <TextView
             android:text="Stability"
-            android:gravity="center"
-            android:textColor="@color/text_color"
+            android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/main_roster_stability_col"
             android:layout_weight="0.2"/>
