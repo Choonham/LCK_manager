@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="16dp" app:layout_constraintHorizontal_bias="1.0">
         <TextView
-                android:text="Today's News"
+                android:text="@string/todays_news"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:padding="3dp"

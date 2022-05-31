@@ -1,4 +1,4 @@
-package com.choonham.lck_manager;
+package com.choonham.lck_manager.vo;
 
 import java.util.Date;
 

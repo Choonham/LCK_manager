@@ -15,4 +15,23 @@
     <string name="app_bar_name">The LCK Manager</string>
 
     <string name="temp_news">Gen.G 소속 탑 라이너 “Doran” 솔로 랭크에서 중국인 유저를 향해 욕설 논란…</string>
+    <string name="transfer_window">Transfer Window</string>
+    <string name="fame_lv">Fame LV:</string>
+    <string name="money">Money :</string>
+    <string name="season">Season</string>
+    <string name="nickname">Nickname</string>
+    <string name="avg">Avg</string>
+    <string name="stability">Stability</string>
+    <string name="sub_players">Sub Players</string>
+    <string name="todays_news">Today\'s News</string>
+    <string name="vs">vs</string>
+    <string name="rank">rank</string>
+    <string name="record">record</string>
+    <string name="team">Team</string>
+    <string name="wins">승</string>
+    <string name="loses">패</string>
+    <string name="win_rate">승률</string>
+    <string name="win_diff">승점</string>
+    <string name="pog_point">POG point</string>
+    <string name="point">point</string>
 </resources>

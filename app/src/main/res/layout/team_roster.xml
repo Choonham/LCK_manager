@@ -32,25 +32,25 @@
                     android:layout_height="match_parent" android:id="@+id/main_roster_position_icon_col"
                     android:layout_weight="0.1"/>
             <TextView
-                    android:text="Season"
+                    android:text="@string/season"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
                     android:layout_height="match_parent" android:id="@+id/main_roster_season_col"
                     android:layout_weight="0.15"/>
             <TextView
-                    android:text="Nickname"
+                    android:text="@string/nickname"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
                     android:layout_height="match_parent" android:id="@+id/main_roster_player_name_col"
                     android:layout_weight="0.35"/>
             <TextView
-                    android:text="Avg"
+                    android:text="@string/avg"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
                     android:layout_height="match_parent" android:id="@+id/main_roster_avg_col"
                     android:layout_weight="0.2"/>
             <TextView
-                    android:text="Stability"
+                    android:text="@string/stability"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
                     android:layout_height="match_parent" android:id="@+id/main_roster_stability_col"
@@ -77,7 +77,7 @@
             app:layout_constraintVertical_bias="0.341"
             app:layout_constraintHorizontal_bias="0.505">
         <TextView
-                android:text="Sub Players"
+                android:text="@string/sub_players"
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textSize="22sp"
                 android:layout_width="match_parent"
