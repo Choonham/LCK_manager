@@ -1,6 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,8 +55,18 @@ public class TransferWindow extends Fragment {
 
         transferWindowListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("DD", "Item Clicked: " + i);
+            public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+                TextView season = selectedView.findViewById(R.id.player_season_for_list);
+                TextView name = selectedView.findViewById(R.id.player_name_for_list);
+                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+                int drawableRef = (int) positionIcon.getTag();
+
+                intent.putExtra("playerSeason", season.getText());
+                intent.putExtra("playerName", name.getText());
+                intent.putExtra("positionIcon", drawableRef);
+
+                startActivity(intent);
             }
         });
 

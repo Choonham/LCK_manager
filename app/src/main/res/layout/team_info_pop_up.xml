@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
         <ImageView
                 android:paddingTop="3dp"
-                android:src="@drawable/league_schedule"
+                android:src="@drawable/info_icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" android:id="@+id/team_info_icon_view" android:layout_weight="0.1"/>
         <TextView

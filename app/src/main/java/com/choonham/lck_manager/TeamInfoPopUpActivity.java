@@ -5,10 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TeamInfoPopUpActivity extends Activity {
 
@@ -55,10 +63,31 @@ public class TeamInfoPopUpActivity extends Activity {
         TextView teamRank = findViewById(R.id.team_info_rank);
         teamRank.setText(rank);
 
+        teamInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), PlayerInfoPopUpActivity.class);
+                TextView playerSeason = selectedView.findViewById(R.id.player_season_for_list);
+                TextView playerName = selectedView.findViewById(R.id.player_name_for_list);
+                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+
+                intent.putExtra("playerSeason", playerSeason.getText());
+                intent.putExtra("playerName", playerName.getText());
+
+                int drawableRef = (int) positionIcon.getTag();
+                intent.putExtra("positionIcon", drawableRef);
+
+                startActivity(intent);
+            }
+        });
+
     }
+
+
 
     @Override
     public void onBackPressed() {
         finish();
     }
+
 }

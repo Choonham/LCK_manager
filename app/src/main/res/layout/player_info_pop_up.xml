@@ -15,7 +15,7 @@
             android:layout_height="wrap_content">
         <ImageView
                 android:paddingTop="3dp"
-                android:src="@drawable/league_schedule"
+                android:src="@drawable/player_icon"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content" android:id="@+id/player_info_icon_view"/>
         <TextView
@@ -33,7 +33,7 @@
                 android:gravity="left"
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content" android:id="@+id/team_info_win_info"/>
+                android:layout_height="wrap_content" android:id="@+id/player_info_season"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:gravity="right"
@@ -45,7 +45,7 @@
                     android:gravity="center"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content" android:id="@+id/team_info_rank"/>
+                    android:layout_height="wrap_content" android:id="@+id/player_info_condition"/>
             <ImageView
                     android:paddingTop="3dp"
                     android:src="@drawable/position_top_icon"
@@ -59,7 +59,6 @@
             android:layout_height="200dp">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
             android:gravity="bottom"
             android:orientation="horizontal"

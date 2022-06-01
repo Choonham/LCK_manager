@@ -60,7 +60,7 @@ public class MainRosterAdapter extends BaseAdapter {
         mainRosterStability.setText(Float.toString(mainRosterStabilityList[i]));
 
         positionIcon.setImageResource(positionIconList[i]);
-
+        positionIcon.setTag(positionIconList[i]);
 
         return view;
     }

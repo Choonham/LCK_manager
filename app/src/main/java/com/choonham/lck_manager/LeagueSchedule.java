@@ -1,5 +1,6 @@
 package com.choonham.lck_manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,14 @@ public class LeagueSchedule extends Fragment {
     String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
 
     ArrayList<String[]> leagueScheduleList;
+
+    TextView teamA;
+    TextView teamB;
+    String teamName;
+    String teamRank;
+
+    TextView teamARank;
+    TextView teamBRank;
 
     ArrayList<MatchScheduleVo> matchScheduleList = new ArrayList<>();
     ArrayList<String> matchDateList = new ArrayList<>();
@@ -59,6 +68,38 @@ public class LeagueSchedule extends Fragment {
                 matchInfo.setText(selectedMatch.getText());
 
             }
+        });
+
+        teamA = view.findViewById(R.id.match_detail_team_a);
+        teamB = view.findViewById(R.id.match_detail_team_b);
+
+        teamARank = view.findViewById(R.id.match_detail_team_a_rank);
+        teamBRank = view.findViewById(R.id.match_detail_team_b_rank);
+        teamA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                teamName = (String) teamA.getText();
+                teamRank = (String) teamARank.getText();
+
+                Intent intent = new Intent(getContext(), TeamInfoPopUpActivity.class);
+
+                intent.putExtra("teamName", teamName);
+                intent.putExtra("teanRank", teamRank);
+
+                startActivity(intent);
+            }
+        });
+
+        teamB.setOnClickListener(view1 -> {
+            teamName = (String) teamB.getText();
+            teamRank = (String) teamBRank.getText();
+
+            Intent intent = new Intent(getContext(), TeamInfoPopUpActivity.class);
+
+            intent.putExtra("teamName", teamName);
+            intent.putExtra("teanRank", teamRank);
+
+            startActivity(intent);
         });
 
         return view;
@@ -162,4 +203,5 @@ public class LeagueSchedule extends Fragment {
 
         return leagueScheduleResult;
     }
+
 }

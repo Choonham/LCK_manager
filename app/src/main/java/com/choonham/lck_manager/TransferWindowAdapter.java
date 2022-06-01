@@ -56,12 +56,14 @@ public class TransferWindowAdapter extends BaseAdapter {
 
         ImageView positionIcon = view.findViewById(R.id.main_roster_position_icon);
 
+
         mainRosterSeason.setText("22 SPR");
         mainRosterPlayerName.setText(transferWindowPlayerList[i]);
         mainRosterAvg.setText(Float.toString(transferWindowAvgList[i]));
         mainRosterStability.setText(Float.toString(transferWindowStabilityList[i]));
 
         positionIcon.setImageResource(positionIconList[i]);
+        positionIcon.setTag(positionIconList[i]);
 
         return view;
     }

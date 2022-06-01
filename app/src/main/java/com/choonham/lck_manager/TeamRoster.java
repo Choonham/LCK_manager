@@ -1,13 +1,12 @@
 package com.choonham.lck_manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.fragment.app.Fragment;
 import org.w3c.dom.Text;
 
@@ -21,6 +20,9 @@ public class TeamRoster extends Fragment {
     float[] tempMainRosterStabilityList = {5.1f, 6.8f, 9.3f, 8.2f, 1.3f};
 
     int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
+
+    TextView playerName;
+    TextView playerSeason;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +39,40 @@ public class TeamRoster extends Fragment {
 
         teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
         teamSubRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
+
+        teamMainRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+                TextView season = selectedView.findViewById(R.id.player_season_for_list);
+                TextView name = selectedView.findViewById(R.id.player_name_for_list);
+                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+                int drawableRef = (int) positionIcon.getTag();
+
+                intent.putExtra("playerSeason", season.getText());
+                intent.putExtra("playerName", name.getText());
+                intent.putExtra("positionIcon", drawableRef);
+
+                startActivity(intent);
+            }
+        });
+
+        teamSubRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+                TextView season = selectedView.findViewById(R.id.player_season_for_list);
+                TextView name = selectedView.findViewById(R.id.player_name_for_list);
+                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+                int drawableRef = (int) positionIcon.getTag();
+
+                intent.putExtra("playerSeason", season.getText());
+                intent.putExtra("playerName", name.getText());
+                intent.putExtra("positionIcon", drawableRef);
+
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

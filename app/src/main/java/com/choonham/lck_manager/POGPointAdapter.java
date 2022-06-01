@@ -47,12 +47,15 @@ public class POGPointAdapter extends BaseAdapter {
 
         TextView pogRank = view.findViewById(R.id.player_rank_pog_point);
         ImageView pogPositionIcon = view.findViewById(R.id.pog_point_position_icon);
+
         TextView pogSeason = view.findViewById(R.id.player_season_pog_point);
         TextView pogName = view.findViewById(R.id.player_name_pog_point);
         TextView pogPoint = view.findViewById(R.id.pog_point);
 
         pogRank.setText(Integer.toString(i + 1));
         pogPositionIcon.setImageResource(positionIcons[i]);
+        pogPositionIcon.setTag(positionIcons[i]);
+
         pogSeason.setText("22 SPR");
         pogName.setText(pogList[i]);
         pogPoint.setText(Integer.toString(pogPointList[i]));
