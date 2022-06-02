@@ -28,9 +28,6 @@
                 android:theme="@android:style/Theme.Dialog"
                 android:exported="true"/>
         <activity
-                android:name=".MainRosterListView"
-                android:exported="true"/>
-        <activity
                 android:name=".MainActivity"
                 android:exported="true"
                 android:theme="@style/Theme.LCK_manager.NoActionBar">

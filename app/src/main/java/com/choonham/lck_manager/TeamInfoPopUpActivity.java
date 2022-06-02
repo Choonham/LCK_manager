@@ -52,10 +52,10 @@ public class TeamInfoPopUpActivity extends Activity {
 
         setResult(Activity.RESULT_OK, intent);
 
-        MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(this, tempMainRosterList, positionIcons, tempMainRosterAvgList, tempMainRosterStabilityList);
+        TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, tempMainRosterList, positionIcons, tempMainRosterAvgList, tempMainRosterStabilityList);
 
         teamInfoListView = findViewById(R.id.team_info_list_view);
-        teamInfoListView.setAdapter(mainRosterAdapter);
+        teamInfoListView.setAdapter(teamInfoAdapter);
 
         TextView teamName = findViewById(R.id.team_info_team_name);
         teamName.setText(name);
@@ -67,9 +67,9 @@ public class TeamInfoPopUpActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(), PlayerInfoPopUpActivity.class);
-                TextView playerSeason = selectedView.findViewById(R.id.player_season_for_list);
-                TextView playerName = selectedView.findViewById(R.id.player_name_for_list);
-                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+                TextView playerSeason = selectedView.findViewById(R.id.player_season_for_list_popup);
+                TextView playerName = selectedView.findViewById(R.id.player_name_for_list_popup);
+                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon_popup);
 
                 intent.putExtra("playerSeason", playerSeason.getText());
                 intent.putExtra("playerName", playerName.getText());

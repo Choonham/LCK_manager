@@ -6,6 +6,7 @@
         <entry key="..\:/LCK/app/src/main/res/drawable/background_color.xml" value="0.4109375" />
         <entry key="..\:/LCK/app/src/main/res/drawable/menu_selector_color.xml" value="0.35833333333333334" />
         <entry key="..\:/LCK/app/src/main/res/drawable/side_nav_bar.xml" value="0.35833333333333334" />
+        <entry key="..\:/LCK/app/src/main/res/drawable/temp.xml" value="0.275" />
         <entry key="..\:/LCK/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
         <entry key="..\:/LCK/app/src/main/res/layout/app_bar_main.xml" value="0.33" />
         <entry key="..\:/LCK/app/src/main/res/layout/background_color.xml" value="0.39479166666666665" />
@@ -23,6 +24,7 @@
         <entry key="..\:/LCK/app/src/main/res/layout/player_info_pop_up.xml" value="0.27445652173913043" />
         <entry key="..\:/LCK/app/src/main/res/layout/player_status_for_list.xml" value="0.27445652173913043" />
         <entry key="..\:/LCK/app/src/main/res/layout/player_status_for_list_header.xml" value="0.27445652173913043" />
+        <entry key="..\:/LCK/app/src/main/res/layout/player_status_for_list_popup.xml" value="0.46145833333333336" />
         <entry key="..\:/LCK/app/src/main/res/layout/pog_point_list_item.xml" value="0.27445652173913043" />
         <entry key="..\:/LCK/app/src/main/res/layout/team_info_pop_up.xml" value="0.27445652173913043" />
         <entry key="..\:/LCK/app/src/main/res/layout/team_roster.xml" value="0.3958333333333333" />

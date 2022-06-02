@@ -3,12 +3,18 @@ package com.choonham.lck_manager;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.choonham.lck_manager.ui.StatusPentagonView;
 
 public class PlayerInfoPopUpActivity extends Activity {
 
@@ -17,6 +23,9 @@ public class PlayerInfoPopUpActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        StatusPentagonView view = new StatusPentagonView(this);
+
         setContentView(R.layout.player_info_pop_up);
 
         Window window = this.getWindow();
@@ -26,6 +35,9 @@ public class PlayerInfoPopUpActivity extends Activity {
         params.y = 200;
          /* wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;*/
         window.setAttributes(params);
+
+        ConstraintLayout status_pentagon_layout = findViewById(R.id.status_pentagon_layout);
+        status_pentagon_layout.addView(view);
 
         Intent intent = getIntent();
 
@@ -51,5 +63,12 @@ public class PlayerInfoPopUpActivity extends Activity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        View view = findViewById(R.id.status_pentagon_layout);
+
+        Log.d("ㅋㅋㅋ",   view.getWidth()+"|"+   view.getHeight());
     }
 }
