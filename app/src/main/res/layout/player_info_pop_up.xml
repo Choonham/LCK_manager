@@ -57,20 +57,132 @@
             android:layout_width="400dp"
             android:layout_height="260dp">
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="223dp"
-                android:layout_height="187dp"
+                android:layout_width="210dp"
+                android:layout_height="200dp"
                 android:id="@+id/status_pentagon_layout"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.507" app:layout_constraintHorizontal_bias="0.502">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+                android:text="피지컬"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_physical_title"
+                app:layout_constraintBottom_toTopOf="@+id/status_pentagon_layout"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.44"
+                app:layout_constraintVertical_bias="0.818"/>
+        <TextView
+                android:text="[114.4]"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_physical_index"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/player_stat_physical_title"
+                app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/status_pentagon_layout"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="1.0"/>
+        <TextView
+                android:text="운영능력"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_operation_title"
+                app:layout_constraintStart_toEndOf="@+id/status_pentagon_layout"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.294"/>
+        <TextView
+                android:text="[101.2]"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_operation_index"
+                app:layout_constraintTop_toBottomOf="@+id/player_stat_operation_title" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/status_pentagon_layout"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0"/>
+        <TextView
+                android:text="안정도"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_stability_title"
+                app:layout_constraintEnd_toStartOf="@+id/status_pentagon_layout"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.754" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.294"/>
+        <TextView
+                android:text="[97.2]"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_stability_index"
+                app:layout_constraintTop_toBottomOf="@+id/player_stat_stability_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/status_pentagon_layout"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.769"
+                app:layout_constraintVertical_bias="0.0"/>
+        <TextView
+                android:text="한타"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_team_fight_title"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
+                app:layout_constraintHorizontal_bias="0.267" app:layout_constraintVertical_bias="0.0"/>
+        <TextView
+                android:text="[110.0]"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/player_stat_team_fight_title"
+                app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0"/>
+        <TextView
+                android:text="라인전"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_lane_title"
+                app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView16" app:layout_constraintHorizontal_bias="0.244"
+                app:layout_constraintVertical_bias="0.0"/>
+        <TextView
+                android:text="[117.9]"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/player_stat_lane_index"
+                app:layout_constraintStart_toEndOf="@+id/player_stat_lane_title"
+                app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.009" app:layout_constraintVertical_bias="0.0"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
             android:gravity="bottom"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="40dp">
+        <TextView
+                android:text="Most 5: "
+                android:textSize="17sp"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/player_stat_most5_title" android:layout_weight="0.15"/>
+        <ImageView
+                android:src="@drawable/cham5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/player_stat_most1" android:layout_weight="0.1"/>
+        <ImageView
+                android:src="@drawable/cham3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/player_stat_most2" android:layout_weight="0.1"/>
+        <ImageView
+                android:src="@drawable/cham2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/player_stat_most3" android:layout_weight="0.1"/>
+        <ImageView
+                android:src="@drawable/cham4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/player_stat_most4" android:layout_weight="0.1"/>
+        <ImageView
+                android:src="@drawable/cham1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/player_stat_most5" android:layout_weight="0.1"/>
+        <TextView
+                android:text="  "
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/temp" android:layout_weight="0.15"/>
     </LinearLayout>
 
 

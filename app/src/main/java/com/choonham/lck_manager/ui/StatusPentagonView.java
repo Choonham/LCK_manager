@@ -9,16 +9,20 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
+import com.choonham.lck_manager.R;
 
 public class StatusPentagonView extends View {
 
     private Paint paint;
-    int width = 0;
-    int height = 0;
+    private float width = 0f;
+    private float height = 0f;
 
-    public StatusPentagonView(Context context) {
-
+    public StatusPentagonView(Context context, float width, float height) {
         super(context);
+
+        this.width = width;
+        this.height = height;
+
     }
 
     @Override
@@ -29,25 +33,71 @@ public class StatusPentagonView extends View {
         // Cap.BUTT와 Join.MITER를 페인트 객체에 적용
         Paint pathPaint = new Paint();
         pathPaint.setAntiAlias(true);
-        pathPaint.setColor(Color.YELLOW);
+        pathPaint.setColor(getResources().getColor(R.color.icon_color, null));
         pathPaint.setStyle(Paint.Style.STROKE);
         pathPaint.setStrokeWidth(5.0F);
         pathPaint.setStrokeCap(Paint.Cap.BUTT);
         pathPaint.setStrokeJoin(Paint.Join.MITER);
 
+        float startPointX = width/2 - (width/20);
+        float startPointY = 0;
+
+        float h = height/2;
+
+        float centerX = startPointX;
+        float centerY = h;
+
         // Path 객체 생성
         Path path = new Path();
-        path.moveTo(233.5f, 2);
-        float temp = (float) Math.cos(Math.toRadians(162));
-        Log.d("ㅎㅎㅎㅎ", temp+"aa");
-        path.lineTo(395.2f, 119.5f);
-        path.lineTo(333.4f, 309.5f);
-        path.lineTo(133.6f, 309.5f);
-        path.lineTo(71.8f, 119.5f);
-        path.lineTo(233.5f, 2);
+        path.moveTo(startPointX, startPointY);
+
+        float multiX1 = (float) Math.cos(Math.toRadians(162)); // -
+        float multiX2 = (float) Math.cos(Math.toRadians(234)); // -
+
+        float multiY1 = (float) Math.sin(Math.toRadians(162)); // +
+        float multiY2 = (float) Math.sin(Math.toRadians(234)); // -
+
+        float point1X = centerX - h*multiX1; float point1Y = centerY - h*multiY1;
+        float point2X = centerX - h*multiX2; float point2Y = centerY - h*multiY2;
+        float point3X = centerX + h*multiX2; float point3Y = centerY - h*multiY2;
+        float point4X = centerX + h*multiX1; float point4Y = centerY - h*multiY1;
+
+        path.lineTo(point1X, point1Y);
+        path.lineTo(point2X, point2Y);
+        path.lineTo(point3X, point3Y);
+        path.lineTo(point4X, point4Y);
+        path.lineTo(startPointX, startPointY);
 
         // Path 객체 그리기
         canvas.drawPath(path, pathPaint);
+
+        pathPaint.setColor(Color.WHITE);
+        pathPaint.setStyle(Paint.Style.STROKE);
+        pathPaint.setPathEffect(new DashPathEffect(new float[]{5, 10, 15, 20}, 0));
+        pathPaint.setStrokeWidth(2.5F);
+
+        Path pathFromCenter1 = new Path();
+        pathFromCenter1.moveTo(centerX, centerY);
+        pathFromCenter1.lineTo(startPointX, startPointY);
+        canvas.drawPath(pathFromCenter1, pathPaint);
+
+        pathFromCenter1.moveTo(centerX, centerY);
+        pathFromCenter1.lineTo(point1X, point1Y);
+        canvas.drawPath(pathFromCenter1, pathPaint);
+
+        pathFromCenter1.moveTo(centerX, centerY);
+        pathFromCenter1.lineTo(point2X, point2Y);
+        canvas.drawPath(pathFromCenter1, pathPaint);
+
+        pathFromCenter1.moveTo(centerX, centerY);
+        pathFromCenter1.lineTo(point3X, point3Y);
+        canvas.drawPath(pathFromCenter1, pathPaint);
+
+        pathFromCenter1.moveTo(centerX, centerY);
+        pathFromCenter1.lineTo(point4X, point4Y);
+        canvas.drawPath(pathFromCenter1, pathPaint);
+
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
