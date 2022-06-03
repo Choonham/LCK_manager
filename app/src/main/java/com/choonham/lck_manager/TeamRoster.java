@@ -53,6 +53,11 @@ public class TeamRoster extends Fragment {
                 intent.putExtra("playerName", name.getText());
                 intent.putExtra("positionIcon", drawableRef);
 
+                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
+                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
+                intent.putExtra("playerAvg", avg.getText());
+                intent.putExtra("playerStability", stability.getText());
+
                 startActivity(intent);
             }
         });
@@ -64,11 +69,17 @@ public class TeamRoster extends Fragment {
                 TextView season = selectedView.findViewById(R.id.player_season_for_list);
                 TextView name = selectedView.findViewById(R.id.player_name_for_list);
                 ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+
                 int drawableRef = (int) positionIcon.getTag();
 
                 intent.putExtra("playerSeason", season.getText());
                 intent.putExtra("playerName", name.getText());
                 intent.putExtra("positionIcon", drawableRef);
+
+                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
+                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
+                intent.putExtra("playerAvg", avg.getText());
+                intent.putExtra("playerStability", stability.getText());
 
                 startActivity(intent);
             }

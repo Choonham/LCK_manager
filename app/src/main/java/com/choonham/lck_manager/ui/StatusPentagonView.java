@@ -16,13 +16,14 @@ public class StatusPentagonView extends View {
     private Paint paint;
     private float width = 0f;
     private float height = 0f;
+    float tempStat;
 
-    public StatusPentagonView(Context context, float width, float height) {
+    public StatusPentagonView(Context context, float width, float height, float tempStat) {
         super(context);
 
         this.width = width;
         this.height = height;
-
+        this.tempStat = tempStat;
     }
 
     @Override
@@ -97,6 +98,46 @@ public class StatusPentagonView extends View {
         pathFromCenter1.lineTo(point4X, point4Y);
         canvas.drawPath(pathFromCenter1, pathPaint);
 
+        Paint statPaint = new Paint();
+        statPaint.setAntiAlias(true);
+        statPaint.setColor(getResources().getColor(R.color.list_view_select_color, null));
+        statPaint.setStyle(Paint.Style.STROKE);
+        statPaint.setStrokeWidth(3.0F);
+
+        statPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        float tempIndex1 = (float) (tempStat + (Math.random() * 50));
+        float tempIndex2 = (float) (tempStat + (Math.random() * 50));
+        float tempIndex3 = (float) (tempStat + (Math.random() * 50));
+        float tempIndex4 = (float) (tempStat + (Math.random() * 50));
+        float tempIndex5 = (float) (tempStat + (Math.random() * 50));
+
+
+        float statPoint0X = centerX;
+        float statPoint0Y = centerY - tempIndex1* (float) Math.sin(Math.toRadians(90));
+
+        float statPoint1X = centerX - tempIndex2*(float) Math.cos(Math.toRadians(162));
+        float statPoint1Y = centerY - tempIndex2* (float) Math.sin(Math.toRadians(162));
+
+        float statPoint2X = centerX - tempIndex3*(float) Math.cos(Math.toRadians(234));
+        float statPoint2Y = centerY - tempIndex3*(float) Math.sin(Math.toRadians(234));
+
+        float statPoint3X = centerX + tempIndex4*(float) Math.cos(Math.toRadians(234));
+        float statPoint3Y = centerY - tempIndex4*(float) Math.sin(Math.toRadians(234));
+
+        float statPoint4X = centerX + tempIndex5*(float) Math.cos(Math.toRadians(162));
+        float statPoint4Y = centerY - tempIndex5* (float) Math.sin(Math.toRadians(162));
+
+        Path statPath = new Path();
+        statPath.moveTo(statPoint0X, statPoint0Y);
+
+        statPath.lineTo(statPoint1X, statPoint1Y);
+        statPath.lineTo(statPoint2X, statPoint2Y);
+        statPath.lineTo(statPoint3X, statPoint3Y);
+        statPath.lineTo(statPoint4X, statPoint4Y);
+        statPath.lineTo(statPoint0X, statPoint0Y);
+
+        canvas.drawPath(statPath, statPaint);
 
     }
 

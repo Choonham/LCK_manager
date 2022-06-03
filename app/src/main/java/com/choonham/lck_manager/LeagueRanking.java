@@ -71,6 +71,8 @@ public class LeagueRanking extends Fragment {
                 intent.putExtra("playerName", name.getText());
                 intent.putExtra("positionIcon", drawableRef);
 
+                intent.putExtra("playerAvg", "112.5");
+                intent.putExtra("playerStability", "112.5");
                 startActivity(intent);
             }
         });

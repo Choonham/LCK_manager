@@ -66,6 +66,12 @@ public class TransferWindow extends Fragment {
                 intent.putExtra("playerName", name.getText());
                 intent.putExtra("positionIcon", drawableRef);
 
+                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
+                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
+                intent.putExtra("playerAvg", avg.getText());
+                intent.putExtra("playerStability", stability.getText());
+
+
                 startActivity(intent);
             }
         });

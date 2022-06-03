@@ -18,6 +18,9 @@ import com.choonham.lck_manager.ui.StatusPentagonView;
 
 public class PlayerInfoPopUpActivity extends Activity {
 
+    private float avg;
+    private float stability;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,9 @@ public class PlayerInfoPopUpActivity extends Activity {
         String season = intent.getStringExtra("playerSeason");
         String name = intent.getStringExtra("playerName");
         int positionIconID = intent.getIntExtra("positionIcon", 0);
+
+        avg = Float.parseFloat(intent.getStringExtra("playerAvg"));
+        stability = Float.parseFloat(intent.getStringExtra("playerStability"));
 
         TextView playerName = findViewById(R.id.player_info_name);
         TextView playerSeason = findViewById(R.id.player_info_season);
@@ -64,7 +70,7 @@ public class PlayerInfoPopUpActivity extends Activity {
     public void onWindowFocusChanged(boolean hasFocus) {
         View view = findViewById(R.id.status_pentagon_layout);
 
-        StatusPentagonView statusPentagonView = new StatusPentagonView(this, view.getWidth(), view.getHeight());
+        StatusPentagonView statusPentagonView = new StatusPentagonView(this, view.getWidth(), view.getHeight(), avg);
         ConstraintLayout status_pentagon_layout = findViewById(R.id.status_pentagon_layout);
         status_pentagon_layout.addView(statusPentagonView);
     }

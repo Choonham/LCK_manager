@@ -74,6 +74,11 @@ public class TeamInfoPopUpActivity extends Activity {
                 intent.putExtra("playerSeason", playerSeason.getText());
                 intent.putExtra("playerName", playerName.getText());
 
+                TextView avg = selectedView.findViewById(R.id.player_avg_for_list_popup);
+                TextView stability = selectedView.findViewById(R.id.player_stability_for_list_popup);
+                intent.putExtra("playerAvg", avg.getText());
+                intent.putExtra("playerStability", stability.getText());
+
                 int drawableRef = (int) positionIcon.getTag();
                 intent.putExtra("positionIcon", drawableRef);
 
