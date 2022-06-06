@@ -4,40 +4,71 @@
                                                    android:layout_height="match_parent"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.0"
+            android:id="@+id/guideline_h_1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.57"
+            android:id="@+id/guideline_h_2"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.9"
+            android:id="@+id/guideline_h_3"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.02"
+            android:id="@+id/guideline_v_1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.98"
+            android:id="@+id/guideline_v_2"/>
+
     <TextView
             android:text="League Schedule"
             android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/league_schedule_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-    />
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3" app:layout_constraintVertical_bias="0.0"/>
     <LinearLayout
             android:orientation="horizontal"
             android:padding="10dp"
-            android:layout_width="399dp"
-            android:layout_height="384dp"
+            android:layout_width="378dp"
+            android:layout_height="326dp"
             android:background="@drawable/league_schedule_calender"
-            app:layout_constraintTop_toBottomOf="@+id/league_schedule_title" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.454" app:layout_constraintVertical_bias="0.0"
-            android:id="@+id/linearLayout3">
+            android:id="@+id/linearLayout3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2" android:layout_marginEnd="4dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_2" app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_1">
         <ListView
-                android:layout_width="359dp"
-                android:layout_height="330dp"
+                android:layout_width="348dp"
+                android:layout_height="299dp"
                 android:id="@+id/league_schedule_list_view"
         />
     </LinearLayout>
     <LinearLayout
             android:orientation="vertical"
             android:background="@drawable/box_border"
-            android:layout_width="386dp"
-            android:layout_height="252dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.478"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" app:layout_constraintVertical_bias="0.14">
+            android:layout_width="382dp"
+            android:layout_height="224dp"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_3">
         <TextView
                 android:layout_marginTop="5dp"
                 android:text="Match 30"
@@ -61,7 +92,8 @@
                     android:background="@drawable/transfer_window_week_border"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a" android:layout_weight="0.45"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a"
+                    android:layout_weight="0.45"/>
             <TextView
                     android:text="@string/vs"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
@@ -74,7 +106,8 @@
                     android:textSize="20sp"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b" android:layout_weight="0.45"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b"
+                    android:layout_weight="0.45"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_marginTop="15dp"
@@ -89,7 +122,8 @@
                     android:background="@drawable/transfer_window_week_border"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a_rank" android:layout_weight="0.45"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a_rank"
+                    android:layout_weight="0.45"/>
             <TextView
                     android:text="@string/rank"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
@@ -102,7 +136,8 @@
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:textSize="20sp"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b_rank" android:layout_weight="0.45"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b_rank"
+                    android:layout_weight="0.45"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -117,7 +152,8 @@
                     android:background="@drawable/transfer_window_week_border"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a_avg" android:layout_weight="0.45"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a_avg"
+                    android:layout_weight="0.45"/>
             <TextView
                     android:text="@string/avg"
                     android:textSize="15sp"
@@ -130,7 +166,8 @@
                     android:textSize="20sp"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b_avg" android:layout_weight="0.45"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b_avg"
+                    android:layout_weight="0.45"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -145,7 +182,8 @@
                     android:background="@drawable/transfer_window_week_border"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a_record" android:layout_weight="0.4"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_a_record"
+                    android:layout_weight="0.4"/>
             <TextView
                     android:text="@string/record"
                     android:textSize="15sp"
@@ -158,7 +196,8 @@
                     android:textSize="20sp"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b_record" android:layout_weight="0.4"/>
+                    android:layout_height="wrap_content" android:id="@+id/match_detail_team_b_record"
+                    android:layout_weight="0.4"/>
         </LinearLayout>
     </LinearLayout>
 

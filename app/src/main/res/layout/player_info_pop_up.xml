@@ -7,6 +7,8 @@
         android:padding="5dp"
         android:layout_width="match_parent"
         tools:context=".NewsPopUpActivity" android:orientation="vertical" android:layout_height="350dp">
+
+
     <LinearLayout
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
@@ -56,13 +58,51 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="400dp"
             android:layout_height="260dp">
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.02"
+                android:id="@+id/guideline_h_1"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.5"
+                android:id="@+id/guideline_h_2"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.94"
+                android:id="@+id/guideline_h_3"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.02"
+                android:id="@+id/guideline_v_1"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.98"
+                android:id="@+id/guideline_v_2"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.5"
+                android:id="@+id/guideline_v_3"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="210dp"
                 android:layout_height="200dp"
                 android:id="@+id/status_pentagon_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_3">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
@@ -70,83 +110,87 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_physical_title"
                 app:layout_constraintBottom_toTopOf="@+id/status_pentagon_layout"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.44"
-                app:layout_constraintVertical_bias="0.818"/>
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1" app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_3" app:layout_constraintHorizontal_bias="1.0"/>
         <TextView
                 android:text="[114.4]"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_physical_index"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/player_stat_physical_title"
-                app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="2dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1" android:layout_marginEnd="136dp"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_3" android:layout_marginBottom="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/status_pentagon_layout"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="1.0"/>
+                app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"/>
         <TextView
                 android:text="운영능력"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_operation_title"
                 app:layout_constraintStart_toEndOf="@+id/status_pentagon_layout"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.294"/>
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_2"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1" app:layout_constraintHorizontal_bias="0.0"/>
         <TextView
                 android:text="[101.2]"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_operation_index"
-                app:layout_constraintTop_toBottomOf="@+id/player_stat_operation_title" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/player_stat_operation_title"
                 app:layout_constraintStart_toEndOf="@+id/status_pentagon_layout"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.0"/>
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_2"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0" android:layout_marginStart="4dp"/>
         <TextView
                 android:text="안정도"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_stability_title"
                 app:layout_constraintEnd_toStartOf="@+id/status_pentagon_layout"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.754" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.294"/>
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_2"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintHorizontal_bias="0.77"/>
         <TextView
                 android:text="[97.2]"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_stability_index"
                 app:layout_constraintTop_toBottomOf="@+id/player_stat_stability_title"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/status_pentagon_layout"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.769"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_2"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintHorizontal_bias="0.807"
                 app:layout_constraintVertical_bias="0.0"/>
         <TextView
                 android:text="한타"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_team_fight_title"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
-                app:layout_constraintHorizontal_bias="0.267" app:layout_constraintVertical_bias="0.0"/>
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1" android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_3"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_3" app:layout_constraintHorizontal_bias="0.45"
+                app:layout_constraintVertical_bias="0.0"/>
         <TextView
                 android:text="[110.0]"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/textView16"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/player_stat_team_fight_title"
                 app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_3"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_3" app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintVertical_bias="0.0"/>
         <TextView
                 android:text="라인전"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_lane_title"
                 app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView16" app:layout_constraintHorizontal_bias="0.244"
-                app:layout_constraintVertical_bias="0.0"/>
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_3"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2" app:layout_constraintHorizontal_bias="0.091"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_3" app:layout_constraintVertical_bias="1.0"/>
         <TextView
                 android:text="[117.9]"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_stat_lane_index"
                 app:layout_constraintStart_toEndOf="@+id/player_stat_lane_title"
                 app:layout_constraintTop_toBottomOf="@+id/status_pentagon_layout"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.009" app:layout_constraintVertical_bias="0.0"/>
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_3" app:layout_constraintHorizontal_bias="0.027"
+                app:layout_constraintVertical_bias="1.0"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
             android:gravity="bottom"

@@ -15,13 +15,13 @@
     <androidx.constraintlayout.widget.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.4"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.37"
             android:id="@+id/guideline_h_2"/>
 
     <androidx.constraintlayout.widget.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.85"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.9"
             android:id="@+id/guideline_h_3"/>
 
     <androidx.constraintlayout.widget.Guideline
@@ -39,14 +39,15 @@
     <LinearLayout
             android:id="@+id/news"
             android:orientation="vertical"
-            android:layout_width="383dp"
-            android:layout_height="264dp"
+            android:layout_width="384dp"
+            android:layout_height="223dp"
             android:background="@drawable/news_bg_image"
             android:layout_gravity="center"
             app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
             app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
             app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_h_2" app:layout_constraintVertical_bias="0.228">
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_2" app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.727">
         <TextView
                 android:text="@string/todays_news"
                 android:textAlignment="center"
@@ -69,8 +70,8 @@
     </LinearLayout>
     <LinearLayout
             android:orientation="vertical"
-            android:layout_width="384dp"
-            android:layout_height="269dp"
+            android:layout_width="388dp"
+            android:layout_height="242dp"
             android:id="@+id/linearLayout2"
             app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
             app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
@@ -104,9 +105,9 @@
             android:layout_height="66dp" app:srcCompat="@drawable/start_match_image"
             android:id="@+id/imageButton"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.142"
-            app:layout_constraintHorizontal_bias="0.504"/>
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
