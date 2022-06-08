@@ -1,14 +1,17 @@
-package com.choonham.lck_manager.vo;
+package com.choonham.lck_manager.entity;
 
 import java.util.Date;
 
-public class MatchScheduleVo {
+public class LeagueSchedule {
     private Date date;
     private int matchNum;
+    private long teamCodeA;
+    private long teamCodeB;
     private String teamA;
     private String teamB;
     private int scoreA = 0;
     private int scoreB = 0;
+    private int playFlag;
 
     public Date getDate() {
         return date;
@@ -56,5 +59,29 @@ public class MatchScheduleVo {
 
     public void setScoreB(int scoreB) {
         this.scoreB = scoreB;
+    }
+
+    public long getTeamCodeA() {
+        return teamCodeA;
+    }
+
+    public void setTeamCodeA(long teamCodeA) {
+        this.teamCodeA = teamCodeA;
+    }
+
+    public long getTeamCodeB() {
+        return teamCodeB;
+    }
+
+    public void setTeamCodeB(long teamCodeB) {
+        this.teamCodeB = teamCodeB;
+    }
+
+    public int getPlayFlag() {
+        return playFlag;
+    }
+
+    public void setPlayFlag(int playFlag) {
+        this.playFlag = playFlag;
     }
 }

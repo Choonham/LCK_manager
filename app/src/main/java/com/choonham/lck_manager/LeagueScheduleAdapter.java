@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.choonham.lck_manager.vo.MatchScheduleVo;
+import com.choonham.lck_manager.entity.LeagueSchedule;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class LeagueScheduleAdapter extends BaseAdapter {
     private static final int TYPE_MATCH_INFO = 0;
     private static final int TYPE_DATE_INFO = 1;
 
-    ArrayList<MatchScheduleVo> matchScheduleList;
+    ArrayList<LeagueSchedule> leagueScheduleList;
     ArrayList<String> matchDateList;
 
     private LayoutInflater inflater;
@@ -24,8 +24,8 @@ public class LeagueScheduleAdapter extends BaseAdapter {
 
     private int matchDateSubNum = 1;
 
-    public LeagueScheduleAdapter(ArrayList<MatchScheduleVo> matchScheduleList, ArrayList<String> matchDateList, Context context) {
-        this.matchScheduleList = matchScheduleList;
+    public LeagueScheduleAdapter(ArrayList<LeagueSchedule> leagueScheduleList, ArrayList<String> matchDateList, Context context) {
+        this.leagueScheduleList = leagueScheduleList;
         this.context = context;
         this.matchDateList = matchDateList;
 
@@ -62,7 +62,7 @@ public class LeagueScheduleAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return matchScheduleList.size() + matchDateList.size();
+        return leagueScheduleList.size() + matchDateList.size();
     }
 
     @Override
@@ -94,11 +94,11 @@ public class LeagueScheduleAdapter extends BaseAdapter {
                     TextView teamA = view.findViewById(R.id.league_schedule_team_a);
                     TextView teamB = view.findViewById(R.id.league_schedule_team_b);
                     TextView scoreB = view.findViewById(R.id.league_schedule_score_b);
-                    matchNum.setText("Match " + Integer.toString(matchScheduleList.get(position - matchDateSubNum).getMatchNum()));
-                    scoreA.setText(Integer.toString(matchScheduleList.get(position - matchDateSubNum).getScoreA()));
-                    teamA.setText(matchScheduleList.get(position - matchDateSubNum).getTeamA());
-                    teamB.setText(matchScheduleList.get(position - matchDateSubNum).getTeamB());
-                    scoreB.setText(Integer.toString(matchScheduleList.get(position - matchDateSubNum).getScoreB()));
+                    matchNum.setText("Match " + Integer.toString(leagueScheduleList.get(position - matchDateSubNum).getMatchNum()));
+                    scoreA.setText(Integer.toString(leagueScheduleList.get(position - matchDateSubNum).getScoreA()));
+                    teamA.setText(leagueScheduleList.get(position - matchDateSubNum).getTeamA());
+                    teamB.setText(leagueScheduleList.get(position - matchDateSubNum).getTeamB());
+                    scoreB.setText(Integer.toString(leagueScheduleList.get(position - matchDateSubNum).getScoreB()));
 
                     break;
 
