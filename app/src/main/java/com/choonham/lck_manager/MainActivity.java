@@ -1,5 +1,6 @@
 package com.choonham.lck_manager;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ViewPager2 pager;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
+
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,5 +137,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         return false;
+    }
+
+    private void createDatabase(String name) {
+        database = openOrCreateDatabase(name, MODE_PRIVATE, null);
+    }
+
+    private void createTable() {
+
+        if(database == null) {
+            return;
+        }
+
+        database.execSQL("CREATE TABLE IF NOT EXISTS champion (" +
+                " _id INTEGER PRIMARY KEY autoincrement," +
+                " champion_code LONG," +
+                " champion_name VARCHAR(100)," +
+                " lane_strength FLOAT(5,2)," +
+                " team_fight FLOAT(5,2)," +
+                " split_push FLOAT(5,2)," +
+                " one_vs_one_strength FLOAT(5,2)," +
+                " initiating FLOAT(5,2)," +
+                " poking FLOAT(5,2)," +
+                " type INT(2)," +
+                " to_six_potential FLOAT(5,2)," +
+                " to_elv_potential FLOAT(5,2)," +
+                " to_sixteen_potential FLOAT(5,2)" +
+                ")");
     }
 }

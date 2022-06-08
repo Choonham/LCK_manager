@@ -1,15 +1,36 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Player {
+    @PrimaryKey
+    @ColumnInfo(name = "player_code")
     private long playerCode;
+
+    @ColumnInfo(name = "season_code")
     private long seasonCode;
+
+    @ColumnInfo(name = "player_name")
     private String playerName;
+
     private int position;
     private double physical;
+
+    @ColumnInfo(name = "team_fight")
     private double teamFight;
+
+    @ColumnInfo(name = "out_smart")
     private double outSmart;
+
+    @ColumnInfo(name = "lane_strength")
     private double laneStrength;
+
     private double stability;
+
+    @ColumnInfo(name = "fame_lv")
     private int fameLv;
 
     public int getPosition() {

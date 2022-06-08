@@ -1,11 +1,28 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Team {
+    @PrimaryKey
+    @ColumnInfo(name = "team_code")
     private long teamCode;
+
+    @ColumnInfo(name = "user_code")
     private long userCode;
+
+    @ColumnInfo(name = "user_type")
     private int userType;
+
+    @ColumnInfo(name = "team_name")
     private String teamName;
+
+    @ColumnInfo(name = "main_roster_code")
     private long mainRosterCode;
+
+    @ColumnInfo(name = "sub_roster_code")
     private long subRosterCode;
 
     public long getTeamCode() {

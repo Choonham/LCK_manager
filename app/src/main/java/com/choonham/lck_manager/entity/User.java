@@ -1,14 +1,37 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class User {
+    @PrimaryKey
+    @ColumnInfo(name = "user_code")
     private long userCode;
+
+    @ColumnInfo(name = "user_id")
     private String userId;
+
+    @ColumnInfo(name = "user_phone_num")
     private String userPhoneNum;
+
+    @ColumnInfo(name = "user_nick_name")
     private String userNickName;
+
+    @ColumnInfo(name = "user_fame_lv")
     private int userFameLv;
+
+    @ColumnInfo(name = "user_money")
     private long userMoney;
+
+    @ColumnInfo(name = "season_code")
     private int seasonCode;
+
+    @ColumnInfo(name = "match_num")
     private int matchNum;
+
+    @ColumnInfo(name = "apier")
     private int apiVer;
 
     public long getUserCode() {

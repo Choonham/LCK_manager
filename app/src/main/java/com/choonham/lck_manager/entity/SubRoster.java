@@ -1,8 +1,18 @@
 package com.choonham.lck_manager.entity;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class SubRoster {
+    @PrimaryKey
+    @ColumnInfo(name = "subRoster_Code")
     private long subRosterCode;
+
+    @ColumnInfo(name = "player_code")
     private long playerCode;
+
+    @ColumnInfo(name = "main_order")
     private int mainOrder;
 
     public long getSubRosterCode() {

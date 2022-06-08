@@ -1,17 +1,48 @@
 package com.choonham.lck_manager.entity;
 
-import java.util.Date;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.util.Date;
+@Entity
 public class LeagueSchedule {
+    @PrimaryKey
+    @ColumnInfo(name = "league_schedule_code")
+    private long leagueScheduleCode;
     private Date date;
+
+    @ColumnInfo(name = "match_num")
     private int matchNum;
+
+    @ColumnInfo(name = "team_code_a")
     private long teamCodeA;
+
+    @ColumnInfo(name = "team_code_b")
     private long teamCodeB;
+
+    @ColumnInfo(name = "team_a")
     private String teamA;
+
+    @ColumnInfo(name = "team_b")
     private String teamB;
+
+    @ColumnInfo(name = "score_a")
     private int scoreA = 0;
+
+    @ColumnInfo(name = "score_b")
     private int scoreB = 0;
+
+    @ColumnInfo(name = "play_flag")
     private int playFlag;
+
+    public long getLeagueScheduleCode() {
+        return leagueScheduleCode;
+    }
+
+    public void setLeagueScheduleCode(long leagueScheduleCode) {
+        this.leagueScheduleCode = leagueScheduleCode;
+    }
 
     public Date getDate() {
         return date;

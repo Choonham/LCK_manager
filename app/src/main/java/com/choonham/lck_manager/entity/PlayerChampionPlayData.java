@@ -1,8 +1,15 @@
 package com.choonham.lck_manager.entity;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 
+@Entity
 public class PlayerChampionPlayData {
+    @ColumnInfo(name = "player_code")
     private long playerCode;
+
+    @ColumnInfo(name = "champion_code")
     private long championCode;
+
     private int win;
     private int lose;
     private double kda;

@@ -1,8 +1,19 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class MainRoster {
+    @PrimaryKey
+    @ColumnInfo(name = "main_roster_code")
     private long mainRosterCode;
+
+    @ColumnInfo(name = "player_code")
     private long playerCode;
+
+    @ColumnInfo(name = "main_order")
     private int mainOrder;
 
     public long getMainRosterCode() {

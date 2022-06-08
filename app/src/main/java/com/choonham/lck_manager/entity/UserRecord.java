@@ -1,18 +1,46 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class UserRecord {
+    @PrimaryKey
+    @ColumnInfo(name = "user_record_code")
     private long userRecordCode;
+
+    @ColumnInfo(name = "user_code")
     private long userCode;
+
+    @ColumnInfo(name = "season_code")
     private int seasonCode;
+
     private int rank;
+
     private int win;
+
     private int lose;
+
+    @ColumnInfo(name = "win_diff")
     private int winDiff;
+
+    @ColumnInfo(name = "fame_diff")
     private int fameDiff;
+
+    @ColumnInfo(name = "top_player_code")
     private long topPlayerCode;
+
+    @ColumnInfo(name = "jungle_player_code")
     private long junglePlayerCode;
+
+    @ColumnInfo(name = "mid_player_code")
     private long midPlayerCode;
+
+    @ColumnInfo(name = "ad_player_code")
     private long adPlayerCode;
+
+    @ColumnInfo(name = "support_player_code")
     private long supportPlayerCode;
 
     public long getUserRecordCode() {

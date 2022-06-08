@@ -1,17 +1,40 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Champion {
+    @PrimaryKey
+    @ColumnInfo(name = "champion_code")
     private long championCode;
+
+    @ColumnInfo(name = "champion_name")
     private String championName;
+
+    @ColumnInfo(name = "lane_strength")
     private double laneStrength;
+
+    @ColumnInfo(name = "team_fight")
     private double teamFight;
+
+    @ColumnInfo(name = "split_push")
     private double splitPush;
+
+    @ColumnInfo(name = "one_vs_one_strength")
     private double oneVsOneStrength;
     private double initiating;
     private double poking;
     private int type;
+
+    @ColumnInfo(name = "to_six_potential")
     private double toSixPotential;
+
+    @ColumnInfo(name = "to_elv_potential")
     private double toElvPotential;
+
+    @ColumnInfo(name = "to_sixteen_potential")
     private double toSixteenPotential;
 
     public long getChampionCode() {

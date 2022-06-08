@@ -1,8 +1,17 @@
 package com.choonham.lck_manager.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
+@Entity
 public class ChampionCounter {
+    @ColumnInfo(name = "champion_code")
     private int championCode;
+
+    @ColumnInfo(name = "counter_champion_code")
     private int counterChampionCode;
+
+    @ColumnInfo(name = "lane_win_rate")
     private int laneWinRate;
 
     public int getChampionCode() {
