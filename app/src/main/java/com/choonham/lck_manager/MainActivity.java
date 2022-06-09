@@ -1,5 +1,7 @@
 package com.choonham.lck_manager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,10 +30,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SQLiteDatabase database;
 
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefs = getSharedPreferences("Pref", MODE_PRIVATE);
+
+        checkFirstRun();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -143,26 +151,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         database = openOrCreateDatabase(name, MODE_PRIVATE, null);
     }
 
-    private void createTable() {
+    private void createTables() {
 
         if(database == null) {
             return;
         }
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS champion (" +
-                " _id INTEGER PRIMARY KEY autoincrement," +
-                " champion_code LONG," +
-                " champion_name VARCHAR(100)," +
-                " lane_strength FLOAT(5,2)," +
-                " team_fight FLOAT(5,2)," +
-                " split_push FLOAT(5,2)," +
-                " one_vs_one_strength FLOAT(5,2)," +
-                " initiating FLOAT(5,2)," +
-                " poking FLOAT(5,2)," +
-                " type INT(2)," +
-                " to_six_potential FLOAT(5,2)," +
-                " to_elv_potential FLOAT(5,2)," +
-                " to_sixteen_potential FLOAT(5,2)" +
-                ")");
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_champion));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_player));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_player_champion_played_data));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_sub_roster));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_team));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_user));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_user_record));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_champion_counter));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_league_schedule));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_main_roster));
+        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_match_data));
+    }
+
+    public void checkFirstRun(){
+        boolean isFirstRun = prefs.getBoolean("isFirstRun",true);
+        if(isFirstRun)    {
+            createDatabase("lck_manager");
+            createTables();
+        }
     }
 }
+

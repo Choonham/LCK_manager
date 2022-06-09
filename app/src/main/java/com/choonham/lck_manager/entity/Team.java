@@ -6,6 +6,16 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Team {
+
+    public Team(long teamCode, long userCode, int userType, String teamName, long mainRosterCode, long subRosterCode) {
+        this.teamCode = teamCode;
+        this.userCode = userCode;
+        this.userType = userType;
+        this.teamName = teamName;
+        this.mainRosterCode = mainRosterCode;
+        this.subRosterCode = subRosterCode;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "team_code")
     private long teamCode;

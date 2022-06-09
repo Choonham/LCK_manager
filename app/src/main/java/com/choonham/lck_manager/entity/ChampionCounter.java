@@ -5,6 +5,13 @@ import androidx.room.Entity;
 
 @Entity
 public class ChampionCounter {
+
+    public ChampionCounter(int championCode, int counterChampionCode, int laneWinRate) {
+        this.championCode = championCode;
+        this.counterChampionCode = counterChampionCode;
+        this.laneWinRate = laneWinRate;
+    }
+
     @ColumnInfo(name = "champion_code")
     private int championCode;
 

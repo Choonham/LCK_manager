@@ -6,6 +6,20 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Player {
+
+    public Player(long playerCode, long seasonCode, String playerName, int position, double physical, double teamFight, double outSmart, double laneStrength, double stability, int fameLv) {
+        this.playerCode = playerCode;
+        this.seasonCode = seasonCode;
+        this.playerName = playerName;
+        this.position = position;
+        this.physical = physical;
+        this.teamFight = teamFight;
+        this.outSmart = outSmart;
+        this.laneStrength = laneStrength;
+        this.stability = stability;
+        this.fameLv = fameLv;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "player_code")
     private long playerCode;

@@ -6,6 +6,19 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class User {
+
+    public User(long userCode, String userId, String userPhoneNum, String userNickName, int userFameLv, long userMoney, int seasonCode, int matchNum, int apiVer) {
+        this.userCode = userCode;
+        this.userId = userId;
+        this.userPhoneNum = userPhoneNum;
+        this.userNickName = userNickName;
+        this.userFameLv = userFameLv;
+        this.userMoney = userMoney;
+        this.seasonCode = seasonCode;
+        this.matchNum = matchNum;
+        this.apiVer = apiVer;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "user_code")
     private long userCode;

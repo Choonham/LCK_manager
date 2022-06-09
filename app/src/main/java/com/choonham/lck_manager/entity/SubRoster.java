@@ -5,6 +5,13 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class SubRoster {
+
+    public SubRoster(long subRosterCode, long playerCode, int mainOrder) {
+        this.subRosterCode = subRosterCode;
+        this.playerCode = playerCode;
+        this.mainOrder = mainOrder;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "subRoster_Code")
     private long subRosterCode;

@@ -4,6 +4,15 @@ import androidx.room.Entity;
 
 @Entity
 public class PlayerChampionPlayData {
+
+    public PlayerChampionPlayData(long playerCode, long championCode, int win, int lose, double kda) {
+        this.playerCode = playerCode;
+        this.championCode = championCode;
+        this.win = win;
+        this.lose = lose;
+        this.kda = kda;
+    }
+
     @ColumnInfo(name = "player_code")
     private long playerCode;
 

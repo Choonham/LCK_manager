@@ -6,6 +6,13 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class MainRoster {
+
+    public MainRoster(long mainRosterCode, long playerCode, int mainOrder) {
+        this.mainRosterCode = mainRosterCode;
+        this.playerCode = playerCode;
+        this.mainOrder = mainOrder;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "main_roster_code")
     private long mainRosterCode;

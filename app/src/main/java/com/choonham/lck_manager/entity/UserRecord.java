@@ -6,6 +6,23 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class UserRecord {
+
+    public UserRecord(long userRecordCode, long userCode, int seasonCode, int rank, int win, int lose, int winDiff, int fameDiff, long topPlayerCode, long junglePlayerCode, long midPlayerCode, long adPlayerCode, long supportPlayerCode) {
+        this.userRecordCode = userRecordCode;
+        this.userCode = userCode;
+        this.seasonCode = seasonCode;
+        this.rank = rank;
+        this.win = win;
+        this.lose = lose;
+        this.winDiff = winDiff;
+        this.fameDiff = fameDiff;
+        this.topPlayerCode = topPlayerCode;
+        this.junglePlayerCode = junglePlayerCode;
+        this.midPlayerCode = midPlayerCode;
+        this.adPlayerCode = adPlayerCode;
+        this.supportPlayerCode = supportPlayerCode;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "user_record_code")
     private long userRecordCode;

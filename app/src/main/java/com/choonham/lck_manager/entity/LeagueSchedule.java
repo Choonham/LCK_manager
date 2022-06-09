@@ -7,6 +7,20 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 @Entity
 public class LeagueSchedule {
+
+    public LeagueSchedule(long leagueScheduleCode, Date date, int matchNum, long teamCodeA, long teamCodeB, String teamA, String teamB, int scoreA, int scoreB, int playFlag) {
+        this.leagueScheduleCode = leagueScheduleCode;
+        this.date = date;
+        this.matchNum = matchNum;
+        this.teamCodeA = teamCodeA;
+        this.teamCodeB = teamCodeB;
+        this.teamA = teamA;
+        this.teamB = teamB;
+        this.scoreA = scoreA;
+        this.scoreB = scoreB;
+        this.playFlag = playFlag;
+    }
+
     @PrimaryKey
     @ColumnInfo(name = "league_schedule_code")
     private long leagueScheduleCode;
