@@ -1,40 +1,41 @@
 package com.choonham.lck_manager.entity;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class SubRoster {
+@Entity(tableName = "main_roster")
+public class MainRosterEntity {
 
-    public SubRoster(long subRosterCode, long playerCode, int mainOrder) {
-        this.subRosterCode = subRosterCode;
+    public MainRosterEntity(int mainRosterCode, int playerCode, int mainOrder) {
+        this.mainRosterCode = mainRosterCode;
         this.playerCode = playerCode;
         this.mainOrder = mainOrder;
     }
 
     @PrimaryKey
-    @ColumnInfo(name = "subRoster_Code")
-    private long subRosterCode;
+    @ColumnInfo(name = "main_roster_code")
+    private int mainRosterCode;
 
     @ColumnInfo(name = "player_code")
-    private long playerCode;
+    private int playerCode;
 
     @ColumnInfo(name = "main_order")
     private int mainOrder;
 
-    public long getSubRosterCode() {
-        return subRosterCode;
+    public int getMainRosterCode() {
+        return mainRosterCode;
     }
 
-    public void setSubRosterCode(long subRosterCode) {
-        this.subRosterCode = subRosterCode;
+    public void setMainRosterCode(int mainRosterCode) {
+        this.mainRosterCode = mainRosterCode;
     }
 
-    public long getPlayerCode() {
+    public int getPlayerCode() {
         return playerCode;
     }
 
-    public void setPlayerCode(long playerCode) {
+    public void setPlayerCode(int playerCode) {
         this.playerCode = playerCode;
     }
 

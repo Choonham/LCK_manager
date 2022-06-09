@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.choonham.lck_manager.entity.LeagueSchedule;
+import com.choonham.lck_manager.entity.TempLeagueSchedule;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class LeagueScheduleAdapter extends BaseAdapter {
     private static final int TYPE_MATCH_INFO = 0;
     private static final int TYPE_DATE_INFO = 1;
 
-    ArrayList<LeagueSchedule> leagueScheduleList;
+    ArrayList<TempLeagueSchedule> leagueScheduleList;
     ArrayList<String> matchDateList;
 
     private LayoutInflater inflater;
@@ -24,7 +24,7 @@ public class LeagueScheduleAdapter extends BaseAdapter {
 
     private int matchDateSubNum = 1;
 
-    public LeagueScheduleAdapter(ArrayList<LeagueSchedule> leagueScheduleList, ArrayList<String> matchDateList, Context context) {
+    public LeagueScheduleAdapter(ArrayList<TempLeagueSchedule> leagueScheduleList, ArrayList<String> matchDateList, Context context) {
         this.leagueScheduleList = leagueScheduleList;
         this.context = context;
         this.matchDateList = matchDateList;

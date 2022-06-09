@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <item name="sql_create_table_champion" type="string">
         CREATE TABLE IF NOT EXISTS champion (
-            champion_code LONG PRIMARY KEY autoincrement,
+            champion_code INTEGER PRIMARY KEY autoincrement,
             champion_name VARCHAR(100),
             lane_strength FLOAT(5,2),
             team_fight FLOAT(5,2),
@@ -10,7 +11,7 @@
             one_vs_one_strength FLOAT(5,2),
             initiating FLOAT(5,2),
             poking FLOAT(5,2),
-            type INT(2),
+            type INTEGER(2),
             to_six_potential FLOAT(5,2),
             to_elv_potential FLOAT(5,2),
             to_sixteen_potential FLOAT(5,2)
@@ -19,116 +20,148 @@
 
     <item name="sql_create_table_player" type="string">
         CREATE TABLE IF NOT EXISTS player (
-            player_code LONG PRIMARY KEY autoincrement,
-            season_code LONG,
+            player_code INTEGER PRIMARY KEY autoincrement,
+            season_code INTEGER,
             player_name VARCHAR(50),
-            position INT(2),
+            position INTEGER(2),
             physical FLOAT(5,2),
             team_fight FLOAT(5,2),
             out_smart FLOAT(5,2),
             lane_strength FLOAT(5,2),
             stability FLOAT(5,2),
-            fame_lv INT(3)
+            fame_lv INTEGER(3)
         )
     </item>
 
     <item name="sql_create_table_player_champion_played_data" type="string">
         CREATE TABLE IF NOT EXISTS player_champion_played_data (
-            player_code LONG,
-            champion_code LONG,
-            win INT(3),
-            lose INT(3),
+            player_code INTEGER,
+            champion_code INTEGER,
+            win INTEGER(3),
+            lose INTEGER(3),
             kda FLOAT(4,1)
         )
     </item>
 
     <item name="sql_create_table_sub_roster" type="string">
         CREATE TABLE IF NOT EXISTS sub_roster (
-            subRoster_Code PRIMARY KEY autoincrement,
-            player_code LONG,
-            main_order INT(2)
+            subRoster_Code INTEGER PRIMARY KEY autoincrement,
+            player_code INTEGER,
+            main_order INTEGER(2)
         )
     </item>
 
     <item name="sql_create_table_team" type="string">
         CREATE TABLE IF NOT EXISTS team (
-            team_code LONG PRIMARY KEY autoincrement,
-            user_code LONG,
-            user_type INT(2),
+            team_code INTEGER PRIMARY KEY autoincrement,
+            user_code INTEGER,
+            user_type INTEGER(2),
             team_name VARCHAR(100),
-            main_roster_code LONG,
-            sub_roster_code LONG
+            main_roster_code INTEGER,
+            sub_roster_code INTEGER
         )
     </item>
 
     <item name="sql_create_table_user" type="string">
         CREATE TABLE IF NOT EXISTS user (
-            user_code LONG PRIMARY KEY autoincrement,
+            user_code INTEGER PRIMARY KEY autoincrement,
             user_id VARCHAR(200),
             user_phone_num VARCHAR(500),
             user_nick_name VARCHAR(150),
-            user_fame_lv INT(3),
-            user_money INT(11),
-            season_code INT(2),
-            match_num INT(4),
-            api_ver INT(3)
+            user_fame_lv INTEGER(3),
+            user_money INTEGER,
+            season_code INTEGER(2),
+            match_num INTEGER(4),
+            api_ver INTEGER(3)
         )
     </item>
 
     <item name="sql_create_table_user_record" type="string">
         CREATE TABLE IF NOT EXISTS user_record (
-            user_record_code LONG PRIMARY KEY autoincrement,
-            user_code LONG,
-            season_code LONG,
+            user_record_code INTEGER PRIMARY KEY autoincrement,
+            user_code INTEGER,
+            season_code INTEGER,
             rank VARCHAR(150),
-            win INT(3),
-            lose INT(3),
-            win_diff INT(3),
-            fame_diff INT(3),
-            top_player_code LONG,
-            jungle_player_code LONG,
-            mid_player_code LONG,
-            ad_player_code LONG,
-            support_player_code LONG
+            win INTEGER(3),
+            lose INTEGER(3),
+            win_diff INTEGER(3),
+            fame_diff INTEGER(3),
+            top_player_code INTEGER,
+            jungle_player_code INTEGER,
+            mid_player_code INTEGER,
+            ad_player_code INTEGER,
+            support_player_code INTEGER
         )
     </item>
 
     <item name="sql_create_table_champion_counter" type="string">
         CREATE TABLE IF NOT EXISTS champion_counter (
-            champion_code LONG PRIMARY KEY autoincrement,
-            counter_champion_code LONG,
+            champion_code INTEGER PRIMARY KEY autoincrement,
+            counter_champion_code INTEGER,
             lane_win_rate FLOAT(4,1)
         )
     </item>
 
     <item name="sql_create_table_league_schedule" type="string">
         CREATE TABLE IF NOT EXISTS league_schedule (
-            league_schedule_code LONG PRIMARY KEY autoincrement,
-            match_num INT(4),
-            team_code_a LONG,
-            team_code_b LONG,
-            score_a INT(2),
-            score_b INT(2),
-            play_flag LONG
+            league_schedule_code INTEGER PRIMARY KEY autoincrement,
+            match_num INTEGER(4),
+            team_code_a INTEGER,
+            team_code_b INTEGER,
+            score_a INTEGER(2),
+            score_b INTEGER(2),
+            play_flag INTEGER
         )
     </item>
 
     <item name="sql_create_table_main_roster" type="string">
         CREATE TABLE IF NOT EXISTS main_roster (
-            main_roster_code LONG PRIMARY KEY autoincrement,
-            player_code LONG,
-            main_order INT(2)
+            main_roster_code INTEGER PRIMARY KEY autoincrement,
+            player_code INTEGER,
+            main_order INTEGER(2)
         )
     </item>
 
     <item name="sql_create_table_match_data" type="string">
         CREATE TABLE IF NOT EXISTS match_data (
-            match_data_code LONG PRIMARY KEY autoincrement,
-            league_schedule_code LONG,
-            team_code LONG,
-            player_code LONG,
-            champion_code LONG
+            match_data_code INTEGER PRIMARY KEY autoincrement,
+            league_schedule_code INTEGER,
+            team_code INTEGER,
+            player_code INTEGER,
+            champion_code INTEGER
         )
     </item>
+
+    <item name="sql_create_table_league_rank" type="string">
+        CREATE TABLE IF NOT EXISTS league_rank (
+            rank INTEGER PRIMARY KEY,
+            team_code INTEGER,
+            win INTEGER,
+            lose INTEGER,
+            wd INTEGER
+        )
+    </item>
+
+    <item name="sql_create_table_pog_point" type="string">
+        CREATE TABLE IF NOT EXISTS pog_point (
+            rank INTEGER PRIMARY KEY,
+            player_code INTEGER,
+            pog_point INTEGER
+        )
+    </item>
+
+    <item name="sql_create_table_transfer_window" type="string">
+        CREATE TABLE IF NOT EXISTS transfer_window (
+            transfer_window_code INTEGER PRIMARY KEY autoincrement,
+            weeks INTEGER,
+            player_code INTEGER,
+            transfer_fee INTEGER,
+            salary_wants INTEGER,
+            salary_offer INTEGER,
+            min_salary INTEGER
+        )
+    </item>
+
+
 
 </resources>

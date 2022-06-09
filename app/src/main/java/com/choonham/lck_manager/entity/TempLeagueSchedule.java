@@ -58,4 +58,6 @@ public class TempLeagueSchedule {
     public void setScoreB(int scoreB) {
         this.scoreB = scoreB;
     }
+
+
 }

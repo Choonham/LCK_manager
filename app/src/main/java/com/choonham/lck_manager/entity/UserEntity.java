@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class User {
+@Entity(tableName = "user")
+public class UserEntity {
 
-    public User(long userCode, String userId, String userPhoneNum, String userNickName, int userFameLv, long userMoney, int seasonCode, int matchNum, int apiVer) {
+    public UserEntity(int userCode, String userId, String userPhoneNum, String userNickName, int userFameLv, int userMoney, int seasonCode, int matchNum, int apiVer) {
         this.userCode = userCode;
         this.userId = userId;
         this.userPhoneNum = userPhoneNum;
@@ -21,7 +21,7 @@ public class User {
 
     @PrimaryKey
     @ColumnInfo(name = "user_code")
-    private long userCode;
+    private int userCode;
 
     @ColumnInfo(name = "user_id")
     private String userId;
@@ -36,7 +36,7 @@ public class User {
     private int userFameLv;
 
     @ColumnInfo(name = "user_money")
-    private long userMoney;
+    private int userMoney;
 
     @ColumnInfo(name = "season_code")
     private int seasonCode;
@@ -47,11 +47,11 @@ public class User {
     @ColumnInfo(name = "apier")
     private int apiVer;
 
-    public long getUserCode() {
+    public int getUserCode() {
         return userCode;
     }
 
-    public void setUserCode(long userCode) {
+    public void setUserCode(int userCode) {
         this.userCode = userCode;
     }
 
@@ -87,11 +87,11 @@ public class User {
         this.userFameLv = userFameLv;
     }
 
-    public long getUserMoney() {
+    public int getUserMoney() {
         return userMoney;
     }
 
-    public void setUserMoney(long userMoney) {
+    public void setUserMoney(int userMoney) {
         this.userMoney = userMoney;
     }
 

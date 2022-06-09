@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class UserRecord {
+@Entity(tableName = "user_record")
+public class UserRecordEntity {
 
-    public UserRecord(long userRecordCode, long userCode, int seasonCode, int rank, int win, int lose, int winDiff, int fameDiff, long topPlayerCode, long junglePlayerCode, long midPlayerCode, long adPlayerCode, long supportPlayerCode) {
+    public UserRecordEntity(int userRecordCode, int userCode, int seasonCode, int rank, int win, int lose, int winDiff, int fameDiff, int topPlayerCode, int junglePlayerCode, int midPlayerCode, int adPlayerCode, int supportPlayerCode) {
         this.userRecordCode = userRecordCode;
         this.userCode = userCode;
         this.seasonCode = seasonCode;
@@ -25,10 +25,10 @@ public class UserRecord {
 
     @PrimaryKey
     @ColumnInfo(name = "user_record_code")
-    private long userRecordCode;
+    private int userRecordCode;
 
     @ColumnInfo(name = "user_code")
-    private long userCode;
+    private int userCode;
 
     @ColumnInfo(name = "season_code")
     private int seasonCode;
@@ -46,33 +46,33 @@ public class UserRecord {
     private int fameDiff;
 
     @ColumnInfo(name = "top_player_code")
-    private long topPlayerCode;
+    private int topPlayerCode;
 
     @ColumnInfo(name = "jungle_player_code")
-    private long junglePlayerCode;
+    private int junglePlayerCode;
 
     @ColumnInfo(name = "mid_player_code")
-    private long midPlayerCode;
+    private int midPlayerCode;
 
     @ColumnInfo(name = "ad_player_code")
-    private long adPlayerCode;
+    private int adPlayerCode;
 
     @ColumnInfo(name = "support_player_code")
-    private long supportPlayerCode;
+    private int supportPlayerCode;
 
-    public long getUserRecordCode() {
+    public int getUserRecordCode() {
         return userRecordCode;
     }
 
-    public void setUserRecordCode(long userRecordCode) {
+    public void setUserRecordCode(int userRecordCode) {
         this.userRecordCode = userRecordCode;
     }
 
-    public long getUserCode() {
+    public int getUserCode() {
         return userCode;
     }
 
-    public void setUserCode(long userCode) {
+    public void setUserCode(int userCode) {
         this.userCode = userCode;
     }
 
@@ -124,43 +124,43 @@ public class UserRecord {
         this.fameDiff = fameDiff;
     }
 
-    public long getTopPlayerCode() {
+    public int getTopPlayerCode() {
         return topPlayerCode;
     }
 
-    public void setTopPlayerCode(long topPlayerCode) {
+    public void setTopPlayerCode(int topPlayerCode) {
         this.topPlayerCode = topPlayerCode;
     }
 
-    public long getJunglePlayerCode() {
+    public int getJunglePlayerCode() {
         return junglePlayerCode;
     }
 
-    public void setJunglePlayerCode(long junglePlayerCode) {
+    public void setJunglePlayerCode(int junglePlayerCode) {
         this.junglePlayerCode = junglePlayerCode;
     }
 
-    public long getMidPlayerCode() {
+    public int getMidPlayerCode() {
         return midPlayerCode;
     }
 
-    public void setMidPlayerCode(long midPlayerCode) {
+    public void setMidPlayerCode(int midPlayerCode) {
         this.midPlayerCode = midPlayerCode;
     }
 
-    public long getAdPlayerCode() {
+    public int getAdPlayerCode() {
         return adPlayerCode;
     }
 
-    public void setAdPlayerCode(long adPlayerCode) {
+    public void setAdPlayerCode(int adPlayerCode) {
         this.adPlayerCode = adPlayerCode;
     }
 
-    public long getSupportPlayerCode() {
+    public int getSupportPlayerCode() {
         return supportPlayerCode;
     }
 
-    public void setSupportPlayerCode(long supportPlayerCode) {
+    public void setSupportPlayerCode(int supportPlayerCode) {
         this.supportPlayerCode = supportPlayerCode;
     }
 }

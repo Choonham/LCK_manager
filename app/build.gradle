@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.choonham.lck_manager"
         minSdk 29
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

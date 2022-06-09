@@ -1,26 +1,26 @@
 package com.choonham.lck_manager;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.room.Room;
 import androidx.viewpager2.widget.ViewPager2;
+import com.choonham.lck_manager.dao.TestDAO;
+import com.choonham.lck_manager.entity.LeagueRankEntity;
+import com.choonham.lck_manager.room.AppDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -32,14 +32,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences prefs;
 
+    AppDatabase db;
+
+    LeagueRankEntity leagueRankEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 
-        checkFirstRun();
+        /*checkFirstRun(this);*/
+        createAppDatabaseInstance();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -109,6 +115,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         return true;
                 }
 
+                leagueRankEntity = new LeagueRankEntity();
+                leagueRankEntity.setRank(12);
+                leagueRankEntity.setLose(8);
+                leagueRankEntity.setWin(5);
+                leagueRankEntity.setWd(-3);
+                leagueRankEntity.setTeamCode(3);
+
+                testDataInsertAndSelect(db, leagueRankEntity);
+
                 return false;
             }
         });
@@ -151,31 +166,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         database = openOrCreateDatabase(name, MODE_PRIVATE, null);
     }
 
-    private void createTables() {
+    private void createTables(Context contect) {
 
         if(database == null) {
             return;
         }
-
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_champion));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_player));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_player_champion_played_data));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_sub_roster));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_team));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_user));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_user_record));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_champion_counter));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_league_schedule));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_main_roster));
-        database.execSQL(getApplicationContext().getResources().getString(R.string.sql_create_table_match_data));
+        Log.d("데이터베이스 생성 시작!", database.getPath());
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_champion));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_player));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_player_champion_played_data));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_sub_roster));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_team));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_user));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_user_record));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_champion_counter));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_league_schedule));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_main_roster));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_match_data));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_league_rank));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_pog_point));
+        database.execSQL(contect.getResources().getString(R.string.sql_create_table_transfer_window));
+        Log.d("데이터베이스 생성 끝!", database.getPath());
     }
 
-    public void checkFirstRun(){
+    public void checkFirstRun(Context context){
         boolean isFirstRun = prefs.getBoolean("isFirstRun",true);
         if(isFirstRun)    {
             createDatabase("lck_manager");
-            createTables();
+            createTables(context);
         }
     }
+
+    private void testDataInsertAndSelect(AppDatabase db, LeagueRankEntity leagueRankEntity) {
+        TestDAO testDAO = db.textDao();
+        testDAO.insertUsers(leagueRankEntity);
+        List<LeagueRankEntity> temp = testDAO.loadAllLeagueRank();
+
+        Log.d("test:", Integer.toString(temp.get(0).getRank()));
+    }
+
+    public void createAppDatabaseInstance() {
+        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "lck_manager_db").build();
+        Log.d("db:", Boolean.toString(db.isOpen()));
+    }
+
 }
 

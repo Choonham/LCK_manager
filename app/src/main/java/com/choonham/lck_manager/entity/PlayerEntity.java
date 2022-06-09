@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Player {
+@Entity(tableName = "player")
+public class PlayerEntity {
 
-    public Player(long playerCode, long seasonCode, String playerName, int position, double physical, double teamFight, double outSmart, double laneStrength, double stability, int fameLv) {
+    public PlayerEntity(int playerCode, int seasonCode, String playerName, int position, double physical, double teamFight, double outSmart, double laneStrength, double stability, int fameLv) {
         this.playerCode = playerCode;
         this.seasonCode = seasonCode;
         this.playerName = playerName;
@@ -22,10 +22,10 @@ public class Player {
 
     @PrimaryKey
     @ColumnInfo(name = "player_code")
-    private long playerCode;
+    private int playerCode;
 
     @ColumnInfo(name = "season_code")
-    private long seasonCode;
+    private int seasonCode;
 
     @ColumnInfo(name = "player_name")
     private String playerName;
@@ -55,19 +55,19 @@ public class Player {
         this.position = position;
     }
 
-    public long getPlayerCode() {
+    public int getPlayerCode() {
         return playerCode;
     }
 
-    public void setPlayerCode(long playerCode) {
+    public void setPlayerCode(int playerCode) {
         this.playerCode = playerCode;
     }
 
-    public long getSeasonCode() {
+    public int getSeasonCode() {
         return seasonCode;
     }
 
-    public void setSeasonCode(long seasonCode) {
+    public void setSeasonCode(int seasonCode) {
         this.seasonCode = seasonCode;
     }
 

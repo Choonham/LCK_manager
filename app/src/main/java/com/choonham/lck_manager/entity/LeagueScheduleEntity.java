@@ -1,14 +1,13 @@
 package com.choonham.lck_manager.entity;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.*;
+import com.choonham.lck_manager.room.DateConverter;
 
 import java.util.Date;
-@Entity
-public class LeagueSchedule {
+@Entity(tableName = "league_schedule")
+public class LeagueScheduleEntity {
 
-    public LeagueSchedule(long leagueScheduleCode, Date date, int matchNum, long teamCodeA, long teamCodeB, String teamA, String teamB, int scoreA, int scoreB, int playFlag) {
+    public LeagueScheduleEntity(int leagueScheduleCode, Date date, int matchNum, int teamCodeA, int teamCodeB, String teamA, String teamB, int scoreA, int scoreB, int playFlag) {
         this.leagueScheduleCode = leagueScheduleCode;
         this.date = date;
         this.matchNum = matchNum;
@@ -23,17 +22,20 @@ public class LeagueSchedule {
 
     @PrimaryKey
     @ColumnInfo(name = "league_schedule_code")
-    private long leagueScheduleCode;
+    private int leagueScheduleCode;
+
+    @ColumnInfo(name = "match_date")
+    @TypeConverters({DateConverter.class})
     private Date date;
 
     @ColumnInfo(name = "match_num")
     private int matchNum;
 
     @ColumnInfo(name = "team_code_a")
-    private long teamCodeA;
+    private int teamCodeA;
 
     @ColumnInfo(name = "team_code_b")
-    private long teamCodeB;
+    private int teamCodeB;
 
     @ColumnInfo(name = "team_a")
     private String teamA;
@@ -50,11 +52,11 @@ public class LeagueSchedule {
     @ColumnInfo(name = "play_flag")
     private int playFlag;
 
-    public long getLeagueScheduleCode() {
+    public int getLeagueScheduleCode() {
         return leagueScheduleCode;
     }
 
-    public void setLeagueScheduleCode(long leagueScheduleCode) {
+    public void setLeagueScheduleCode(int leagueScheduleCode) {
         this.leagueScheduleCode = leagueScheduleCode;
     }
 
@@ -106,19 +108,19 @@ public class LeagueSchedule {
         this.scoreB = scoreB;
     }
 
-    public long getTeamCodeA() {
+    public int getTeamCodeA() {
         return teamCodeA;
     }
 
-    public void setTeamCodeA(long teamCodeA) {
+    public void setTeamCodeA(int teamCodeA) {
         this.teamCodeA = teamCodeA;
     }
 
-    public long getTeamCodeB() {
+    public int getTeamCodeB() {
         return teamCodeB;
     }
 
-    public void setTeamCodeB(long teamCodeB) {
+    public void setTeamCodeB(int teamCodeB) {
         this.teamCodeB = teamCodeB;
     }
 

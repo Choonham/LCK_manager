@@ -2,16 +2,17 @@ package com.choonham.lck_manager.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-@Entity
-public class ChampionCounter {
+@Entity(tableName = "champion_counter")
+public class ChampionCounterEntity {
 
-    public ChampionCounter(int championCode, int counterChampionCode, int laneWinRate) {
+    public ChampionCounterEntity(int championCode, int counterChampionCode, int laneWinRate) {
         this.championCode = championCode;
         this.counterChampionCode = counterChampionCode;
         this.laneWinRate = laneWinRate;
     }
-
+    @PrimaryKey
     @ColumnInfo(name = "champion_code")
     private int championCode;
 

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import com.choonham.lck_manager.entity.TempLeagueSchedule;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +31,7 @@ public class LeagueSchedule extends Fragment {
     TextView teamARank;
     TextView teamBRank;
 
-    ArrayList<com.choonham.lck_manager.entity.LeagueSchedule> leagueScheduleList = new ArrayList<>();
+    ArrayList<TempLeagueSchedule> tempLeagueScheduleList = new ArrayList<>();
     ArrayList<String> matchDateList = new ArrayList<>();
 
     ListView leagueScheduleListView;
@@ -46,7 +47,7 @@ public class LeagueSchedule extends Fragment {
             Log.e("error" , e.getMessage());
         }
 
-        LeagueScheduleAdapter leagueScheduleAdapter = new LeagueScheduleAdapter(leagueScheduleList, matchDateList, getContext());
+        LeagueScheduleAdapter leagueScheduleAdapter = new LeagueScheduleAdapter(tempLeagueScheduleList, matchDateList, getContext());
         leagueScheduleListView = view.findViewById(R.id.league_schedule_list_view);
         leagueScheduleListView.setAdapter(leagueScheduleAdapter);
 
@@ -134,13 +135,13 @@ public class LeagueSchedule extends Fragment {
                 for(int j = 0; j <= 1; j++) {
                     if(leagueScheduleList.size() > 0) {
                         String[] tempMatch = leagueScheduleList.remove(0);
-                        com.choonham.lck_manager.entity.LeagueSchedule leagueSchedule = new com.choonham.lck_manager.entity.LeagueSchedule();
+                        TempLeagueSchedule leagueSchedule = new TempLeagueSchedule();
                         leagueSchedule.setTeamA(tempMatch[0]);
                         leagueSchedule.setTeamB(tempMatch[1]);
                         leagueSchedule.setMatchNum(matchNum);
                         leagueSchedule.setDate(date);
 
-                        leagueScheduleList.add(leagueSchedule);
+                        tempLeagueScheduleList.add(leagueSchedule);
                         matchNum = matchNum + 1;
                     }
                 }

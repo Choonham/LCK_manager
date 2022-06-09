@@ -1,41 +1,42 @@
 package com.choonham.lck_manager.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-@Entity
-public class PlayerChampionPlayData {
+@Entity(tableName = "player_champion_play_data")
+public class PlayerChampionPlayDataEntity {
 
-    public PlayerChampionPlayData(long playerCode, long championCode, int win, int lose, double kda) {
+    public PlayerChampionPlayDataEntity(int playerCode, int championCode, int win, int lose, double kda) {
         this.playerCode = playerCode;
         this.championCode = championCode;
         this.win = win;
         this.lose = lose;
         this.kda = kda;
     }
-
+    @PrimaryKey
     @ColumnInfo(name = "player_code")
-    private long playerCode;
+    private int playerCode;
 
     @ColumnInfo(name = "champion_code")
-    private long championCode;
+    private int championCode;
 
     private int win;
     private int lose;
     private double kda;
 
-    public long getPlayerCode() {
+    public int getPlayerCode() {
         return playerCode;
     }
 
-    public void setPlayerCode(long playerCode) {
+    public void setPlayerCode(int playerCode) {
         this.playerCode = playerCode;
     }
 
-    public long getChampionCode() {
+    public int getChampionCode() {
         return championCode;
     }
 
-    public void setChampionCode(long championCode) {
+    public void setChampionCode(int championCode) {
         this.championCode = championCode;
     }
 

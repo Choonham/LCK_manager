@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Team {
+@Entity(tableName = "team")
+public class TeamEntity {
 
-    public Team(long teamCode, long userCode, int userType, String teamName, long mainRosterCode, long subRosterCode) {
+    public TeamEntity(int teamCode, int userCode, int userType, String teamName, int mainRosterCode, int subRosterCode) {
         this.teamCode = teamCode;
         this.userCode = userCode;
         this.userType = userType;
@@ -18,10 +18,10 @@ public class Team {
 
     @PrimaryKey
     @ColumnInfo(name = "team_code")
-    private long teamCode;
+    private int teamCode;
 
     @ColumnInfo(name = "user_code")
-    private long userCode;
+    private int userCode;
 
     @ColumnInfo(name = "user_type")
     private int userType;
@@ -30,24 +30,24 @@ public class Team {
     private String teamName;
 
     @ColumnInfo(name = "main_roster_code")
-    private long mainRosterCode;
+    private int mainRosterCode;
 
     @ColumnInfo(name = "sub_roster_code")
-    private long subRosterCode;
+    private int subRosterCode;
 
-    public long getTeamCode() {
+    public int getTeamCode() {
         return teamCode;
     }
 
-    public void setTeamCode(long teamCode) {
+    public void setTeamCode(int teamCode) {
         this.teamCode = teamCode;
     }
 
-    public long getUserCode() {
+    public int getUserCode() {
         return userCode;
     }
 
-    public void setUserCode(long userCode) {
+    public void setUserCode(int userCode) {
         this.userCode = userCode;
     }
 
@@ -67,19 +67,19 @@ public class Team {
         this.teamName = teamName;
     }
 
-    public long getMainRosterCode() {
+    public int getMainRosterCode() {
         return mainRosterCode;
     }
 
-    public void setMainRosterCode(long mainRosterCode) {
+    public void setMainRosterCode(int mainRosterCode) {
         this.mainRosterCode = mainRosterCode;
     }
 
-    public long getSubRosterCode() {
+    public int getSubRosterCode() {
         return subRosterCode;
     }
 
-    public void setSubRosterCode(long subRosterCode) {
+    public void setSubRosterCode(int subRosterCode) {
         this.subRosterCode = subRosterCode;
     }
 }

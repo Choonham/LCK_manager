@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Champion {
+@Entity(tableName = "champion")
+public class ChampionEntity {
 
-    public Champion(long championCode, String championName, double laneStrength, double teamFight, double splitPush, double oneVsOneStrength, double initiating, double poking, int type, double toSixPotential, double toElvPotential, double toSixteenPotential) {
+    public ChampionEntity(int championCode, String championName, double laneStrength, double teamFight, double splitPush, double oneVsOneStrength, double initiating, double poking, int type, double toSixPotential, double toElvPotential, double toSixteenPotential) {
         this.championCode = championCode;
         this.championName = championName;
         this.laneStrength = laneStrength;
@@ -24,7 +24,7 @@ public class Champion {
 
     @PrimaryKey
     @ColumnInfo(name = "champion_code")
-    private long championCode;
+    private int championCode;
 
     @ColumnInfo(name = "champion_name")
     private String championName;
@@ -53,11 +53,11 @@ public class Champion {
     @ColumnInfo(name = "to_sixteen_potential")
     private double toSixteenPotential;
 
-    public long getChampionCode() {
+    public int getChampionCode() {
         return championCode;
     }
 
-    public void setChampionCode(long championCode) {
+    public void setChampionCode(int championCode) {
         this.championCode = championCode;
     }
 
