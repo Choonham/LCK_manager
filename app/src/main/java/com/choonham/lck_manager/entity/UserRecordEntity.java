@@ -7,23 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "user_record")
 public class UserRecordEntity {
 
-    public UserRecordEntity(int userRecordCode, int userCode, int seasonCode, int rank, int win, int lose, int winDiff, int fameDiff, int topPlayerCode, int junglePlayerCode, int midPlayerCode, int adPlayerCode, int supportPlayerCode) {
-        this.userRecordCode = userRecordCode;
-        this.userCode = userCode;
-        this.seasonCode = seasonCode;
-        this.rank = rank;
-        this.win = win;
-        this.lose = lose;
-        this.winDiff = winDiff;
-        this.fameDiff = fameDiff;
-        this.topPlayerCode = topPlayerCode;
-        this.junglePlayerCode = junglePlayerCode;
-        this.midPlayerCode = midPlayerCode;
-        this.adPlayerCode = adPlayerCode;
-        this.supportPlayerCode = supportPlayerCode;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_record_code")
     private int userRecordCode;
 

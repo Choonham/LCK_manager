@@ -6,14 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "player_champion_play_data")
 public class PlayerChampionPlayDataEntity {
 
-    public PlayerChampionPlayDataEntity(int playerCode, int championCode, int win, int lose, double kda) {
-        this.playerCode = playerCode;
-        this.championCode = championCode;
-        this.win = win;
-        this.lose = lose;
-        this.kda = kda;
-    }
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "player_code")
     private int playerCode;
 

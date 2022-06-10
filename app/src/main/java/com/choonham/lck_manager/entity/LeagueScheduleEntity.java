@@ -7,20 +7,7 @@ import java.util.Date;
 @Entity(tableName = "league_schedule")
 public class LeagueScheduleEntity {
 
-    public LeagueScheduleEntity(int leagueScheduleCode, Date date, int matchNum, int teamCodeA, int teamCodeB, String teamA, String teamB, int scoreA, int scoreB, int playFlag) {
-        this.leagueScheduleCode = leagueScheduleCode;
-        this.date = date;
-        this.matchNum = matchNum;
-        this.teamCodeA = teamCodeA;
-        this.teamCodeB = teamCodeB;
-        this.teamA = teamA;
-        this.teamB = teamB;
-        this.scoreA = scoreA;
-        this.scoreB = scoreB;
-        this.playFlag = playFlag;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "league_schedule_code")
     private int leagueScheduleCode;
 

@@ -6,12 +6,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "sub_roster")
 public class SubRosterEntity {
 
-    public SubRosterEntity(int subRosterCode, int playerCode, int mainOrder) {
-        this.subRosterCode = subRosterCode;
-        this.playerCode = playerCode;
-        this.mainOrder = mainOrder;
-    }
-
     @PrimaryKey
     @ColumnInfo(name = "subRoster_Code")
     private int subRosterCode;

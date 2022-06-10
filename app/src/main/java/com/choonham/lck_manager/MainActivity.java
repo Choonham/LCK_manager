@@ -45,7 +45,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 
         /*checkFirstRun(this);*/
-        createAppDatabaseInstance();
+        db = AppDatabase.getInstance(this);
+
+
+        /*leagueRankEntity = new LeagueRankEntity();
+        leagueRankEntity.setRank(12);
+        leagueRankEntity.setLose(8);
+        leagueRankEntity.setWin(5);
+        leagueRankEntity.setWd(-3);
+        leagueRankEntity.setTeamCode(3);
+
+        testDataInsertAndSelect(db, leagueRankEntity);*/
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -114,15 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         pager.setCurrentItem(4);
                         return true;
                 }
-
-                leagueRankEntity = new LeagueRankEntity();
-                leagueRankEntity.setRank(12);
-                leagueRankEntity.setLose(8);
-                leagueRankEntity.setWin(5);
-                leagueRankEntity.setWd(-3);
-                leagueRankEntity.setTeamCode(3);
-
-                testDataInsertAndSelect(db, leagueRankEntity);
 
                 return false;
             }
@@ -199,16 +200,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void testDataInsertAndSelect(AppDatabase db, LeagueRankEntity leagueRankEntity) {
         TestDAO testDAO = db.textDao();
-        testDAO.insertUsers(leagueRankEntity);
-        List<LeagueRankEntity> temp = testDAO.loadAllLeagueRank();
+        testDAO.insertLeagueRankEntity(leagueRankEntity);
+        List<LeagueRankEntity> temp = testDAO.loadAllLeagueRankEntity();
 
         Log.d("test:", Integer.toString(temp.get(0).getRank()));
     }
-
-    public void createAppDatabaseInstance() {
-        this.db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "lck_manager_db").build();
-        Log.d("db:", Boolean.toString(db.isOpen()));
-    }
-
 }
 

@@ -10,8 +10,8 @@ import java.util.List;
 @Dao
 public interface TestDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertUsers(LeagueRankEntity leagueRankEntity);
+    public void insertLeagueRankEntity(LeagueRankEntity leagueRankEntity);
 
     @Query("SELECT * FROM league_rank")
-    public List<LeagueRankEntity> loadAllLeagueRank();
+    public List<LeagueRankEntity> loadAllLeagueRankEntity();
 }

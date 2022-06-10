@@ -7,16 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "match_data")
 public class MatchDataEntity {
 
-    public MatchDataEntity(int matchDataCode, int leagueScheduleCode, int teamCode, int playerCode, int championCode, double kda) {
-        this.matchDataCode = matchDataCode;
-        this.leagueScheduleCode = leagueScheduleCode;
-        this.teamCode = teamCode;
-        this.playerCode = playerCode;
-        this.championCode = championCode;
-        this.kda = kda;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "match_data_code")
     private int matchDataCode;
 

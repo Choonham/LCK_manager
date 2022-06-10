@@ -7,20 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "player")
 public class PlayerEntity {
 
-    public PlayerEntity(int playerCode, int seasonCode, String playerName, int position, double physical, double teamFight, double outSmart, double laneStrength, double stability, int fameLv) {
-        this.playerCode = playerCode;
-        this.seasonCode = seasonCode;
-        this.playerName = playerName;
-        this.position = position;
-        this.physical = physical;
-        this.teamFight = teamFight;
-        this.outSmart = outSmart;
-        this.laneStrength = laneStrength;
-        this.stability = stability;
-        this.fameLv = fameLv;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "player_code")
     private int playerCode;
 

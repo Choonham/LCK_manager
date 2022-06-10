@@ -7,13 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "main_roster")
 public class MainRosterEntity {
 
-    public MainRosterEntity(int mainRosterCode, int playerCode, int mainOrder) {
-        this.mainRosterCode = mainRosterCode;
-        this.playerCode = playerCode;
-        this.mainOrder = mainOrder;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "main_roster_code")
     private int mainRosterCode;
 

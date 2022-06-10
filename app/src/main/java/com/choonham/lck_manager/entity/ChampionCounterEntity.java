@@ -7,11 +7,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "champion_counter")
 public class ChampionCounterEntity {
 
-    public ChampionCounterEntity(int championCode, int counterChampionCode, int laneWinRate) {
-        this.championCode = championCode;
-        this.counterChampionCode = counterChampionCode;
-        this.laneWinRate = laneWinRate;
-    }
     @PrimaryKey
     @ColumnInfo(name = "champion_code")
     private int championCode;

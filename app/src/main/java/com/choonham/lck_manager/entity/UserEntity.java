@@ -7,19 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "user")
 public class UserEntity {
 
-    public UserEntity(int userCode, String userId, String userPhoneNum, String userNickName, int userFameLv, int userMoney, int seasonCode, int matchNum, int apiVer) {
-        this.userCode = userCode;
-        this.userId = userId;
-        this.userPhoneNum = userPhoneNum;
-        this.userNickName = userNickName;
-        this.userFameLv = userFameLv;
-        this.userMoney = userMoney;
-        this.seasonCode = seasonCode;
-        this.matchNum = matchNum;
-        this.apiVer = apiVer;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_code")
     private int userCode;
 

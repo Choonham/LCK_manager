@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "transfer_window")
 public class TransferWindowEntity {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transfer_window_code")
     private int transferWindowCode;
 

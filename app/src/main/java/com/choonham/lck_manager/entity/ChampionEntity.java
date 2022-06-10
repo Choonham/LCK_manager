@@ -7,22 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "champion")
 public class ChampionEntity {
 
-    public ChampionEntity(int championCode, String championName, double laneStrength, double teamFight, double splitPush, double oneVsOneStrength, double initiating, double poking, int type, double toSixPotential, double toElvPotential, double toSixteenPotential) {
-        this.championCode = championCode;
-        this.championName = championName;
-        this.laneStrength = laneStrength;
-        this.teamFight = teamFight;
-        this.splitPush = splitPush;
-        this.oneVsOneStrength = oneVsOneStrength;
-        this.initiating = initiating;
-        this.poking = poking;
-        this.type = type;
-        this.toSixPotential = toSixPotential;
-        this.toElvPotential = toElvPotential;
-        this.toSixteenPotential = toSixteenPotential;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "champion_code")
     private int championCode;
 

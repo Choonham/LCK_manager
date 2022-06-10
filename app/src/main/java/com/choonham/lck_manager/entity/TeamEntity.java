@@ -7,16 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "team")
 public class TeamEntity {
 
-    public TeamEntity(int teamCode, int userCode, int userType, String teamName, int mainRosterCode, int subRosterCode) {
-        this.teamCode = teamCode;
-        this.userCode = userCode;
-        this.userType = userType;
-        this.teamName = teamName;
-        this.mainRosterCode = mainRosterCode;
-        this.subRosterCode = subRosterCode;
-    }
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "team_code")
     private int teamCode;
 
