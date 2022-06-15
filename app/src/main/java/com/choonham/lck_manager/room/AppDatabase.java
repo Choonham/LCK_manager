@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import com.choonham.lck_manager.dao.NewsAndIssueDAO;
 import com.choonham.lck_manager.dao.TestDAO;
 import com.choonham.lck_manager.entity.*;
 
@@ -21,8 +22,10 @@ import com.choonham.lck_manager.entity.*;
         TeamEntity.class,
         TransferWindowEntity.class,
         UserEntity.class,
-        UserRecordEntity.class
-}, version = 1)
+        UserRecordEntity.class,
+        NewsAndIssueEntity.class,
+        NewsEffectsEntity.class
+}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase database;
@@ -34,12 +37,12 @@ public abstract class AppDatabase extends RoomDatabase {
         if (database == null)
         {
             database = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
                     .build();
         }
         return database;
     }
 
     public abstract TestDAO textDao();
+
+    public abstract NewsAndIssueDAO newsAndIssueDAO();
 }
