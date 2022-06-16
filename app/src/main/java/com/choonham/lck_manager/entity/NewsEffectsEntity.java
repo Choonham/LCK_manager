@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "news_effects_entity")
 public class NewsEffectsEntity {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="effect_code")
     private int effectCode;
 
@@ -18,7 +18,7 @@ public class NewsEffectsEntity {
     private int effect;
 
     @ColumnInfo(name="effect_content")
-    private int effectContent;
+    private String effectContent;
 
     @ColumnInfo(name="effected_status")
     private int effectedStatus;
@@ -50,14 +50,6 @@ public class NewsEffectsEntity {
         this.effect = effect;
     }
 
-    public int getEffectContent() {
-        return effectContent;
-    }
-
-    public void setEffectContent(int effectContent) {
-        this.effectContent = effectContent;
-    }
-
     public int getEffectedStatus() {
         return effectedStatus;
     }
@@ -73,4 +65,13 @@ public class NewsEffectsEntity {
     public void setEffectedIndex(int effectedIndex) {
         this.effectedIndex = effectedIndex;
     }
+
+    public String getEffectContent() {
+        return effectContent;
+    }
+
+    public void setEffectContent(String effectContent) {
+        this.effectContent = effectContent;
+    }
+
 }

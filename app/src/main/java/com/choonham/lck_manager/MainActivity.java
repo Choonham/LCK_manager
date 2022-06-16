@@ -1,6 +1,5 @@
 package com.choonham.lck_manager;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -11,21 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.room.Room;
 import androidx.viewpager2.widget.ViewPager2;
 import com.choonham.lck_manager.dao.NewsAndIssueDAO;
-import com.choonham.lck_manager.dao.TestDAO;
-import com.choonham.lck_manager.entity.LeagueRankEntity;
 import com.choonham.lck_manager.entity.NewsAndIssueEntity;
 import com.choonham.lck_manager.room.AppDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.observers.DisposableSingleObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -48,10 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 
         /*checkFirstRun(this);*/
-        db = AppDatabase.getInstance(this);
-        insertNewsData(db);
-
-        Single<NewsAndIssueEntity> tempData = selectNewsDataByCode(db, 0);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -157,24 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         return false;
-    }
-
-    private void insertNewsData(AppDatabase db){
-        NewsAndIssueEntity newsAndIssueEntity = new NewsAndIssueEntity();
-        newsAndIssueEntity.setNewsCode(0);
-        newsAndIssueEntity.setNewsTitle("너구리: 킹켄 오른, 나보다 훨씬 잘해");
-        newsAndIssueEntity.setNewsContent("22 LCK SUMMER 개막전: DRX 킹겐의 오른, 농심 선수들에게 벽을 느끼게 하며 승리!");
-        newsAndIssueEntity.setEffectedPlayer(0);
-        newsAndIssueEntity.setTeamCode(0);
-        newsAndIssueEntity.setRemaining(3);
-
-        NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
-        newsAndIssueDAO.insertNews(newsAndIssueEntity);
-    }
-
-    private Single<NewsAndIssueEntity> selectNewsDataByCode(AppDatabase db, int newsCode) {
-        NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
-        return newsAndIssueDAO.loadNewsByCode(0);
     }
 
     /*private void createDatabase(String name) {

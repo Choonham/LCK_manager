@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "sub_roster")
 public class SubRosterEntity {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "subRoster_Code")
     private int subRosterCode;
 

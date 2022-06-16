@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "league_rank")
 public class LeagueRankEntity {
     @PrimaryKey
+    @ColumnInfo(name="league_rank_code")
+    private int leagueRankCode;
+
     private int rank;
 
     @ColumnInfo(name="team_code")
@@ -17,6 +20,14 @@ public class LeagueRankEntity {
     private int lose;
 
     private int wd;
+
+    public int getLeagueRankCode() {
+        return leagueRankCode;
+    }
+
+    public void setLeagueRankCode(int leagueRankCode) {
+        this.leagueRankCode = leagueRankCode;
+    }
 
     public int getRank() {
         return rank;

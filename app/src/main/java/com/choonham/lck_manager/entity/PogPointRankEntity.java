@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "pog_point_rank")
 public class PogPointRankEntity {
     @PrimaryKey
+    @ColumnInfo(name="pog_point_code")
+    private int pogPointCode;
+
     private int rank;
 
     @ColumnInfo(name="player_code")
@@ -14,6 +17,14 @@ public class PogPointRankEntity {
 
     @ColumnInfo(name="pog_point")
     private int pogPoint;
+
+    public int getPogPointCode() {
+        return pogPointCode;
+    }
+
+    public void setPogPointCode(int pogPointCode) {
+        this.pogPointCode = pogPointCode;
+    }
 
     public int getRank() {
         return rank;

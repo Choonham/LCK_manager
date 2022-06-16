@@ -7,7 +7,10 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "champion_counter")
 public class ChampionCounterEntity {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "champion_counter_seq_code")
+    private int championCounterSeqCode;
+
     @ColumnInfo(name = "champion_code")
     private int championCode;
 
@@ -16,6 +19,14 @@ public class ChampionCounterEntity {
 
     @ColumnInfo(name = "lane_win_rate")
     private int laneWinRate;
+
+    public int getChampionCounterSeqCode() {
+        return championCounterSeqCode;
+    }
+
+    public void setChampionCounterSeqCode(int championCounterSeqCode) {
+        this.championCounterSeqCode = championCounterSeqCode;
+    }
 
     public int getChampionCode() {
         return championCode;

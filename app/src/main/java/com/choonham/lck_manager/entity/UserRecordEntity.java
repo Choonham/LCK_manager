@@ -29,21 +29,6 @@ public class UserRecordEntity {
     @ColumnInfo(name = "fame_diff")
     private int fameDiff;
 
-    @ColumnInfo(name = "top_player_code")
-    private int topPlayerCode;
-
-    @ColumnInfo(name = "jungle_player_code")
-    private int junglePlayerCode;
-
-    @ColumnInfo(name = "mid_player_code")
-    private int midPlayerCode;
-
-    @ColumnInfo(name = "ad_player_code")
-    private int adPlayerCode;
-
-    @ColumnInfo(name = "support_player_code")
-    private int supportPlayerCode;
-
     public int getUserRecordCode() {
         return userRecordCode;
     }
@@ -108,43 +93,4 @@ public class UserRecordEntity {
         this.fameDiff = fameDiff;
     }
 
-    public int getTopPlayerCode() {
-        return topPlayerCode;
-    }
-
-    public void setTopPlayerCode(int topPlayerCode) {
-        this.topPlayerCode = topPlayerCode;
-    }
-
-    public int getJunglePlayerCode() {
-        return junglePlayerCode;
-    }
-
-    public void setJunglePlayerCode(int junglePlayerCode) {
-        this.junglePlayerCode = junglePlayerCode;
-    }
-
-    public int getMidPlayerCode() {
-        return midPlayerCode;
-    }
-
-    public void setMidPlayerCode(int midPlayerCode) {
-        this.midPlayerCode = midPlayerCode;
-    }
-
-    public int getAdPlayerCode() {
-        return adPlayerCode;
-    }
-
-    public void setAdPlayerCode(int adPlayerCode) {
-        this.adPlayerCode = adPlayerCode;
-    }
-
-    public int getSupportPlayerCode() {
-        return supportPlayerCode;
-    }
-
-    public void setSupportPlayerCode(int supportPlayerCode) {
-        this.supportPlayerCode = supportPlayerCode;
-    }
 }
