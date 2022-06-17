@@ -11,7 +11,7 @@ import com.choonham.lck_manager.entity.*;
 @Database(entities = {
         ChampionEntity.class,
         ChampionCounterEntity.class,
-        LeagueRankEntity.class,
+        LeagueSeasonTeamEntity.class,
         LeagueScheduleEntity.class,
         MainRosterEntity.class,
         MatchDataEntity.class,

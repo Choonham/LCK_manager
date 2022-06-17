@@ -1,4 +1,4 @@
 package com.choonham.lck_manager.dao;
 
-public interface LeagueRankDAO {
+public interface LeagueSeasonTeamDAO {
 }

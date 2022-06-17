@@ -4,14 +4,14 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import com.choonham.lck_manager.entity.LeagueRankEntity;
+import com.choonham.lck_manager.entity.LeagueSeasonTeamEntity;
 
 import java.util.List;
 @Dao
 public interface TestDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertLeagueRankEntity(LeagueRankEntity leagueRankEntity);
+    public void insertLeagueRankEntity(LeagueSeasonTeamEntity leagueSeasonTeamEntity);
 
-    @Query("SELECT * FROM league_rank")
-    public List<LeagueRankEntity> loadAllLeagueRankEntity();
+    @Query("SELECT * FROM LeagueSeasonTeamEntity")
+    public List<LeagueSeasonTeamEntity> loadAllLeagueRankEntity();
 }

@@ -4,13 +4,19 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "league_rank")
-public class LeagueRankEntity {
+@Entity(tableName = "league_season_team")
+public class LeagueSeasonTeamEntity {
     @PrimaryKey
-    @ColumnInfo(name="league_rank_code")
-    private int leagueRankCode;
+    @ColumnInfo(name="league_season_team_code")
+    private int leagueSeasonTeamCode;
 
     private int rank;
+
+    @ColumnInfo(name="season_code")
+    private int seasonCode;
+
+    @ColumnInfo(name="season_id")
+    private String seasonId;
 
     @ColumnInfo(name="team_code")
     private int teamCode;
@@ -21,12 +27,28 @@ public class LeagueRankEntity {
 
     private int wd;
 
-    public int getLeagueRankCode() {
-        return leagueRankCode;
+    public int getLeagueSeasonTeamCode() {
+        return leagueSeasonTeamCode;
     }
 
-    public void setLeagueRankCode(int leagueRankCode) {
-        this.leagueRankCode = leagueRankCode;
+    public void setLeagueSeasonTeamCode(int leagueSeasonTeamCode) {
+        this.leagueSeasonTeamCode = leagueSeasonTeamCode;
+    }
+
+    public int getSeasonCode() {
+        return seasonCode;
+    }
+
+    public void setSeasonCode(int seasonCode) {
+        this.seasonCode = seasonCode;
+    }
+
+    public String getSeasonId() {
+        return seasonId;
+    }
+
+    public void setSeasonId(String seasonId) {
+        this.seasonId = seasonId;
     }
 
     public int getRank() {

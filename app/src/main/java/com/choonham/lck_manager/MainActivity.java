@@ -183,10 +183,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void testDataInsertAndSelect(AppDatabase db, LeagueRankEntity leagueRankEntity) {
+    private void testDataInsertAndSelect(AppDatabase db, LeagueSeasonTeamEntity leagueSeasonTeamEntity) {
         TestDAO testDAO = db.textDao();
-        testDAO.insertLeagueRankEntity(leagueRankEntity);
-        List<LeagueRankEntity> temp = testDAO.loadAllLeagueRankEntity();
+        testDAO.insertLeagueRankEntity(leagueSeasonTeamEntity);
+        List<LeagueSeasonTeamEntity> temp = testDAO.loadAllLeagueRankEntity();
 
         Log.d("test:", Integer.toString(temp.get(0).getRank()));
     } */
