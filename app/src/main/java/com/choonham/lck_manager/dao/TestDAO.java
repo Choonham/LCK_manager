@@ -12,6 +12,6 @@ public interface TestDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertLeagueRankEntity(LeagueSeasonTeamEntity leagueSeasonTeamEntity);
 
-    @Query("SELECT * FROM LeagueSeasonTeamEntity")
+    @Query("SELECT * FROM league_season_team")
     public List<LeagueSeasonTeamEntity> loadAllLeagueRankEntity();
 }

@@ -11,19 +11,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.LCK_manager">
         <activity
-                android:name=".NewsPopUpActivity"
-                android:theme="@android:style/Theme.Dialog"
-                android:exported="true"/>
-        <activity
-                android:name=".TeamInfoPopUpActivity"
-                android:theme="@android:style/Theme.Dialog"
-                android:exported="true"/>
-        <activity
-                android:name=".PlayerInfoPopUpActivity"
-                android:theme="@android:style/Theme.Dialog"
-                android:exported="true"/>
-        <activity
-                android:name=".MainActivity"
+                android:name=".LoginActivity"
                 android:exported="true"
                 android:theme="@style/Theme.LCK_manager.NoActionBar">
             <intent-filter>
@@ -31,6 +19,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+                android:name=".NewsPopUpActivity"
+                android:exported="true"
+                android:theme="@android:style/Theme.Dialog"/>
+        <activity
+                android:name=".TeamInfoPopUpActivity"
+                android:exported="true"
+                android:theme="@android:style/Theme.Dialog"/>
+        <activity
+                android:name=".PlayerInfoPopUpActivity"
+                android:exported="true"
+                android:theme="@android:style/Theme.Dialog"/>
+        <activity
+                android:name=".MainActivity"
+                android:exported="true"
+                android:theme="@style/Theme.LCK_manager.NoActionBar">
         </activity>
 
         <meta-data
