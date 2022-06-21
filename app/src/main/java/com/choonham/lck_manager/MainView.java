@@ -1,5 +1,7 @@
 package com.choonham.lck_manager;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -96,9 +98,19 @@ public class MainView extends Fragment {
         });
 
         db = AppDatabase.getInstance(getContext());
+        /*
         insertNewsData(db);
         insertEffectsData(db);
+        */
 
+       /* // 로그인한 객체 정보(google)
+        AccountManager am = AccountManager.get(getContext());
+        Account[] accounts = am.getAccountsByType("com.google");
+
+        for(Account account : accounts) {
+            Log.d("account: ", account.name);
+        }
+        */
         return view;
     }
 

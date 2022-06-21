@@ -1,20 +1,28 @@
 package com.choonham.lck_manager;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.print.PrintAttributes;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
+import android.util.Log;
+import android.view.*;
 import android.widget.ListView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class NewsPopUpActivity extends Activity {
 
     ListView issueEffectListView;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +43,14 @@ public class NewsPopUpActivity extends Activity {
 
         IssueEffectAdapter issueEffectAdapter = new IssueEffectAdapter(this);
         issueEffectListView.setAdapter(issueEffectAdapter);
+        textView = findViewById(R.id.news_detail_content);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override

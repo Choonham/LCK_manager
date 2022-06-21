@@ -14,8 +14,11 @@ public class UserEntity {
     @ColumnInfo(name = "user_id")
     private String userId;
 
-    @ColumnInfo(name = "user_phone_num")
-    private String userPhoneNum;
+    @ColumnInfo(name = "user_email")
+    private String userEmail;
+
+    @ColumnInfo(name = "user_name")
+    private String userName;
 
     @ColumnInfo(name = "user_nick_name")
     private String userNickName;
@@ -47,16 +50,24 @@ public class UserEntity {
         return userId;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public String getUserPhoneNum() {
-        return userPhoneNum;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserPhoneNum(String userPhoneNum) {
-        this.userPhoneNum = userPhoneNum;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getUserNickName() {
