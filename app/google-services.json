@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "331615894052-608i7ssj0e6j7h1rr01mj9okc688fgcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.choonham.lck_manager",
+            "certificate_hash": "fbe7afc048326b5bb1cbb332e6545ebea78811d3"
+          }
+        },
+        {
           "client_id": "331615894052-r4v9in51fn194jubmac3av6d5tu59c3q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,7 @@
           }
         },
         {
-          "client_id": "331615894052-0ki8p24scal2tfm75uu2fg52fqe3qgjr.apps.googleusercontent.com",
+          "client_id": "331615894052-incvaltlq9l3jgn9leevp7rebfd54jqi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

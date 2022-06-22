@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
@@ -31,8 +32,6 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
 
     public GoogleSignInClient mGoogleSignInClient;
-    public static int GOOGLE_SIGN_IN = 1000;
-    public static String TAG = "Google Login Tag: ";
     UserDAO userDAO;
     AppDatabase db;
 
@@ -58,26 +57,9 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        /*if(gsa != null) {
-            // 로그인한 객체 정보(google)
-            AccountManager am = AccountManager.get(this);
-            Account[] accounts = am.getAccountsByType("com.google");
-
-            for(Account account : accounts) {
-                Log.d("login account: ", account.name);
-            }
-
-            Intent mainActivity = new Intent(this, MainActivity.class);
-            startActivity(mainActivity);
-        }*/
-
         mAuth = FirebaseAuth.getInstance();
 
-        if (mAuth.getCurrentUser() != null) {
-            Intent mainActivity = new Intent(this, MainActivity.class);
-            startActivity(mainActivity);
-            finish();
-        }
+        updateUI(mAuth.getCurrentUser());
 
         // Build a GoogleAccountHolder with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
