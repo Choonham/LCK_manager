@@ -98,10 +98,10 @@ public class MainView extends Fragment {
         });
 
         db = AppDatabase.getInstance(getContext());
-        /*
+
         insertNewsData(db);
         insertEffectsData(db);
-        */
+
 
        /* // 로그인한 객체 정보(google)
         AccountManager am = AccountManager.get(getContext());
@@ -155,7 +155,7 @@ public class MainView extends Fragment {
         for(int i = 0; i < 3; i++) {
             NewsEffectsEntity newsEffectsEntity = new NewsEffectsEntity();
 
-            newsEffectsEntity.setNewsCode(0);
+            newsEffectsEntity.setNewsCode(1);
             newsEffectsEntity.setEffect(i);
             newsEffectsEntity.setEffectContent(effectContentList[i]);
             newsEffectsEntity.setEffectedIndex(effectIndexList[i]);

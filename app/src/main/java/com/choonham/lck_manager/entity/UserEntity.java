@@ -1,11 +1,13 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
-public class UserEntity {
+public class UserEntity{
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_code")

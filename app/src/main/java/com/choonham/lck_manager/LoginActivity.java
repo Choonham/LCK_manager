@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +17,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
-import io.reactivex.functions.Action;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -90,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         db = AppDatabase.getInstance(this);
+
         if (requestCode == RC_SIGN_IN) {
 
             // The Task returned from this call is always completed, no need to attach
@@ -97,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
             userDAO = db.userDAO();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-            // 로그인 이력이 있다면, 자동 로그인 (계정 선택 안함)
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
@@ -105,26 +103,29 @@ public class LoginActivity extends AppCompatActivity {
                 String personId = account.getId();
                 String personEmail = account.getEmail();
 
-                UserEntity userEntity = new UserEntity();
-                userEntity.setUserId(personId);
-                userEntity.setUserEmail(personEmail);
-                userEntity.setUserName(personName);
+                userDAO.countUserEntitiesByUserID(personId)
+                    .subscribeOn(Schedulers.io())
+                    .doOnSuccess(count -> {
+                        Log.d("count: ", count.toString());
 
-                userDAO.insertUserEntity(userEntity)
-                        .subscribeOn(Schedulers.io())
-                        .doOnSuccess(insertValue -> {
-                            Log.d("Insert data: ", insertValue.toString());
-                        })
-                        .subscribe();
+                        if(count ==0) {
+                            UserEntity userEntity = new UserEntity();
+                            userEntity.setUserId(personId);
+                            userEntity.setUserEmail(personEmail);
+                            userEntity.setUserName(personName);
 
-                userDAO.loadUserEntityById(personId)
-                        .subscribeOn(Schedulers.io())
-                        .doOnSuccess(loadValue -> {
-                            Log.d("insert ID", loadValue.getUserId());
-                        })
-                        .subscribe();
+                            /*insertUserIDInfo(userEntity);*/
 
-                Log.d("허허", "허허");
+                            Intent intent = new Intent(this, InitialSettingActivity.class);
+                            intent.putExtra("userId", personId);
+                            intent.putExtra("userEmail", personEmail);
+                            intent.putExtra("userName", personName);
+
+                            startActivity(intent);
+                        }
+
+                    })
+                    .subscribe();
 
                 firebaseAuthWithGoogle(account);
             } catch(Exception e) {
@@ -179,6 +180,23 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void insertUserIDInfo(UserEntity userEntity) {
+
+        userDAO.insertUserEntity(userEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(insertValue -> {
+                    Log.d("Insert data: ", insertValue.toString());
+                })
+                .subscribe();
+
+        userDAO.loadUserEntityById(userEntity.getUserId())
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Log.d("insert ID", loadValue.getUserId());
+                })
+                .subscribe();
     }
 
 }

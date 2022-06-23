@@ -4,9 +4,9 @@
 
     <permission-group android:name="${applicationId}.andpermission"/>
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:allowBackup="true"
@@ -17,6 +17,10 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.LCK_manager">
         <activity
+                android:name=".InitialSettingActivity"
+                android:theme="@style/Theme.LCK_manager.NoActionBar"
+                android:exported="true"/>
+        <activity
                 android:name=".LoginActivity"
                 android:exported="true"
                 android:theme="@style/Theme.LCK_manager.NoActionBar">
@@ -25,7 +29,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
         <activity
                 android:name=".NewsPopUpActivity"

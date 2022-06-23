@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:background="@drawable/background_color"
+                                                   android:id="@+id/set_nickname_and_season_fragment"
+                                                   tools:context=".SetNicknameAndSeasonFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.15"
+            android:id="@+id/guideline_h_1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.4"
+            android:id="@+id/guideline_h_2"/>
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.7"
+            android:id="@+id/guideline_h_3"/>
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.1"
+            android:id="@+id/guideline_v_1"/>
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.9"
+            android:id="@+id/guideline_v_2"/>
+
+    <TextView
+            android:text="팀명을 입력해주세요."
+            android:textSize="20sp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guide_team_name"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1" android:layout_marginTop="16dp"/>
+
+    <EditText
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/team_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/guide_team_name"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_2" app:layout_constraintVertical_bias="0.081"
+    />
+
+    <TextView
+            android:text="시작 시즌을 선택해주세요."
+            android:textSize="20sp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guide_start_season"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_2" android:layout_marginTop="28dp"
+            app:layout_constraintHorizontal_bias="0.496"/>
+
+    <Spinner
+            android:layout_width="115dp"
+            android:layout_height="35dp" android:id="@+id/season_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/guide_start_season" android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_3" app:layout_constraintHorizontal_bias="0.355"
+            app:layout_constraintVertical_bias="0.0"/>
+
+    <TextView
+            android:text="시즌"
+            android:textSize="25sp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/season_text"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            android:layout_marginEnd="76dp"
+            app:layout_constraintStart_toEndOf="@+id/season_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/guide_start_season"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_3" app:layout_constraintHorizontal_bias="0.937"
+            app:layout_constraintVertical_bias="0.168"/>
+
+    <Button
+            android:text="완료"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/set_nickname_season_button"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.497" app:layout_constraintVertical_bias="0.087"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

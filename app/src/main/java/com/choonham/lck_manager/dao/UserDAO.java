@@ -18,4 +18,7 @@ public interface UserDAO {
     @Query("SELECT * FROM user u WHERE u.user_id = :userID")
     Single<UserEntity> loadUserEntityById(String userID);
 
+    @Query("SELECT COUNT(*) FROM user u WHERE u.user_id = :userID")
+    Single<Integer> countUserEntitiesByUserID(String userID);
+
 }
