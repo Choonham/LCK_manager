@@ -1,4 +1,4 @@
-package com.choonham.lck_manager.ui;
+package com.choonham.lck_manager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

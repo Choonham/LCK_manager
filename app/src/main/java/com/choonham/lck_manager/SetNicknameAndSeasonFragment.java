@@ -18,7 +18,7 @@ public class SetNicknameAndSeasonFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_nickname_and_season, container, false);
-        Spinner spinner = container.findViewById(R.id.season_spinner);
+        Spinner spinner = rootView.findViewById(R.id.season_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, items);
