@@ -1,10 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +9,15 @@ import android.view.ViewGroup;
 
 public class SetNicknameAndSeasonFragment extends Fragment {
 
-    String[] items = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2021"};
+    String[] items = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_nickname_and_season, container, false);
         Spinner spinner = rootView.findViewById(R.id.season_spinner);
+
+        InitialSettingActivity initialSettingActivity = (InitialSettingActivity) getActivity();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getContext(), android.R.layout.simple_spinner_item, items);
@@ -34,6 +33,14 @@ public class SetNicknameAndSeasonFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        Button button = rootView.findViewById(R.id.set_nickname_season_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initialSettingActivity.onFragmentChanged(1);
             }
         });
 
