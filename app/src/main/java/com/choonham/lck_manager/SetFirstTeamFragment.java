@@ -1,62 +1,80 @@
 package com.choonham.lck_manager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.*;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SetFirstTeamFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SetFirstTeamFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ListView faPlayerListView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    String[] tempFAPlayerList = {"Doran", "Pyosik", "Chovy", "Deft", "Keria", "Faker", "Gumayusi", "Geus", "Kiin"};
+    float[] tempFAPlayerAvgList = {112.5f, 115.5f, 120.2f, 117.2f, 120.8f, 115.5f, 120.2f, 117.2f, 120.8f};
+    float[] tempFAPlayerStabilityList = {5.1f, 6.8f, 9.3f, 8.2f, 1.3f, 6.8f, 9.3f, 8.2f, 1.3f};
 
-    public SetFirstTeamFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SetFirstTeamFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SetFirstTeamFragment newInstance(String param1, String param2) {
-        SetFirstTeamFragment fragment = new SetFirstTeamFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    int[] positionIcons = {
+            R.drawable.position_top_icon,
+            R.drawable.position_jungle_icon,
+            R.drawable.position_mid_icon,
+            R.drawable.position_ad_icon,
+            R.drawable.position_support_icon,
+            R.drawable.position_mid_icon,
+            R.drawable.position_ad_icon,
+            R.drawable.position_top_icon,
+            R.drawable.position_top_icon
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_first_team, container, false);
+
+        Button button = rootView.findViewById(R.id.set_first_team_button);
+
+        MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), tempFAPlayerList, positionIcons, tempFAPlayerAvgList, tempFAPlayerStabilityList);
+
+        faPlayerListView = rootView.findViewById(R.id.FA_player_list_view);
+        faPlayerListView.setAdapter(faPlayerListAdapter);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MainActivity.class);
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                startActivity(intent);
+            }
+        });
+
+        faPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+                TextView season = selectedView.findViewById(R.id.player_season_for_list);
+                TextView name = selectedView.findViewById(R.id.player_name_for_list);
+                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
+                int drawableRef = (int) positionIcon.getTag();
+
+                intent.putExtra("playerSeason", season.getText());
+                intent.putExtra("playerName", name.getText());
+                intent.putExtra("positionIcon", drawableRef);
+
+                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
+                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
+                intent.putExtra("playerAvg", avg.getText());
+                intent.putExtra("playerStability", stability.getText());
+
+
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

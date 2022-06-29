@@ -19,7 +19,7 @@
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
                 android:background="#00FFFFFF"
                 app:popupTheme="@style/Theme.LCK_manager.PopupOverlay" android:backgroundTint="#00FFFFFF"
                 android:outlineSpotShadowColor="#00000000" android:outlineAmbientShadowColor="#00FFFFFF"/>

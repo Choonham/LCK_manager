@@ -15,7 +15,7 @@ public class InitialSettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setting);
 
         setNicknameAndSeasonFragment = (SetNicknameAndSeasonFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.container);
+                .findFragmentById(R.id.SetNicknameAndSeasonFragment);
         setFirstTeamFragment = new SetFirstTeamFragment();
     }
 

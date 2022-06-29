@@ -5,34 +5,155 @@
                                                    android:layout_height="match_parent"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    android:background="@drawable/background_color"
-                                                   android:id="@+id/set_first_team_fragment"
+                                                   android:id="@+id/container"
                                                    tools:context=".SetFirstTeamFragment">
 
     <androidx.constraintlayout.widget.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.15"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.08"
             android:id="@+id/guideline_h_1"/>
 
     <androidx.constraintlayout.widget.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.4"
-            android:id="@+id/guideline_h_2"/>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.7"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.45"
             android:id="@+id/guideline_h_3"/>
     <androidx.constraintlayout.widget.Guideline
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.1"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.04"
             android:id="@+id/guideline_v_1"/>
     <androidx.constraintlayout.widget.Guideline
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.9"
+            android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.96"
             android:id="@+id/guideline_v_2"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:background="@drawable/box_border"
+            android:id="@+id/linearLayout"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_h_3">
+        <TextView
+                android:text="FA Player List"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/FA_player_list_title"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:background="@drawable/transfer_window_week_border"
+                android:textSize="20sp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginTop="10dp"
+        />
+
+        <include
+                layout="@layout/player_status_for_list_header"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"/>
+
+        <ListView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/FA_player_list_view"
+                android:layout_width="340dp"
+                android:layout_height="150dp"
+                android:headerDividersEnabled="true"
+                android:divider="@drawable/main_roster_divider"
+                android:listSelector="@drawable/list_view_select_border"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="350dp"
+            android:layout_height="210dp"
+            android:background="@drawable/box_border"
+            android:id="@+id/linearLayout2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_3" android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.423" app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintVertical_bias="0.161">
+
+        <include
+                layout="@layout/player_status_for_list_header"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"/>
+        <ListView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/selected_player_list_view"
+                android:layout_width="339dp"
+                android:layout_height="160dp"
+                android:headerDividersEnabled="true"
+                android:divider="@drawable/main_roster_divider"
+                android:listSelector="@drawable/list_view_select_border"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="347dp"
+            android:layout_height="46dp"
+            android:background="@drawable/box_border"
+            android:id="@+id/linearLayout3" app:layout_constraintBottom_toTopOf="@+id/set_first_team_button"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1" android:layout_marginBottom="24dp">
+
+        <TextView
+                android:text="@string/fame_lv"
+                android:textSize="20sp"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:textAlignment="viewEnd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/transfer_window_fame_lv_title"
+                android:layout_weight="0.3"
+                tools:ignore="RtlCompat"/>
+        <TextView
+                android:text="1"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:textAlignment="viewStart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/transfer_window_fame_lv"
+                android:layout_weight="0.2"
+                tools:ignore="RtlCompat"/>
+        <TextView
+                android:text="@string/money"
+                android:textSize="20sp"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:textAlignment="viewEnd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/transfer_window_money_title"
+                android:layout_weight="0.3"
+                tools:ignore="RtlCompat"/>
+        <TextView
+                android:text="$20"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:textAlignment="viewStart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:id="@+id/transfer_window_money" android:layout_weight="0.2"
+                tools:ignore="RtlCompat"/>
+    </LinearLayout>
+    <Button
+            android:text="완료"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/set_first_team_button"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
