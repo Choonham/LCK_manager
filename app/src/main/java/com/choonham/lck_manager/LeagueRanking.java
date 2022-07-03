@@ -13,8 +13,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
+
+import java.util.List;
 
 public class LeagueRanking extends Fragment {
+    private final ActivityTagEnum TAG = ActivityTagEnum.LEAGUE_RANKING;
+
+    private List<PlayerEntity> pogPlayerList;
+
     String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
     int[] winList = {4, 4, 3, 3, 2, 2, 1, 1, 1, 0, 0};
 
@@ -39,8 +48,11 @@ public class LeagueRanking extends Fragment {
         leagueRankingListView = view.findViewById(R.id.league_ranking_list_view);
         pogPointListView = view.findViewById(R.id.pog_point_list_view);
 
+        Common common = Common.getInstance();
+        pogPlayerList = common.getTempPlayerList(2);
+
         LeagueRankingAdapter leagueRankingAdapter = new LeagueRankingAdapter(teamList, winList, getContext());
-        POGPointAdapter pogPointAdapter = new POGPointAdapter(pogList, positionIcons, pogPointList, getContext());
+        POGPointAdapter pogPointAdapter = new POGPointAdapter(getContext(), pogPlayerList);
 
         leagueRankingListView.setAdapter(leagueRankingAdapter);
         pogPointListView.setAdapter(pogPointAdapter);
@@ -62,6 +74,7 @@ public class LeagueRanking extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
                 Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+
                 TextView season = selectedView.findViewById(R.id.player_season_pog_point);
                 TextView name = selectedView.findViewById(R.id.player_name_pog_point);
                 ImageView positionIcon = selectedView.findViewById(R.id.pog_point_position_icon);
@@ -73,6 +86,15 @@ public class LeagueRanking extends Fragment {
 
                 intent.putExtra("playerAvg", "112.5");
                 intent.putExtra("playerStability", "112.5");
+
+                intent.putExtra("playerEntity", pogPlayerList.get(i));
+
+                intent.putExtra("tag", TAG);
+
+                /*
+                Common common = Common.getInstance();
+                Intent intent = common.getPlayerInfoPopUpIntent(selectedView, TAG, getContext(), 0);
+                */
                 startActivity(intent);
             }
         });

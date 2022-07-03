@@ -1,11 +1,15 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "news_and_issue")
-public class NewsAndIssueEntity {
+public class NewsAndIssueEntity implements Parcelable {
+    public NewsAndIssueEntity() {}
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="news_code")
     private int newsCode;
@@ -24,6 +28,27 @@ public class NewsAndIssueEntity {
 
     @ColumnInfo(name="remaining")
     private int remaining;
+
+    protected NewsAndIssueEntity(Parcel in) {
+        newsCode = in.readInt();
+        teamCode = in.readInt();
+        newsTitle = in.readString();
+        newsContent = in.readString();
+        effectedPlayer = in.readInt();
+        remaining = in.readInt();
+    }
+
+    public static final Creator<NewsAndIssueEntity> CREATOR = new Creator<NewsAndIssueEntity>() {
+        @Override
+        public NewsAndIssueEntity createFromParcel(Parcel in) {
+            return new NewsAndIssueEntity(in);
+        }
+
+        @Override
+        public NewsAndIssueEntity[] newArray(int size) {
+            return new NewsAndIssueEntity[size];
+        }
+    };
 
     public int getNewsCode() {
         return newsCode;
@@ -71,5 +96,20 @@ public class NewsAndIssueEntity {
 
     public void setRemaining(int remaining) {
         this.remaining = remaining;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(newsCode);
+        parcel.writeInt(teamCode);
+        parcel.writeString(newsTitle);
+        parcel.writeString(newsContent);
+        parcel.writeInt(effectedPlayer);
+        parcel.writeInt(remaining);
     }
 }

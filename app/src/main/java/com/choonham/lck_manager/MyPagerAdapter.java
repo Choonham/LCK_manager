@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 import java.util.ArrayList;
 
 public class MyPagerAdapter extends FragmentStateAdapter {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.MY_PAGER_ADAPTER;
 
     ArrayList<Fragment> items = new ArrayList<Fragment>();
 

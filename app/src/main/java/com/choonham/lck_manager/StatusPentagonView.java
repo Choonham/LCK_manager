@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 import com.choonham.lck_manager.R;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class StatusPentagonView extends View {
+    private final ActivityTagEnum TAG = ActivityTagEnum.STATUS_PENTAGON_VIEW;
 
     private Paint paint;
     private float width = 0f;

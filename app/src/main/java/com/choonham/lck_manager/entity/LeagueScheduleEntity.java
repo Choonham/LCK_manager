@@ -1,11 +1,16 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.*;
 import com.choonham.lck_manager.room.DateConverter;
 
 import java.util.Date;
 @Entity(tableName = "league_schedule")
-public class LeagueScheduleEntity {
+public class LeagueScheduleEntity implements Parcelable {
+
+    public LeagueScheduleEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "league_schedule_code")
@@ -38,6 +43,48 @@ public class LeagueScheduleEntity {
 
     @ColumnInfo(name = "play_flag")
     private int playFlag;
+
+    protected LeagueScheduleEntity(Parcel in) {
+        leagueScheduleCode = in.readInt();
+        matchNum = in.readInt();
+        teamCodeA = in.readInt();
+        teamCodeB = in.readInt();
+        teamA = in.readString();
+        teamB = in.readString();
+        scoreA = in.readInt();
+        scoreB = in.readInt();
+        playFlag = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(leagueScheduleCode);
+        dest.writeInt(matchNum);
+        dest.writeInt(teamCodeA);
+        dest.writeInt(teamCodeB);
+        dest.writeString(teamA);
+        dest.writeString(teamB);
+        dest.writeInt(scoreA);
+        dest.writeInt(scoreB);
+        dest.writeInt(playFlag);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<LeagueScheduleEntity> CREATOR = new Creator<LeagueScheduleEntity>() {
+        @Override
+        public LeagueScheduleEntity createFromParcel(Parcel in) {
+            return new LeagueScheduleEntity(in);
+        }
+
+        @Override
+        public LeagueScheduleEntity[] newArray(int size) {
+            return new LeagueScheduleEntity[size];
+        }
+    };
 
     public int getLeagueScheduleCode() {
         return leagueScheduleCode;

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.dao.NewsAndIssueDAO;
 import com.choonham.lck_manager.entity.NewsAndIssueEntity;
 import com.choonham.lck_manager.entity.NewsEffectsEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedNews;
 import com.choonham.lck_manager.room.AppDatabase;
 import io.reactivex.rxjava3.core.Single;
@@ -26,6 +27,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.List;
 
 public class MainView extends Fragment {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.MAIN_VIEW;
 
     ListView matchScheduleListView;
 

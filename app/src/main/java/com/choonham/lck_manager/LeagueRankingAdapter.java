@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class LeagueRankingAdapter extends BaseAdapter {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.LEAGUE_RANKING_ADAPTER;
 
     String[] teamList;
     int[] winList;

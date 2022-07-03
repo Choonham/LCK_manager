@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class SetNicknameAndSeasonFragment extends Fragment {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.SET_NICKNAME_AND_SEASON_FRAGMENT;
 
     String[] items = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"};
 

@@ -1,11 +1,16 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user_record")
-public class UserRecordEntity {
+public class UserRecordEntity implements Parcelable {
+
+    public UserRecordEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_record_code")
@@ -28,6 +33,29 @@ public class UserRecordEntity {
 
     @ColumnInfo(name = "fame_diff")
     private int fameDiff;
+
+    protected UserRecordEntity(Parcel in) {
+        userRecordCode = in.readInt();
+        userCode = in.readInt();
+        seasonCode = in.readInt();
+        rank = in.readInt();
+        win = in.readInt();
+        lose = in.readInt();
+        winDiff = in.readInt();
+        fameDiff = in.readInt();
+    }
+
+    public static final Creator<UserRecordEntity> CREATOR = new Creator<UserRecordEntity>() {
+        @Override
+        public UserRecordEntity createFromParcel(Parcel in) {
+            return new UserRecordEntity(in);
+        }
+
+        @Override
+        public UserRecordEntity[] newArray(int size) {
+            return new UserRecordEntity[size];
+        }
+    };
 
     public int getUserRecordCode() {
         return userRecordCode;
@@ -93,4 +121,20 @@ public class UserRecordEntity {
         this.fameDiff = fameDiff;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(userRecordCode);
+        parcel.writeInt(userCode);
+        parcel.writeInt(seasonCode);
+        parcel.writeInt(rank);
+        parcel.writeInt(win);
+        parcel.writeInt(lose);
+        parcel.writeInt(winDiff);
+        parcel.writeInt(fameDiff);
+    }
 }

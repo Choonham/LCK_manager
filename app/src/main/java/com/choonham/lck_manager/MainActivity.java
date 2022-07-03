@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 import com.choonham.lck_manager.dao.NewsAndIssueDAO;
 import com.choonham.lck_manager.entity.NewsAndIssueEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.room.AppDatabase;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +30,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.MAIN_ACTIVITY;
 
     ViewPager2 pager;
     DrawerLayout drawerLayout;

@@ -1,11 +1,17 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "player")
-public class PlayerEntity {
+public class PlayerEntity implements Parcelable {
+
+    public PlayerEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "player_code")
@@ -33,6 +39,39 @@ public class PlayerEntity {
 
     @ColumnInfo(name = "fame_lv")
     private int fameLv;
+
+    @Ignore
+    private int positionIcon;
+
+    @Ignore
+    private int pogPoint;
+
+    protected PlayerEntity(Parcel in) {
+        playerCode = in.readInt();
+        seasonCode = in.readInt();
+        playerName = in.readString();
+        position = in.readInt();
+        physical = in.readDouble();
+        teamFight = in.readDouble();
+        outSmart = in.readDouble();
+        laneStrength = in.readDouble();
+        stability = in.readDouble();
+        fameLv = in.readInt();
+        positionIcon = in.readInt();
+        pogPoint = in.readInt();
+    }
+
+    public static final Creator<PlayerEntity> CREATOR = new Creator<PlayerEntity>() {
+        @Override
+        public PlayerEntity createFromParcel(Parcel in) {
+            return new PlayerEntity(in);
+        }
+
+        @Override
+        public PlayerEntity[] newArray(int size) {
+            return new PlayerEntity[size];
+        }
+    };
 
     public int getPosition() {
         return position;
@@ -112,5 +151,42 @@ public class PlayerEntity {
 
     public void setFameLv(int fameLv) {
         this.fameLv = fameLv;
+    }
+
+    public int getPositionIcon() {
+        return positionIcon;
+    }
+
+    public void setPositionIcon(int positionIcon) {
+        this.positionIcon = positionIcon;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public int getPogPoint() {
+        return pogPoint;
+    }
+
+    public void setPogPoint(int pogPoint) {
+        this.pogPoint = pogPoint;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(playerCode);
+        parcel.writeInt(seasonCode);
+        parcel.writeString(playerName);
+        parcel.writeInt(position);
+        parcel.writeDouble(physical);
+        parcel.writeDouble(teamFight);
+        parcel.writeDouble(outSmart);
+        parcel.writeDouble(laneStrength);
+        parcel.writeDouble(stability);
+        parcel.writeInt(fameLv);
+        parcel.writeInt(positionIcon);
+        parcel.writeInt(pogPoint);
     }
 }

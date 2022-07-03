@@ -1,11 +1,17 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "league_season_team")
-public class LeagueSeasonTeamEntity {
+public class LeagueSeasonTeamEntity implements Parcelable {
+
+    public LeagueSeasonTeamEntity() {
+    };
+
     @PrimaryKey
     @ColumnInfo(name="league_season_team_code")
     private int leagueSeasonTeamCode;
@@ -26,6 +32,29 @@ public class LeagueSeasonTeamEntity {
     private int lose;
 
     private int wd;
+
+    protected LeagueSeasonTeamEntity(Parcel in) {
+        leagueSeasonTeamCode = in.readInt();
+        rank = in.readInt();
+        seasonCode = in.readInt();
+        seasonId = in.readString();
+        teamCode = in.readInt();
+        win = in.readInt();
+        lose = in.readInt();
+        wd = in.readInt();
+    }
+
+    public static final Creator<LeagueSeasonTeamEntity> CREATOR = new Creator<LeagueSeasonTeamEntity>() {
+        @Override
+        public LeagueSeasonTeamEntity createFromParcel(Parcel in) {
+            return new LeagueSeasonTeamEntity(in);
+        }
+
+        @Override
+        public LeagueSeasonTeamEntity[] newArray(int size) {
+            return new LeagueSeasonTeamEntity[size];
+        }
+    };
 
     public int getLeagueSeasonTeamCode() {
         return leagueSeasonTeamCode;
@@ -89,5 +118,22 @@ public class LeagueSeasonTeamEntity {
 
     public void setWd(int wd) {
         this.wd = wd;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(leagueSeasonTeamCode);
+        parcel.writeInt(rank);
+        parcel.writeInt(seasonCode);
+        parcel.writeString(seasonId);
+        parcel.writeInt(teamCode);
+        parcel.writeInt(win);
+        parcel.writeInt(lose);
+        parcel.writeInt(wd);
     }
 }

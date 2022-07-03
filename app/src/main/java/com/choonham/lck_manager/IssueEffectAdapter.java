@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class IssueEffectAdapter extends BaseAdapter {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.ISSUE_EFFECT_ADAPTER;
 
     String[] effectsList = {"Transfer Window에서 Offer 가격", "3경기 주전 사용 금지 및 경험치 하락"};
     String[] effectsIndexList = {"- 30%", "- 100xp"};

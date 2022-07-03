@@ -11,12 +11,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.entity.TempLeagueSchedule;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class LeagueSchedule extends Fragment {
+    private final ActivityTagEnum TAG = ActivityTagEnum.LEAGUE_SCHEDULE;
+
     private MaterialCalendarView calendarView;
 
     String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};

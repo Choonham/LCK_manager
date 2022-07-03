@@ -8,28 +8,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.fragment.app.Fragment;
+import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 public class TeamRoster extends Fragment {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.TEAM_ROSTER;
+
+    private List<PlayerEntity> playerEntityList;
 
     ListView teamMainRosterListView;
     ListView teamSubRosterListView;
 
-    String[] tempMainRosterList = {"Doran", "Peanut", "Chovy", "Ruler", "Lehands"};
-    float[] tempMainRosterAvgList = {112.5f, 115.5f, 120.2f, 117.2f, 120.8f};
-    float[] tempMainRosterStabilityList = {5.1f, 6.8f, 9.3f, 8.2f, 1.3f};
-
-    int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
-
     TextView playerName;
     TextView playerSeason;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.team_roster, container, false);
 
-        MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), tempMainRosterList, positionIcons, tempMainRosterAvgList, tempMainRosterStabilityList);
+        Common common = Common.getInstance();
+        playerEntityList = common.getTempPlayerList(0);
+        MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), playerEntityList);
         teamMainRosterListView = view.findViewById(R.id.main_roster_list);
         /*ViewGroup header = (ViewGroup) inflater.inflate(R.layout.main_roster_header_view, teamMainRosterListView, false);
         header.setPadding(0, 20, 0, 0);*/
@@ -43,20 +49,8 @@ public class TeamRoster extends Fragment {
         teamMainRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
-                TextView season = selectedView.findViewById(R.id.player_season_for_list);
-                TextView name = selectedView.findViewById(R.id.player_name_for_list);
-                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
-                int drawableRef = (int) positionIcon.getTag();
-
-                intent.putExtra("playerSeason", season.getText());
-                intent.putExtra("playerName", name.getText());
-                intent.putExtra("positionIcon", drawableRef);
-
-                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
-                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
-                intent.putExtra("playerAvg", avg.getText());
-                intent.putExtra("playerStability", stability.getText());
+                Common common = Common.getInstance();
+                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
 
                 startActivity(intent);
             }
@@ -65,7 +59,7 @@ public class TeamRoster extends Fragment {
         teamSubRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+                /*Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
                 TextView season = selectedView.findViewById(R.id.player_season_for_list);
                 TextView name = selectedView.findViewById(R.id.player_name_for_list);
                 ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
@@ -80,6 +74,12 @@ public class TeamRoster extends Fragment {
                 TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
                 intent.putExtra("playerAvg", avg.getText());
                 intent.putExtra("playerStability", stability.getText());
+                intent.putExtra("tag", TAG);
+
+                startActivity(intent);*/
+
+                Common common = Common.getInstance();
+                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
 
                 startActivity(intent);
             }

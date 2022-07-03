@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.choonham.lck_manager.entity.TempLeagueSchedule;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 import java.util.ArrayList;
 
 public class LeagueScheduleAdapter extends BaseAdapter {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.LEAGUE_SCHEDULE_ADAPTER;
 
     int type;
     private static final int TYPE_MATCH_INFO = 0;

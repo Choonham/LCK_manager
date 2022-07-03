@@ -8,29 +8,29 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
+
+import java.util.List;
 
 public class MainRosterAdapter extends BaseAdapter {
 
+    private final ActivityTagEnum TAG = ActivityTagEnum.MAIN_ROSTER_ADAPTER;
+
     Context context;
-    String[] mainRosterList;
-    int[] positionIconList;
-    float[] mainRosterAvgList;
-    float[] mainRosterStabilityList;
+    List<PlayerEntity> playerEntityList;
 
     LayoutInflater inflater;
 
-    public MainRosterAdapter(Context applicationContext, String[] mainRosterList, int[] positionIconList, float[] mainRosterAvgList, float[] mainRosterStabilityList) {
+    public MainRosterAdapter(Context applicationContext, List<PlayerEntity> playerEntityList) {
         this.context = applicationContext;
-        this.mainRosterList = mainRosterList;
-        this.positionIconList = positionIconList;
-        this.mainRosterAvgList = mainRosterAvgList;
-        this.mainRosterStabilityList = mainRosterStabilityList;
+        this.playerEntityList = playerEntityList;
 
         inflater = (LayoutInflater.from(applicationContext));
     }
     @Override
     public int getCount() {
-        return mainRosterList.length;
+        return playerEntityList.size();
     }
 
     @Override
@@ -55,12 +55,12 @@ public class MainRosterAdapter extends BaseAdapter {
         ImageView positionIcon = view.findViewById(R.id.main_roster_position_icon);
 
         mainRosterSeason.setText("22 SPR");
-        mainRosterPlayerName.setText(mainRosterList[i]);
-        mainRosterAvg.setText(Float.toString(mainRosterAvgList[i]));
-        mainRosterStability.setText(Float.toString(mainRosterStabilityList[i]));
+        mainRosterPlayerName.setText(playerEntityList.get(i).getPlayerName());
+        mainRosterAvg.setText(Double.toString(playerEntityList.get(i).getPhysical()));
+        mainRosterStability.setText(Double.toString(playerEntityList.get(i).getStability()));
 
-        positionIcon.setImageResource(positionIconList[i]);
-        positionIcon.setTag(positionIconList[i]);
+        positionIcon.setImageResource(playerEntityList.get(i).getPositionIcon());
+        positionIcon.setTag(playerEntityList.get(i).getPositionIcon());
 
         return view;
     }

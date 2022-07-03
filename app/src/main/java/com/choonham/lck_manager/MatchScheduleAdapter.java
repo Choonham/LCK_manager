@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class MatchScheduleAdapter extends BaseAdapter {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.MATCH_SCHEDULE_ADAPTER;
 
     private String[] matchScheduleTeamList;
     private int[] matchScheduleResultList;

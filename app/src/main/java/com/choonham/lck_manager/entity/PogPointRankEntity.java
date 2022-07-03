@@ -1,11 +1,17 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "pog_point_rank")
-public class PogPointRankEntity {
+public class PogPointRankEntity implements Parcelable {
+
+    public PogPointRankEntity() {
+    }
+
     @PrimaryKey
     @ColumnInfo(name="pog_point_code")
     private int pogPointCode;
@@ -17,6 +23,38 @@ public class PogPointRankEntity {
 
     @ColumnInfo(name="pog_point")
     private int pogPoint;
+
+    protected PogPointRankEntity(Parcel in) {
+        pogPointCode = in.readInt();
+        rank = in.readInt();
+        playerCode = in.readInt();
+        pogPoint = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(pogPointCode);
+        dest.writeInt(rank);
+        dest.writeInt(playerCode);
+        dest.writeInt(pogPoint);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<PogPointRankEntity> CREATOR = new Creator<PogPointRankEntity>() {
+        @Override
+        public PogPointRankEntity createFromParcel(Parcel in) {
+            return new PogPointRankEntity(in);
+        }
+
+        @Override
+        public PogPointRankEntity[] newArray(int size) {
+            return new PogPointRankEntity[size];
+        }
+    };
 
     public int getPogPointCode() {
         return pogPointCode;

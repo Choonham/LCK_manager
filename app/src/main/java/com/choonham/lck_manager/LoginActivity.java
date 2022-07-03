@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.UserEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.room.AppDatabase;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +29,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private final ActivityTagEnum TAG = ActivityTagEnum.LOGIN_ACTIVITY;
 
     public GoogleSignInClient mGoogleSignInClient;
     UserDAO userDAO;

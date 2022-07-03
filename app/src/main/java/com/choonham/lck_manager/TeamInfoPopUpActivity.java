@@ -17,16 +17,17 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
+
+import java.util.List;
 
 public class TeamInfoPopUpActivity extends Activity {
 
+    private final ActivityTagEnum TAG = ActivityTagEnum.TEAM_INFO_POPUP_ACTIVITY;
+    private List<PlayerEntity> playerEntityList;
     ListView teamInfoListView;
-
-    String[] tempMainRosterList = {"Doran", "Peanut", "Chovy", "Ruler", "Lehands"};
-    float[] tempMainRosterAvgList = {112.5f, 115.5f, 120.2f, 117.2f, 120.8f};
-    float[] tempMainRosterStabilityList = {5.1f, 6.8f, 9.3f, 8.2f, 1.3f};
-
-    int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,9 @@ public class TeamInfoPopUpActivity extends Activity {
 
         setResult(Activity.RESULT_OK, intent);
 
-        TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, tempMainRosterList, positionIcons, tempMainRosterAvgList, tempMainRosterStabilityList);
+        Common common = Common.getInstance();
+        playerEntityList = common.getTempPlayerList(0);
+        TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, playerEntityList);
 
         teamInfoListView = findViewById(R.id.team_info_list_view);
         teamInfoListView.setAdapter(teamInfoAdapter);
@@ -66,7 +69,7 @@ public class TeamInfoPopUpActivity extends Activity {
         teamInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), PlayerInfoPopUpActivity.class);
+                /*Intent intent = new Intent(getApplicationContext(), PlayerInfoPopUpActivity.class);
                 TextView playerSeason = selectedView.findViewById(R.id.player_season_for_list_popup);
                 TextView playerName = selectedView.findViewById(R.id.player_name_for_list_popup);
                 ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon_popup);
@@ -81,6 +84,11 @@ public class TeamInfoPopUpActivity extends Activity {
 
                 int drawableRef = (int) positionIcon.getTag();
                 intent.putExtra("positionIcon", drawableRef);
+
+                intent.putExtra("tag", TAG);*/
+
+                Common common = Common.getInstance();
+                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getApplicationContext(), 1);
 
                 startActivity(intent);
             }

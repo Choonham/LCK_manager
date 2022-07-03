@@ -1,11 +1,16 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "team")
-public class TeamEntity {
+public class TeamEntity implements Parcelable {
+
+    public TeamEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "team_code")
@@ -25,6 +30,27 @@ public class TeamEntity {
 
     @ColumnInfo(name = "sub_roster_code")
     private int subRosterCode;
+
+    protected TeamEntity(Parcel in) {
+        teamCode = in.readInt();
+        userCode = in.readInt();
+        userType = in.readInt();
+        teamName = in.readString();
+        mainRosterCode = in.readInt();
+        subRosterCode = in.readInt();
+    }
+
+    public static final Creator<TeamEntity> CREATOR = new Creator<TeamEntity>() {
+        @Override
+        public TeamEntity createFromParcel(Parcel in) {
+            return new TeamEntity(in);
+        }
+
+        @Override
+        public TeamEntity[] newArray(int size) {
+            return new TeamEntity[size];
+        }
+    };
 
     public int getTeamCode() {
         return teamCode;
@@ -72,5 +98,20 @@ public class TeamEntity {
 
     public void setSubRosterCode(int subRosterCode) {
         this.subRosterCode = subRosterCode;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(teamCode);
+        parcel.writeInt(userCode);
+        parcel.writeInt(userType);
+        parcel.writeString(teamName);
+        parcel.writeInt(mainRosterCode);
+        parcel.writeInt(subRosterCode);
     }
 }

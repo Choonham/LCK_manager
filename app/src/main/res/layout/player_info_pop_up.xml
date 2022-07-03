@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/popup_background"
         android:padding="5dp"
+        android:id="@+id/player_info_popup_parent_layout"
         android:layout_width="match_parent"
         tools:context=".NewsPopUpActivity" android:orientation="vertical" android:layout_height="350dp">
 
@@ -196,6 +197,7 @@
             android:gravity="bottom"
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:id="@+id/most_five_linear_layout"
             android:layout_height="40dp">
         <TextView
                 android:text="Most 5: "

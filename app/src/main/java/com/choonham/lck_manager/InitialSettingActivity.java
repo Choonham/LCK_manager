@@ -3,8 +3,10 @@ package com.choonham.lck_manager;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class InitialSettingActivity extends AppCompatActivity {
+    private final ActivityTagEnum TAG = ActivityTagEnum.INITIAL_SETTING_ACTIVITY;
 
     SetFirstTeamFragment setFirstTeamFragment;
     SetNicknameAndSeasonFragment setNicknameAndSeasonFragment;

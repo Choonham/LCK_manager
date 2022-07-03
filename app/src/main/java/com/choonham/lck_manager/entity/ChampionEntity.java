@@ -1,11 +1,16 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "champion")
-public class ChampionEntity {
+public class ChampionEntity implements Parcelable {
+
+    public ChampionEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "champion_code")
@@ -37,6 +42,54 @@ public class ChampionEntity {
 
     @ColumnInfo(name = "to_sixteen_potential")
     private double toSixteenPotential;
+
+    protected ChampionEntity(Parcel in) {
+        championCode = in.readInt();
+        championName = in.readString();
+        laneStrength = in.readDouble();
+        teamFight = in.readDouble();
+        splitPush = in.readDouble();
+        oneVsOneStrength = in.readDouble();
+        initiating = in.readDouble();
+        poking = in.readDouble();
+        type = in.readInt();
+        toSixPotential = in.readDouble();
+        toElvPotential = in.readDouble();
+        toSixteenPotential = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(championCode);
+        dest.writeString(championName);
+        dest.writeDouble(laneStrength);
+        dest.writeDouble(teamFight);
+        dest.writeDouble(splitPush);
+        dest.writeDouble(oneVsOneStrength);
+        dest.writeDouble(initiating);
+        dest.writeDouble(poking);
+        dest.writeInt(type);
+        dest.writeDouble(toSixPotential);
+        dest.writeDouble(toElvPotential);
+        dest.writeDouble(toSixteenPotential);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ChampionEntity> CREATOR = new Creator<ChampionEntity>() {
+        @Override
+        public ChampionEntity createFromParcel(Parcel in) {
+            return new ChampionEntity(in);
+        }
+
+        @Override
+        public ChampionEntity[] newArray(int size) {
+            return new ChampionEntity[size];
+        }
+    };
 
     public int getChampionCode() {
         return championCode;

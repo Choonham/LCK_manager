@@ -7,7 +7,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
-public class UserEntity{
+public class UserEntity implements Parcelable{
+
+    public UserEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_code")
@@ -39,6 +42,31 @@ public class UserEntity{
 
     @ColumnInfo(name = "apier")
     private int apiVer;
+
+    protected UserEntity(Parcel in) {
+        userCode = in.readInt();
+        userId = in.readString();
+        userEmail = in.readString();
+        userName = in.readString();
+        userNickName = in.readString();
+        userFameLv = in.readInt();
+        userMoney = in.readInt();
+        seasonCode = in.readInt();
+        matchNum = in.readInt();
+        apiVer = in.readInt();
+    }
+
+    public static final Creator<UserEntity> CREATOR = new Creator<UserEntity>() {
+        @Override
+        public UserEntity createFromParcel(Parcel in) {
+            return new UserEntity(in);
+        }
+
+        @Override
+        public UserEntity[] newArray(int size) {
+            return new UserEntity[size];
+        }
+    };
 
     public int getUserCode() {
         return userCode;
@@ -118,5 +146,24 @@ public class UserEntity{
 
     public void setMatchNum(int matchNum) {
         this.matchNum = matchNum;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(userCode);
+        parcel.writeString(userId);
+        parcel.writeString(userEmail);
+        parcel.writeString(userName);
+        parcel.writeString(userNickName);
+        parcel.writeInt(userFameLv);
+        parcel.writeInt(userMoney);
+        parcel.writeInt(seasonCode);
+        parcel.writeInt(matchNum);
+        parcel.writeInt(apiVer);
     }
 }

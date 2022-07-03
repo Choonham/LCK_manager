@@ -1,11 +1,16 @@
 package com.choonham.lck_manager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "match_data")
-public class MatchDataEntity {
+public class MatchDataEntity implements Parcelable {
+
+    public MatchDataEntity() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "match_data_code")
@@ -24,6 +29,42 @@ public class MatchDataEntity {
     private int championCode;
 
     private double kda;
+
+    protected MatchDataEntity(Parcel in) {
+        matchDataCode = in.readInt();
+        leagueScheduleCode = in.readInt();
+        teamCode = in.readInt();
+        playerCode = in.readInt();
+        championCode = in.readInt();
+        kda = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(matchDataCode);
+        dest.writeInt(leagueScheduleCode);
+        dest.writeInt(teamCode);
+        dest.writeInt(playerCode);
+        dest.writeInt(championCode);
+        dest.writeDouble(kda);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<MatchDataEntity> CREATOR = new Creator<MatchDataEntity>() {
+        @Override
+        public MatchDataEntity createFromParcel(Parcel in) {
+            return new MatchDataEntity(in);
+        }
+
+        @Override
+        public MatchDataEntity[] newArray(int size) {
+            return new MatchDataEntity[size];
+        }
+    };
 
     public int getMatchDataCode() {
         return matchDataCode;
