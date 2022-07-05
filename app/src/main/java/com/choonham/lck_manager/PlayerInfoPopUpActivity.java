@@ -21,6 +21,12 @@ public class PlayerInfoPopUpActivity extends Activity {
 
     ImageButton offerBtn;
 
+    ImageButton toSubBtn;
+    ImageButton toMainBtn;
+
+    ImageButton offerToFABtn;
+    ImageButton releaseBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +56,12 @@ public class PlayerInfoPopUpActivity extends Activity {
 
         ActivityTagEnum tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
 
+        LinearLayout parentLayout = findViewById(R.id.player_info_popup_parent_layout);
+        ViewGroup.LayoutParams layoutParams = parentLayout.getLayoutParams();
+
+        LinearLayout mostFiveLinearLayout = findViewById(R.id.most_five_linear_layout);
+
         if(tag.equals(ActivityTagEnum.TRANSFER_WINDOW) || tag.equals(ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT)) {
-            LinearLayout parentLayout = findViewById(R.id.player_info_popup_parent_layout);
-            ViewGroup.LayoutParams layoutParams = parentLayout.getLayoutParams();
             parentLayout.post(new Runnable()
             {
                 @Override
@@ -84,12 +93,96 @@ public class PlayerInfoPopUpActivity extends Activity {
 
                     parentLayout.setLayoutParams(layoutParams);
                     parentLayout.addView(constraintLayout);
-
-
                 }
             });
 
             /*parentLayout.setLayoutParams(layoutParams);*/
+        } else if(tag.equals(ActivityTagEnum.TEAM_ROSTER_MAIN)){
+            LinearLayout.LayoutParams paramsTemp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            paramsTemp.setMargins(0, 0, 0, 0);
+
+            paramsTemp.gravity = Gravity.LEFT;
+
+            toSubBtn = new ImageButton(getApplicationContext());
+            toSubBtn.setImageResource(R.drawable.to_sub_button);
+            toSubBtn.setBackgroundColor(Color.TRANSPARENT);
+
+            toSubBtn.setPadding(0,0,50,0);
+
+            toSubBtn.setLayoutParams(paramsTemp);
+
+            mostFiveLinearLayout.addView(toSubBtn);
+
+        } else if(tag.equals(ActivityTagEnum.TEAM_ROSTER_SUB)){
+            LinearLayout.LayoutParams paramsTemp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            paramsTemp.setMargins(0, 0, 0, 0);
+
+            paramsTemp.gravity = Gravity.LEFT;
+
+            toMainBtn = new ImageButton(getApplicationContext());
+            toMainBtn.setImageResource(R.drawable.to_main_button);
+            toMainBtn.setBackgroundColor(Color.TRANSPARENT);
+
+            toMainBtn.setPadding(0,0,50,0);
+
+            toMainBtn.setLayoutParams(paramsTemp);
+
+            mostFiveLinearLayout.addView(toMainBtn);
+
+            parentLayout.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    layoutParams.height = (int)(parentLayout.getHeight() * 1.3);
+                    ConstraintLayout constraintLayout2 = new ConstraintLayout(getApplicationContext());
+                    constraintLayout2.setId(ConstraintLayout.generateViewId());
+
+                    offerToFABtn = new ImageButton(getApplicationContext());
+                    offerToFABtn.setImageResource(R.drawable.offer_to_fa_btn);
+                    offerToFABtn.setBackgroundColor(Color.TRANSPARENT);
+
+                    offerToFABtn.setPadding(0,0,0,0);
+
+                    offerToFABtn.setId(Button.generateViewId());
+
+                    releaseBtn = new ImageButton(getApplicationContext());
+                    releaseBtn.setImageResource(R.drawable.release_btn);
+                    releaseBtn.setBackgroundColor(Color.TRANSPARENT);
+
+                    releaseBtn.setPadding(0,0,0,0);
+
+                    releaseBtn.setId(Button.generateViewId());
+
+                    constraintLayout2.addView(offerToFABtn, 0);
+                    constraintLayout2.addView(releaseBtn, 1);
+
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(constraintLayout2);
+
+                    constraintSet.connect(releaseBtn.getId(), ConstraintSet.TOP, constraintLayout2.getId(), ConstraintSet.TOP, 100);
+                    constraintSet.connect(releaseBtn.getId(), ConstraintSet.BOTTOM, constraintLayout2.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(releaseBtn.getId(), ConstraintSet.LEFT, constraintLayout2.getId(), ConstraintSet.LEFT, 0);
+                    constraintSet.connect(releaseBtn.getId(), ConstraintSet.RIGHT, offerToFABtn.getId(), ConstraintSet.LEFT, 0);
+
+                    constraintSet.connect(offerToFABtn.getId(), ConstraintSet.TOP, constraintLayout2.getId(), ConstraintSet.TOP, 100);
+                    constraintSet.connect(offerToFABtn.getId(), ConstraintSet.BOTTOM, constraintLayout2.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(offerToFABtn.getId(), ConstraintSet.LEFT, releaseBtn.getId(), ConstraintSet.RIGHT, 0);
+                    constraintSet.connect(offerToFABtn.getId(), ConstraintSet.RIGHT, constraintLayout2.getId(), ConstraintSet.RIGHT, 0);
+
+                    constraintSet.applyTo(constraintLayout2);
+
+                    parentLayout.setLayoutParams(layoutParams);
+                    parentLayout.addView(constraintLayout2);
+                }
+            });
+
         }
 
         avg = Float.parseFloat(intent.getStringExtra("playerAvg"));

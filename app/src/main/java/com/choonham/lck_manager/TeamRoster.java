@@ -17,7 +17,7 @@ import java.util.List;
 
 public class TeamRoster extends Fragment {
 
-    private final ActivityTagEnum TAG = ActivityTagEnum.TEAM_ROSTER;
+    private ActivityTagEnum tag;
 
     private List<PlayerEntity> playerEntityList;
 
@@ -49,8 +49,11 @@ public class TeamRoster extends Fragment {
         teamMainRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+
+                tag = ActivityTagEnum.TEAM_ROSTER_MAIN;
+
                 Common common = Common.getInstance();
-                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
+                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, tag, getContext(), 0);
 
                 startActivity(intent);
             }
@@ -78,8 +81,10 @@ public class TeamRoster extends Fragment {
 
                 startActivity(intent);*/
 
+                tag = ActivityTagEnum.TEAM_ROSTER_SUB;
+
                 Common common = Common.getInstance();
-                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
+                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, tag, getContext(), 0);
 
                 startActivity(intent);
             }
