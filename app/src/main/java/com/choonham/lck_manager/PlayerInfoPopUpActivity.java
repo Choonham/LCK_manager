@@ -9,6 +9,7 @@ import android.view.*;
 import android.widget.*;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.ChampionCounterEntity;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
@@ -40,7 +41,7 @@ public class PlayerInfoPopUpActivity extends Activity {
 
         params.gravity = Gravity.TOP;
         params.y = 200;
-         /* wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;*/
+        /* wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;*/
         window.setAttributes(params);
 
         Intent intent = getIntent();
@@ -151,6 +152,15 @@ public class PlayerInfoPopUpActivity extends Activity {
                     offerToFABtn.setPadding(0,0,0,0);
 
                     offerToFABtn.setId(Button.generateViewId());
+                    offerToFABtn.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view)
+                    {
+                        PlayerProposalActivity playerProposalActivity = new PlayerProposalActivity();
+                        Intent intent = playerProposalActivity.getPlayerProposalPopUp(getApplicationContext());
+                        startActivity(intent);
+                    }
+                });
 
                     releaseBtn = new ImageButton(getApplicationContext());
                     releaseBtn.setImageResource(R.drawable.release_btn);
