@@ -10,6 +10,8 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "player")
 public class PlayerEntity implements Parcelable {
 
+    // this is test
+
     public PlayerEntity() {
     }
 
