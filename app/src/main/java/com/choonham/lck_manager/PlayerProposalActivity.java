@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class PlayerProposalActivity extends Activity {
@@ -18,10 +20,21 @@ public class PlayerProposalActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE); // no headLine
         setContentView(R.layout.player_proposal);
 
         Window window = this.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
+
+        Intent intent = getIntent();
+
+        PlayerEntity playerEntity = intent.getParcelableExtra("playerEntity");
+
+        String name = playerEntity.getPlayerName();
+
+        TextView playerName = findViewById(R.id.player_info_name);
+
+        playerName.setText(name);
     }
 
     @Override

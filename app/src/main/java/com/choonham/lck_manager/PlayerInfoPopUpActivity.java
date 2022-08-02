@@ -79,7 +79,15 @@ public class PlayerInfoPopUpActivity extends Activity {
                     offerBtn.setPadding(0,0,0,0);
 
                     offerBtn.setId(Button.generateViewId());
-
+                    offerBtn.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view)
+                        {
+                            Intent intent = new Intent(getApplicationContext(),PlayerProposalActivity.class);
+                            intent.putExtra("playerEntity", playerEntity);
+                            startActivity(intent);
+                        }
+                    });
                     constraintLayout.addView(offerBtn, 0);
 
                     ConstraintSet constraintSet = new ConstraintSet();
@@ -152,15 +160,6 @@ public class PlayerInfoPopUpActivity extends Activity {
                     offerToFABtn.setPadding(0,0,0,0);
 
                     offerToFABtn.setId(Button.generateViewId());
-                    offerToFABtn.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view)
-                    {
-                        PlayerProposalActivity playerProposalActivity = new PlayerProposalActivity();
-                        Intent intent = playerProposalActivity.getPlayerProposalPopUp(getApplicationContext());
-                        startActivity(intent);
-                    }
-                });
 
                     releaseBtn = new ImageButton(getApplicationContext());
                     releaseBtn.setImageResource(R.drawable.release_btn);
