@@ -3,6 +3,8 @@ package com.choonham.lck_manager;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.android.volley.RequestQueue;
+import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class InitialSettingActivity extends AppCompatActivity {

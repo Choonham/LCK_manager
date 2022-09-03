@@ -8,10 +8,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.android.volley.*;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class SetFirstTeamFragment extends Fragment {
@@ -20,6 +25,16 @@ public class SetFirstTeamFragment extends Fragment {
     private List<PlayerEntity> playerEntityList;
 
     ListView faPlayerListView;
+
+    RequestQueue requestQueue;
+
+    String getFirstRosterUrl = "http://59.17.192.100:8100/apiDataServer/getFirstPlayerList";
+
+    public JSONObject getJsonObject(){
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("seasonCode", "2");
+        return new JSONObject(params);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +50,40 @@ public class SetFirstTeamFragment extends Fragment {
 
         faPlayerListView = rootView.findViewById(R.id.FA_player_list_view);
         faPlayerListView.setAdapter(faPlayerListAdapter);
+
+        requestQueue = Common.getRequestQueueInstance(getContext());
+
+        JSONObject jsonParams = new JSONObject();
+        try {
+            jsonParams.put("seasonCode", "2");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Building a request
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                getFirstRosterUrl,
+                // Using a variable for the domain is great for testing,
+                jsonParams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("응답 ->", response.toString());
+                        // Handle the response
+                    }
+                },
+
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("에러 ->", error.getMessage());
+                        // Handle the error
+                    }
+                });
+
+        // RequestQueue 의 add()메서드를 사용하여 요청 보냄
+        requestQueue.add(request);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

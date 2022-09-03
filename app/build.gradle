@@ -86,4 +86,7 @@ dependencies {
     // Database 디버깅을 위한 라이브러리
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
+    // Http 요청을 위한 라이브러리
+    implementation group: 'com.android.volley', name: 'volley', version: '1.2.1'
+
 }

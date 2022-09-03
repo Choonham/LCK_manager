@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.choonham.lck_manager.PlayerInfoPopUpActivity;
 import com.choonham.lck_manager.R;
 import com.choonham.lck_manager.entity.PlayerEntity;
@@ -24,6 +26,9 @@ public class Common {
     double[] tempMainRosterAvgList2 = {112.5, 115.5, 120.2, 117.2, 120.8, 115.5, 120.2, 117.2, 120.8};
     double[] tempMainRosterStabilityList2 = {5.1, 6.8, 9.3, 8.2, 1.3, 6.8, 9.3, 8.2, 1.3};
 
+    // HTTP 요청을 위한 RequestQueue 를 static 으로 선언
+    private static RequestQueue requestQueue;
+
     int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
 
     int[] positionIcons2 = {
@@ -41,8 +46,27 @@ public class Common {
     int[] pogPoints = {400, 400, 300, 300, 200, 200, 100, 100, 100};
 
     static Common instance;
+    private static Context contextForChecking;
 
     private Common() {};
+
+    /**
+     * get RequestQueue Instance
+     *
+     * @param context
+     * @return requestQueue
+     */
+    public static RequestQueue getRequestQueueInstance(Context context) {
+        // RequestQueue 객체 생성
+        if(requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        } else {
+            if(!contextForChecking.getClass().equals(context.getClass())) {
+                requestQueue = Volley.newRequestQueue(context);
+            }
+        }
+        return requestQueue;
+    }
 
     public Intent getPlayerInfoPopUpIntent(List<PlayerEntity> playerList, int index, View selectedView, ActivityTagEnum tag, Context context, int popupFlag){
         Intent intent = new Intent(context, PlayerInfoPopUpActivity.class);
