@@ -77,7 +77,7 @@ public class MainView extends Fragment {
         matchStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Single<NewsAndIssueEntity> tempData = selectNewsDataByCode(db, 0);
+                Single<NewsAndIssueEntity> tempData = selectNewsDataByCode(db);
                 tempData
                         .subscribeOn(Schedulers.io())
                         .doOnSuccess(data -> {
@@ -85,7 +85,7 @@ public class MainView extends Fragment {
                         })
                         .subscribe();
 
-                Single<List<JoinedNews>> selectedData = selectNewsAndEffectByCode(db, 0);
+                /*Single<List<JoinedNews>> selectedData = selectNewsAndEffectByCode(db, 0);
                 selectedData
                         .subscribeOn(Schedulers.io())
                         .doOnSuccess(data -> {
@@ -96,7 +96,7 @@ public class MainView extends Fragment {
                                 i++;
                             }
                         })
-                        .subscribe();
+                        .subscribe();*/
             }
         });
 
@@ -137,6 +137,8 @@ public class MainView extends Fragment {
         newsAndIssueEntity.setTeamCode(0);
         newsAndIssueEntity.setRemaining(3);
 
+        Log.d("Insert data(news): ", newsAndIssueEntity.getNewsTitle());
+
         NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
         newsAndIssueDAO.insertNews(newsAndIssueEntity)
                 .subscribeOn(Schedulers.io())
@@ -144,11 +146,13 @@ public class MainView extends Fragment {
                     Log.d("Insert data(news): ", data.toString());
                 })
                 .subscribe();
+
+
     }
 
-    private Single<NewsAndIssueEntity> selectNewsDataByCode(AppDatabase db, int newsCode) {
+    private Single<NewsAndIssueEntity> selectNewsDataByCode(AppDatabase db) {
         NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
-        return newsAndIssueDAO.loadNewsByCode(0);
+        return newsAndIssueDAO.loadNews();
     }
 
     private void insertEffectsData(AppDatabase db) {

@@ -40,7 +40,7 @@ public class UserEntity implements Parcelable{
     @ColumnInfo(name = "match_num")
     private int matchNum;
 
-    @ColumnInfo(name = "apier")
+    @ColumnInfo(name = "apiver")
     private int apiVer;
 
     protected UserEntity(Parcel in) {

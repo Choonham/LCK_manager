@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "331615894052-hpjcvhu41t99im3ediomj9hv1tkt6fii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.choonham.lck_manager",
+            "certificate_hash": "1cb228081192128efaccff3af346a9adf7599b6e"
+          }
+        },
+        {
           "client_id": "331615894052-n9eoho329qpbqlrq45orccjdm6tj4jtl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -22,6 +22,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -81,5 +82,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth:19.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
+    // Database 디버깅을 위한 라이브러리
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
 }

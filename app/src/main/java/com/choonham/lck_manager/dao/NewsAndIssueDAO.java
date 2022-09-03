@@ -21,8 +21,8 @@ public interface NewsAndIssueDAO {
         @Delete
         Completable deleteNews(NewsAndIssueEntity newsAndIssueEntity);
 
-        @Query("SELECT * FROM news_and_issue WHERE news_code = :newsCode")
-        Single<NewsAndIssueEntity> loadNewsByCode(int newsCode);
+        @Query("SELECT * FROM news_and_issue")
+        Single<NewsAndIssueEntity> loadNews();
 
         @Query("SELECT " +
                 "t1.news_code, " +

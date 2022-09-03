@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                             userEntity.setUserEmail(personEmail);
                             userEntity.setUserName(personName);
 
-                            /*insertUserIDInfo(userEntity);*/
+                            insertUserIDInfo(userEntity);
 
                             Intent intent = new Intent(this, InitialSettingActivity.class);
                             intent.putExtra("userId", personId);
