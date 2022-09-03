@@ -191,15 +191,24 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(insertValue -> {
                     Log.d("Insert data: ", insertValue.toString());
+                    checkInsertYN(insertValue);
+                })
+                .doOnError(error -> {
+                    Log.e("insert error :" ,error.getMessage());
                 })
                 .subscribe();
+    }
 
-        userDAO.loadUserEntityById(userEntity.getUserId())
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    Log.d("insert ID", loadValue.getUserId());
-                })
-                .subscribe();
+    private void checkInsertYN(Long insertCode) {
+        userDAO.loadUserEntityById(insertCode)
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess(loadValue -> {
+                Log.d("insertedID", loadValue.getUserId());
+            })
+            .doOnError(error -> {
+                Log.e("check error :" ,error.getMessage());
+            })
+            .subscribe();
     }
 
 }
