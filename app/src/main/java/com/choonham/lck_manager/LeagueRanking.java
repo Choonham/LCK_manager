@@ -16,13 +16,14 @@ import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 
 import java.util.List;
 
 public class LeagueRanking extends Fragment {
     private final ActivityTagEnum TAG = ActivityTagEnum.LEAGUE_RANKING;
 
-    private List<PlayerEntity> pogPlayerList;
+    private List<JoinedPlayer> pogPlayerList;
 
     String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
     int[] winList = {4, 4, 3, 3, 2, 2, 1, 1, 1, 0, 0};
@@ -87,7 +88,7 @@ public class LeagueRanking extends Fragment {
                 intent.putExtra("playerAvg", "112.5");
                 intent.putExtra("playerStability", "112.5");
 
-                intent.putExtra("playerEntity", pogPlayerList.get(i));
+                intent.putExtra("playerEntity", pogPlayerList.get(i).playerEntity);
 
                 intent.putExtra("tag", TAG);
 

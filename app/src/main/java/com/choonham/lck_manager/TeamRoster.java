@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class TeamRoster extends Fragment {
 
     private ActivityTagEnum tag;
 
-    private List<PlayerEntity> playerEntityList;
+    private List<JoinedPlayer> playerEntityList;
 
     ListView teamMainRosterListView;
     ListView teamSubRosterListView;

@@ -7,6 +7,8 @@ import com.android.volley.RequestQueue;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
+import javax.annotation.Nullable;
+
 public class InitialSettingActivity extends AppCompatActivity {
     private final ActivityTagEnum TAG = ActivityTagEnum.INITIAL_SETTING_ACTIVITY;
 
@@ -23,11 +25,12 @@ public class InitialSettingActivity extends AppCompatActivity {
         setFirstTeamFragment = new SetFirstTeamFragment();
     }
 
-    public void onFragmentChanged(int index) {
+    public void onFragmentChanged(int index, @Nullable Bundle data) {
         Log.d("TAG", Integer.toString(index));
         if(index == 0) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, setNicknameAndSeasonFragment).commit();
         } else if(index == 1) {
+            setFirstTeamFragment.setArguments(data);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, setFirstTeamFragment).commit();
         }
     }

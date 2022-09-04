@@ -9,18 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 
 import java.util.List;
 
 public class POGPointAdapter extends BaseAdapter {
     private final ActivityTagEnum TAG = ActivityTagEnum.POG_POINT_ADAPTER;
 
-    private List<PlayerEntity> playerEntityList;
+    private List<JoinedPlayer> playerEntityList;
 
     private LayoutInflater inflater;
     private Context context;
 
-    public POGPointAdapter(Context context, List<PlayerEntity> playerEntityList) {
+    public POGPointAdapter(Context context, List<JoinedPlayer> playerEntityList) {
         this.playerEntityList = playerEntityList;
         this.context = context;
         inflater = (LayoutInflater.from(context));
@@ -55,12 +56,16 @@ public class POGPointAdapter extends BaseAdapter {
         TextView pogPoint = view.findViewById(R.id.pog_point);
 
         pogRank.setText(Integer.toString(i + 1));
-        pogPositionIcon.setImageResource(playerEntityList.get(i).getPositionIcon());
-        pogPositionIcon.setTag(playerEntityList.get(i).getPositionIcon());
+
+        PlayerEntity playerEntity = playerEntityList.get(i).playerEntity;
+        //PlayerEntity seasonEntity = playerEntityList.get(i).playerEntity;
+
+        pogPositionIcon.setImageResource(playerEntity.getPositionIcon());
+        pogPositionIcon.setTag(playerEntity.getPositionIcon());
 
         pogSeason.setText("22 SPR");
-        pogName.setText(playerEntityList.get(i).getPlayerName());
-        pogPoint.setText(Integer.toString(playerEntityList.get(i).getPogPoint()));
+        pogName.setText(playerEntity.getPlayerName());
+        pogPoint.setText(Integer.toString(playerEntity.getPogPoint()));
         return view;
     }
 }

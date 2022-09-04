@@ -20,13 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 
 import java.util.List;
 
 public class TeamInfoPopUpActivity extends Activity {
 
     private final ActivityTagEnum TAG = ActivityTagEnum.TEAM_INFO_POPUP_ACTIVITY;
-    private List<PlayerEntity> playerEntityList;
+    private List<JoinedPlayer> playerEntityList;
     ListView teamInfoListView;
 
     @Override
@@ -69,23 +70,6 @@ public class TeamInfoPopUpActivity extends Activity {
         teamInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                /*Intent intent = new Intent(getApplicationContext(), PlayerInfoPopUpActivity.class);
-                TextView playerSeason = selectedView.findViewById(R.id.player_season_for_list_popup);
-                TextView playerName = selectedView.findViewById(R.id.player_name_for_list_popup);
-                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon_popup);
-
-                intent.putExtra("playerSeason", playerSeason.getText());
-                intent.putExtra("playerName", playerName.getText());
-
-                TextView avg = selectedView.findViewById(R.id.player_avg_for_list_popup);
-                TextView stability = selectedView.findViewById(R.id.player_stability_for_list_popup);
-                intent.putExtra("playerAvg", avg.getText());
-                intent.putExtra("playerStability", stability.getText());
-
-                int drawableRef = (int) positionIcon.getTag();
-                intent.putExtra("positionIcon", drawableRef);
-
-                intent.putExtra("tag", TAG);*/
 
                 Common common = Common.getInstance();
                 Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getApplicationContext(), 1);

@@ -11,24 +11,35 @@ import android.view.ViewGroup;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.common.JsonArrayRequest;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataInput;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class SetFirstTeamFragment extends Fragment {
 
     private final ActivityTagEnum TAG = ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT;
-    private List<PlayerEntity> playerEntityList;
+    private List<JoinedPlayer> playerEntityList;
 
     ListView faPlayerListView;
 
     RequestQueue requestQueue;
 
     String getFirstRosterUrl = "http://59.17.192.100:8100/apiDataServer/getFirstPlayerList";
+
+    Bundle data;
 
     public JSONObject getJsonObject(){
         HashMap<String, String> params = new HashMap<String, String>();
@@ -44,33 +55,75 @@ public class SetFirstTeamFragment extends Fragment {
         Button button = rootView.findViewById(R.id.set_first_team_button);
 
         Common common = Common.getInstance();
-        playerEntityList = common.getTempPlayerList(1);
 
-        MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
-
-        faPlayerListView = rootView.findViewById(R.id.FA_player_list_view);
-        faPlayerListView.setAdapter(faPlayerListAdapter);
+        int seasonCode = getArguments().getInt("seasonCode");
 
         requestQueue = Common.getRequestQueueInstance(getContext());
 
+        faPlayerListView = rootView.findViewById(R.id.FA_player_list_view);
+
+        ObjectMapper mapper = new ObjectMapper();
+
         JSONObject jsonParams = new JSONObject();
         try {
-            jsonParams.put("seasonCode", "2");
+            jsonParams.put("seasonCode", seasonCode);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
         // Building a request
-        JsonObjectRequest request = new JsonObjectRequest(
+        JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.POST,
                 getFirstRosterUrl,
                 // Using a variable for the domain is great for testing,
                 jsonParams,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         Log.d("응답 ->", response.toString());
+
                         // Handle the response
+                        try {
+                            playerEntityList = new ArrayList<>();
+                            //PlayerEntity[] playerEntityArray = mapper.readValue((DataInput) response, PlayerEntity[].class);
+                            for(int i = 0; i < response.length(); i++) {
+                                JSONObject json = (JSONObject) response.get(i);
+                                Log.e("안녕", json.get("playerName").toString());
+
+                                JoinedPlayer joinedPlayer = new JoinedPlayer();
+
+                                PlayerEntity player = new PlayerEntity();
+                                SeasonEntity seasonEntity = new SeasonEntity();
+
+                                player.setPlayerName((String) json.get("playerName"));
+                                player.setPlayerCode((Integer) json.get("playerCode"));
+
+                                JSONObject season = (JSONObject) json.get("seasonCode");
+                                seasonEntity.setSeasonCode((Integer) season.get("seasonCode"));
+                                seasonEntity.setSeasonName((String) season.get("seasonName"));
+                                seasonEntity.setSeasonForShort((String) season.get("seasonForShort"));
+
+                                player.setPosition((Integer) json.get("position"));
+                                player.setPhysical((Double) json.get("physical"));
+                                player.setLaneStrength((Double) json.get("laneStrength"));
+                                player.setStability((Double) json.get("stability"));
+                                player.setOutSmart((Double) json.get("outSmart"));
+                                player.setTeamFight((Double) json.get("teamFight"));
+                                player.setFameLv((Integer) json.get("fameLv"));
+
+                                joinedPlayer.playerEntity = player;
+                                joinedPlayer.seasonEntity = seasonEntity;
+
+                                playerEntityList.add(joinedPlayer);
+                            }
+
+                            MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
+
+                            faPlayerListView.setAdapter(faPlayerListAdapter);
+
+                        } catch (Exception e) {
+                            Log.e("JSON parsing Error: ", e.getMessage());
+                        }
                     }
                 },
 
@@ -84,6 +137,7 @@ public class SetFirstTeamFragment extends Fragment {
 
         // RequestQueue 의 add()메서드를 사용하여 요청 보냄
         requestQueue.add(request);
+        //playerEntityList = common.getTempPlayerList(1);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,22 +154,6 @@ public class SetFirstTeamFragment extends Fragment {
         faPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                /*Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
-                TextView season = selectedView.findViewById(R.id.player_season_for_list);
-                TextView name = selectedView.findViewById(R.id.player_name_for_list);
-                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
-                int drawableRef = (int) positionIcon.getTag();
-
-                intent.putExtra("playerSeason", season.getText());
-                intent.putExtra("playerName", name.getText());
-                intent.putExtra("positionIcon", drawableRef);
-
-                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
-                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
-                intent.putExtra("playerAvg", avg.getText());
-                intent.putExtra("playerStability", stability.getText());
-                intent.putExtra("tag", TAG);*/
-
                 Common common = Common.getInstance();
                 Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
 

@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 
 import java.util.List;
 
@@ -18,11 +20,11 @@ public class MainRosterAdapter extends BaseAdapter {
     private final ActivityTagEnum TAG = ActivityTagEnum.MAIN_ROSTER_ADAPTER;
 
     Context context;
-    List<PlayerEntity> playerEntityList;
+    List<JoinedPlayer> playerEntityList;
 
     LayoutInflater inflater;
 
-    public MainRosterAdapter(Context applicationContext, List<PlayerEntity> playerEntityList) {
+    public MainRosterAdapter(Context applicationContext, List<JoinedPlayer> playerEntityList) {
         this.context = applicationContext;
         this.playerEntityList = playerEntityList;
 
@@ -54,13 +56,16 @@ public class MainRosterAdapter extends BaseAdapter {
 
         ImageView positionIcon = view.findViewById(R.id.main_roster_position_icon);
 
-        mainRosterSeason.setText("22 SPR");
-        mainRosterPlayerName.setText(playerEntityList.get(i).getPlayerName());
-        mainRosterAvg.setText(Double.toString(playerEntityList.get(i).getPhysical()));
-        mainRosterStability.setText(Double.toString(playerEntityList.get(i).getStability()));
+        PlayerEntity playerEntity = playerEntityList.get(i).playerEntity;
+        SeasonEntity seasonEntity = playerEntityList.get(i).seasonEntity;
 
-        positionIcon.setImageResource(playerEntityList.get(i).getPositionIcon());
-        positionIcon.setTag(playerEntityList.get(i).getPositionIcon());
+        mainRosterSeason.setText(seasonEntity.getSeasonForShort());
+        mainRosterPlayerName.setText(playerEntity.getPlayerName());
+        mainRosterAvg.setText(Double.toString(playerEntity.getPhysical()));
+        mainRosterStability.setText(Double.toString(playerEntity.getStability()));
+
+        positionIcon.setImageResource(playerEntity.getPositionIcon());
+        positionIcon.setTag(playerEntity.getPositionIcon());
 
         return view;
     }

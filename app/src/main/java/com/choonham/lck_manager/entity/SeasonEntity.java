@@ -19,15 +19,20 @@ public class SeasonEntity implements Parcelable {
     @ColumnInfo(name="season_name")
     private String seasonName;
 
+    @ColumnInfo(name="season_for_short")
+    private String seasonForShort;
+
     protected SeasonEntity(Parcel in) {
         seasonCode = in.readInt();
         seasonName = in.readString();
+        seasonForShort = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(seasonCode);
         dest.writeString(seasonName);
+        dest.writeString(seasonForShort);
     }
 
     @Override
@@ -61,5 +66,13 @@ public class SeasonEntity implements Parcelable {
 
     public void setSeasonName(String seasonName) {
         this.seasonName = seasonName;
+    }
+
+    public String getSeasonForShort() {
+        return seasonForShort;
+    }
+
+    public void setSeasonForShort(String seasonForShort) {
+        this.seasonForShort = seasonForShort;
     }
 }

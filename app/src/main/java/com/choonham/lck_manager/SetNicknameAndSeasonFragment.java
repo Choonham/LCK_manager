@@ -1,6 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.*;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ public class SetNicknameAndSeasonFragment extends Fragment {
     private final ActivityTagEnum TAG = ActivityTagEnum.SET_NICKNAME_AND_SEASON_FRAGMENT;
 
     String[] items = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"};
+
+    int springSeasonCode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +33,7 @@ public class SetNicknameAndSeasonFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                springSeasonCode = i*2 + 1;
             }
 
             @Override
@@ -43,7 +46,11 @@ public class SetNicknameAndSeasonFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initialSettingActivity.onFragmentChanged(1);
+                Bundle result = new Bundle();
+                result.putInt("seasonCode", springSeasonCode);
+                result.putString("teamName", "teamName");
+
+                initialSettingActivity.onFragmentChanged(1, result);
             }
         });
 

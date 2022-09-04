@@ -14,6 +14,7 @@ import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.ChampionCounterEntity;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class TransferWindow extends Fragment {
 
     ListView transferWindowListView;
 
-    private List<PlayerEntity> playerEntityList;
+    private List<JoinedPlayer> playerEntityList;
 
     private ImageButton refresh;
 

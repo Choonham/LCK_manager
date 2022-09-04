@@ -89,4 +89,8 @@ dependencies {
     // Http 요청을 위한 라이브러리
     implementation group: 'com.android.volley', name: 'volley', version: '1.2.1'
 
+    implementation "com.fasterxml.jackson.core:jackson-core:2.9.9"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.9.9"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.9.9"
+
 }

@@ -11,7 +11,9 @@ import com.android.volley.toolbox.Volley;
 import com.choonham.lck_manager.PlayerInfoPopUpActivity;
 import com.choonham.lck_manager.R;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class Common {
         return requestQueue;
     }
 
-    public Intent getPlayerInfoPopUpIntent(List<PlayerEntity> playerList, int index, View selectedView, ActivityTagEnum tag, Context context, int popupFlag){
+    public Intent getPlayerInfoPopUpIntent(List<JoinedPlayer> playerList, int index, View selectedView, ActivityTagEnum tag, Context context, int popupFlag){
         Intent intent = new Intent(context, PlayerInfoPopUpActivity.class);
 
         TextView season;
@@ -100,26 +102,37 @@ public class Common {
         intent.putExtra("playerStability", stability.getText());
         intent.putExtra("tag", tag);
 
-        intent.putExtra("playerEntity", playerList.get(index));
+        intent.putExtra("playerEntity", playerList.get(index).playerEntity);
 
         return intent;
     }
 
-    public List<PlayerEntity> getTempPlayerList(int teamCode) {
-        List<PlayerEntity> returnList = new ArrayList<>();
+    public List<JoinedPlayer> getTempPlayerList(int teamCode) {
+        List<JoinedPlayer> returnList = new ArrayList<>();
 
         switch (teamCode) {
             case 0:
                 int i = 0;
 
                 for(String tempPlayerName : tempMainRosterList) {
-                    PlayerEntity tempPlayer = new PlayerEntity();
-                    tempPlayer.setPlayerName(tempPlayerName);
-                    tempPlayer.setSeasonCode(1);
-                    tempPlayer.setPosition(i);
-                    tempPlayer.setPhysical(tempMainRosterAvgList[i]);
-                    tempPlayer.setStability(tempMainRosterStabilityList[i]);
-                    tempPlayer.setPositionIcon(positionIcons[i]);
+                    JoinedPlayer tempPlayer = new JoinedPlayer();
+
+                    PlayerEntity playerEntity = new PlayerEntity();
+                    SeasonEntity seasonEntity = new SeasonEntity();
+
+                    seasonEntity.setSeasonCode(15);
+                    seasonEntity.setSeasonForShort("22 SPR");
+                    seasonEntity.setSeasonName("22 SPRING");
+
+                    playerEntity.setPlayerName(tempPlayerName);
+                    playerEntity.setSeasonCode(1);
+                    playerEntity.setPosition(i);
+                    playerEntity.setPhysical(tempMainRosterAvgList[i]);
+                    playerEntity.setStability(tempMainRosterStabilityList[i]);
+                    playerEntity.setPositionIcon(positionIcons[i]);
+
+                    tempPlayer.playerEntity = playerEntity;
+                    tempPlayer.seasonEntity = seasonEntity;
 
                     returnList.add(tempPlayer);
                     i++;
@@ -131,13 +144,25 @@ public class Common {
                 int j = 0;
 
                 for(String tempPlayerName : tempMainRosterList2) {
-                    PlayerEntity tempPlayer = new PlayerEntity();
-                    tempPlayer.setPlayerName(tempPlayerName);
-                    tempPlayer.setSeasonCode(1);
-                    tempPlayer.setPosition(j);
-                    tempPlayer.setPhysical(tempMainRosterAvgList2[j]);
-                    tempPlayer.setStability(tempMainRosterStabilityList2[j]);
-                    tempPlayer.setPositionIcon(positionIcons2[j]);
+                    JoinedPlayer tempPlayer = new JoinedPlayer();
+
+                    PlayerEntity playerEntity = new PlayerEntity();
+                    SeasonEntity seasonEntity = new SeasonEntity();
+
+                    playerEntity.setPlayerName(tempPlayerName);
+                    playerEntity.setSeasonCode(1);
+                    playerEntity.setPosition(j);
+                    playerEntity.setPhysical(tempMainRosterAvgList2[j]);
+                    playerEntity.setStability(tempMainRosterStabilityList2[j]);
+                    playerEntity.setPositionIcon(positionIcons2[j]);
+
+                    seasonEntity.setSeasonCode(15);
+                    seasonEntity.setSeasonForShort("22 SPR");
+                    seasonEntity.setSeasonName("22 SPRING");
+
+                    tempPlayer.seasonEntity = seasonEntity;
+
+                    tempPlayer.playerEntity = playerEntity;
 
                     returnList.add(tempPlayer);
                     j++;
@@ -149,12 +174,25 @@ public class Common {
                 int k = 0;
 
                 for(String tempPlayerName : tempMainRosterList2) {
-                    PlayerEntity tempPlayer = new PlayerEntity();
-                    tempPlayer.setPlayerName(tempPlayerName);
-                    tempPlayer.setSeasonCode(1);
-                    tempPlayer.setPosition(k);
-                    tempPlayer.setPositionIcon(positionIcons2[k]);
-                    tempPlayer.setPogPoint(pogPoints[k]);
+                    JoinedPlayer tempPlayer = new JoinedPlayer();
+
+                    PlayerEntity playerEntity = new PlayerEntity();
+                    SeasonEntity seasonEntity = new SeasonEntity();
+
+                    playerEntity.setPlayerName(tempPlayerName);
+                    playerEntity.setSeasonCode(1);
+                    playerEntity.setPosition(k);
+                    playerEntity.setPositionIcon(positionIcons2[k]);
+                    playerEntity.setPogPoint(pogPoints[k]);
+
+                    seasonEntity.setSeasonCode(15);
+                    seasonEntity.setSeasonForShort("22 SPR");
+                    seasonEntity.setSeasonName("22 SPRING");
+
+                    tempPlayer.seasonEntity = seasonEntity;
+
+                    tempPlayer.playerEntity = playerEntity;
+
                     returnList.add(tempPlayer);
                     k++;
                 }
