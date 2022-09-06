@@ -23,6 +23,8 @@ public class SetNicknameAndSeasonFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_nickname_and_season, container, false);
         Spinner spinner = rootView.findViewById(R.id.season_spinner);
 
+        Log.d("하위하위", "하워");
+
         InitialSettingActivity initialSettingActivity = (InitialSettingActivity) getActivity();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(

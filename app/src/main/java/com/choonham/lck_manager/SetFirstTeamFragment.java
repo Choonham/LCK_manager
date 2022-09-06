@@ -1,6 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.*;
@@ -41,20 +42,30 @@ public class SetFirstTeamFragment extends Fragment {
 
     Bundle data;
 
+    ProgressDialog customProgressDialog;
+
     public JSONObject getJsonObject(){
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("seasonCode", "2");
         return new JSONObject(params);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_first_team, container, false);
 
         Button button = rootView.findViewById(R.id.set_first_team_button);
 
         Common common = Common.getInstance();
+
+        // 로딩창 객체 생성
+        customProgressDialog = new ProgressDialog(getContext());
+
+        // 로딩창 배경 투명하게
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        customProgressDialog.show();
 
         int seasonCode = getArguments().getInt("seasonCode");
 
@@ -65,6 +76,7 @@ public class SetFirstTeamFragment extends Fragment {
         ObjectMapper mapper = new ObjectMapper();
 
         JSONObject jsonParams = new JSONObject();
+
         try {
             jsonParams.put("seasonCode", seasonCode);
         } catch (JSONException e) {
@@ -88,7 +100,6 @@ public class SetFirstTeamFragment extends Fragment {
                             //PlayerEntity[] playerEntityArray = mapper.readValue((DataInput) response, PlayerEntity[].class);
                             for(int i = 0; i < response.length(); i++) {
                                 JSONObject json = (JSONObject) response.get(i);
-                                Log.e("안녕", json.get("playerName").toString());
 
                                 JoinedPlayer joinedPlayer = new JoinedPlayer();
 
@@ -120,6 +131,8 @@ public class SetFirstTeamFragment extends Fragment {
                             MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
 
                             faPlayerListView.setAdapter(faPlayerListAdapter);
+
+                            customProgressDialog.dismiss();
 
                         } catch (Exception e) {
                             Log.e("JSON parsing Error: ", e.getMessage());

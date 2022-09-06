@@ -106,12 +106,14 @@ public class LoginActivity extends AppCompatActivity {
                 String personId = account.getId();
                 String personEmail = account.getEmail();
 
+                firebaseAuthWithGoogle(account);
+
                 userDAO.countUserEntitiesByUserID(personId)
                     .subscribeOn(Schedulers.io())
                     .doOnSuccess(count -> {
                         Log.d("count: ", count.toString());
 
-                        if(count ==0) {
+                        if(count == 0) {
                             UserEntity userEntity = new UserEntity();
                             userEntity.setUserId(personId);
                             userEntity.setUserEmail(personEmail);
@@ -128,9 +130,10 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     })
+                    .doOnError(error -> {
+                        Log.e("auth error :" ,error.getMessage());
+                    })
                     .subscribe();
-
-                firebaseAuthWithGoogle(account);
             } catch(Exception e) {
                 Log.e("error: ", e.getMessage());
             }
