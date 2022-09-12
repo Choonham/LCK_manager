@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.android.volley.*;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
@@ -26,6 +29,8 @@ import com.yanzhenjie.permission.runtime.Permission;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth = null;
     private static final int RC_SIGN_IN = 9001;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +78,12 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(view -> {
             signIn();
         });
+
+
     }
 
     /**
-     *  로그인 완료 후, Main Activity 로 화면 이동
+     * 로그인 완료 후, Main Activity 로 화면 이동
      */
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -82,7 +91,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     *  Main Activity 로 이동 후, Google 계정 정보 DB에 저장
+     * Main Activity 로 이동 후, Google 계정 정보 DB에 저장
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -109,32 +119,32 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
 
                 userDAO.countUserEntitiesByUserID(personId)
-                    .subscribeOn(Schedulers.io())
-                    .doOnSuccess(count -> {
-                        Log.d("count: ", count.toString());
+                        .subscribeOn(Schedulers.io())
+                        .doOnSuccess(count -> {
+                            Log.d("count: ", count.toString());
 
-                        if(count == 0) {
-                            UserEntity userEntity = new UserEntity();
-                            userEntity.setUserId(personId);
-                            userEntity.setUserEmail(personEmail);
-                            userEntity.setUserName(personName);
+                            if (count == 0) {
+                                UserEntity userEntity = new UserEntity();
+                                userEntity.setUserId(personId);
+                                userEntity.setUserEmail(personEmail);
+                                userEntity.setUserName(personName);
 
-                            insertUserIDInfo(userEntity);
+                                insertUserIDInfo(userEntity);
 
-                            Intent intent = new Intent(this, InitialSettingActivity.class);
-                            intent.putExtra("userId", personId);
-                            intent.putExtra("userEmail", personEmail);
-                            intent.putExtra("userName", personName);
+                                Intent intent = new Intent(this, InitialSettingActivity.class);
+                                intent.putExtra("userId", personId);
+                                intent.putExtra("userEmail", personEmail);
+                                intent.putExtra("userName", personName);
 
-                            startActivity(intent);
-                        }
+                                startActivity(intent);
+                            }
 
-                    })
-                    .doOnError(error -> {
-                        Log.e("auth error :" ,error.getMessage());
-                    })
-                    .subscribe();
-            } catch(Exception e) {
+                        })
+                        .doOnError(error -> {
+                            Log.e("auth error :", error.getMessage());
+                        })
+                        .subscribe();
+            } catch (Exception e) {
                 Log.e("error: ", e.getMessage());
             }
 
@@ -169,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     *  회원 정보 삭제(설정에 추가 예정)
+     * 회원 정보 삭제(설정에 추가 예정)
      */
     private void revokeAccess() {
         mGoogleSignInClient.revokeAccess()
@@ -179,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                         AccountManager am = AccountManager.get(getApplication());
                         Account[] accounts = am.getAccountsByType("com.google");
 
-                        for(Account account : accounts) {
+                        for (Account account : accounts) {
                             am.removeAccount(account, null, null);
                             Log.d("removed account: ", account.name);
                         }
@@ -197,21 +207,22 @@ public class LoginActivity extends AppCompatActivity {
                     checkInsertYN(insertValue);
                 })
                 .doOnError(error -> {
-                    Log.e("insert error :" ,error.getMessage());
+                    Log.e("insert error :", error.getMessage());
                 })
                 .subscribe();
     }
 
     private void checkInsertYN(Long insertCode) {
         userDAO.loadUserEntityById(insertCode)
-            .subscribeOn(Schedulers.io())
-            .doOnSuccess(loadValue -> {
-                Log.d("insertedID", loadValue.getUserId());
-            })
-            .doOnError(error -> {
-                Log.e("check error :" ,error.getMessage());
-            })
-            .subscribe();
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Log.d("insertedID", loadValue.getUserId());
+                })
+                .doOnError(error -> {
+                    Log.e("check error :", error.getMessage());
+                })
+                .subscribe();
     }
+
 
 }

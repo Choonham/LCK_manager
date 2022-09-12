@@ -3,11 +3,18 @@ package com.choonham.lck_manager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.*;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.android.volley.*;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetNicknameAndSeasonFragment extends Fragment {
 
@@ -16,6 +23,18 @@ public class SetNicknameAndSeasonFragment extends Fragment {
     String[] items = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"};
 
     int springSeasonCode;
+
+    static RequestQueue requestQueue;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        // RequestQueue 객체 생성
+        if (requestQueue == null) {
+//            requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +75,55 @@ public class SetNicknameAndSeasonFragment extends Fragment {
             }
         });
 
+
+
         return rootView;
+    }
+
+    /**
+     * @param {String} userName
+     * @param {String} userId
+     * @param {String} userNickName
+     * @param {String} seasonCode
+     */
+    public void makeLoginRequest(String userName, String userId, String userNickName, String seasonCode) {
+        String url = "http://59.17.192.100:8100/apiDataServer/regUser?key=this00is00lck00manager00api00key";
+
+        // 요청을 보내기 위한 StringRequest 객체 생성
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        println("응답 ->" + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        println("에러 ->" + error);
+                    }
+                }) {
+
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> resultSet = new HashMap<String, String>();
+                resultSet.put("userName", userName);
+                resultSet.put("userId", userId);
+                resultSet.put("userNickName", userNickName);
+                resultSet.put("season_code", seasonCode);
+                return resultSet;
+            }
+        };
+        //cache
+        request.setShouldCache(false);
+
+        // RequestQueue 의 add()메서드를 사용하여 요청 보냄
+        requestQueue.add(request);
+        println("요청 보냄");
+    }
+
+    public void println(String data) {
+        Log.v("tag", data);
     }
 }
