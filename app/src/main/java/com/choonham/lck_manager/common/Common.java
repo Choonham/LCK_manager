@@ -31,7 +31,7 @@ public class Common {
     // HTTP 요청을 위한 RequestQueue 를 static 으로 선언
     private static RequestQueue requestQueue;
 
-    int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
+    public static int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
 
     int[] positionIcons2 = {
             R.drawable.position_top_icon,
@@ -103,6 +103,8 @@ public class Common {
         intent.putExtra("tag", tag);
 
         intent.putExtra("playerEntity", playerList.get(index).playerEntity);
+
+        intent.putExtra("seasonEntity", playerList.get(index).seasonEntity);
 
         return intent;
     }

@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.ChampionCounterEntity;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class PlayerInfoPopUpActivity extends Activity {
@@ -51,8 +52,9 @@ public class PlayerInfoPopUpActivity extends Activity {
         int positionIconID = intent.getIntExtra("positionIcon", 0);*/
 
         PlayerEntity playerEntity = intent.getParcelableExtra("playerEntity");
+        SeasonEntity seasonEntity = intent.getParcelableExtra("seasonEntity");
 
-        String season = (playerEntity.getSeasonCode() == 1 ? "22 SPR" : "NONE");
+        String season = (seasonEntity.getSeasonForShort());
         String name = playerEntity.getPlayerName();
 
         ActivityTagEnum tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
@@ -85,6 +87,7 @@ public class PlayerInfoPopUpActivity extends Activity {
                         {
                             Intent intent = new Intent(getApplicationContext(),PlayerProposalActivity.class);
                             intent.putExtra("playerEntity", playerEntity);
+                            intent.putExtra("seasonEntity", seasonEntity);
                             startActivity(intent);
                         }
                     });
@@ -201,7 +204,7 @@ public class PlayerInfoPopUpActivity extends Activity {
         TextView playerSeason = findViewById(R.id.player_info_season);
         ImageView playerPositionIcon = findViewById(R.id.player_info_position_icon);
 
-        playerPositionIcon.setImageResource(playerEntity.getPositionIcon());
+        playerPositionIcon.setImageResource(Common.positionIcons[playerEntity.getPosition()]);
 
         playerName.setText(name);
         playerSeason.setText(season);

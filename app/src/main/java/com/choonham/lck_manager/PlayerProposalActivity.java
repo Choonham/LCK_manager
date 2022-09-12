@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.*;
+import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 public class PlayerProposalActivity extends Activity {
@@ -36,11 +35,16 @@ public class PlayerProposalActivity extends Activity {
         Intent intent = getIntent();
 
         PlayerEntity playerEntity = intent.getParcelableExtra("playerEntity");
+        SeasonEntity seasonEntity = intent.getParcelableExtra("seasonEntity");
 
         String name = playerEntity.getPlayerName();
 
         TextView playerName = findViewById(R.id.player_info_name);
+        TextView playerSeason = findViewById(R.id.player_info_season);
+        ImageView playerPositionIcon = findViewById(R.id.player_info_position_icon);
 
+        playerSeason.setText(seasonEntity.getSeasonForShort());
+        playerPositionIcon.setImageResource(Common.positionIcons[playerEntity.getPosition()]);
         playerName.setText(name);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
