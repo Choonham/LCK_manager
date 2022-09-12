@@ -29,9 +29,16 @@
     <style name="Theme.LCK_manager.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
-    <style name="Theme.LCK_manager.commonTextTheme">
-        <item name="android:gravity">center</item>
+    <style name="Theme.LCK_manager.commonTextThemeCenterLeft">
+        <item name="android:gravity">center_vertical|left|start</item>
         <item name="android:textColor">@color/text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.LCK_manager.commonTextTheme">
+        <item name="android:gravity">center_vertical|center</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

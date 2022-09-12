@@ -24,14 +24,12 @@
                 android:layout_marginLeft="5dp"
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textSize="20dp"
-                android:gravity="left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/player_info_name"/>
         <TextView
                 android:text="[22 SPR]"
                 android:layout_marginLeft="5dp"
                 android:textSize="20dp"
-                android:gravity="left"
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content" android:id="@+id/player_info_season"/>
@@ -43,7 +41,6 @@
             <TextView
                     android:text="55%"
                     android:textSize="20dp"
-                    android:gravity="center"
                     android:theme="@style/Theme.LCK_manager.commonTextTheme"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content" android:id="@+id/player_info_condition"/>
@@ -56,58 +53,154 @@
     </LinearLayout>
 <!--    body    -->
     <LinearLayout
-            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_margin="30dp"
             android:layout_width="match_parent"
-            android:id="@+id/transfer_fee_layout"
-            android:layout_height="40dp">
-        <TextView
-                android:text="Offered Transfer fee: "
-                android:textSize="17sp"
-                android:theme="@style/Theme.LCK_manager.commonTextTheme"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_fee" android:layout_weight="0.15"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:id="@+id/transfer_fee_layout"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/box_border">
+            <TextView
+                    android:gravity = "center_vertical|left|start"
+                    android:text="Offered Transfer fee: "
+                    android:textSize="15sp"
+                    android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" android:id="@+id/transfer_fee" android:layout_weight="0.6"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:background="@drawable/box_border"
+                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.4">
 
-        <EditText
-                android:text="  "
-                android:layout_width="0dp"
-                android:inputType="number"
-                android:layout_height="match_parent" android:id="@+id/transfer_fee_proposal" android:layout_weight="0.15"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:id="@+id/transfer_fee_salary_layout"
-            android:layout_height="40dp">
-        <TextView
-                android:text="Offered salary: "
-                android:textSize="17sp"
-                android:theme="@style/Theme.LCK_manager.commonTextTheme"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_fee_salary" android:layout_weight="0.15"/>
+            <TextView
+                    android:text="$"
+                    android:textSize="15sp"
+                    android:paddingLeft="10dp"
+                    android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" android:layout_weight="0.1"/>
 
-        <EditText
-                android:text="  "
-                android:layout_width="0dp"
-                android:inputType="number"
-                android:layout_height="match_parent" android:id="@+id/transfer_fee_salary_proposal" android:layout_weight="0.15"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:id="@+id/transfer_fee_total_salary_layout"
-            android:layout_height="40dp">
-        <TextView
-                android:text="Offer salary: "
-                android:textSize="17sp"
-                android:theme="@style/Theme.LCK_manager.commonTextTheme"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_fee_total_salary" android:layout_weight="0.15"/>
+            <TextView
+                    android:text="200000"
+                    android:textSize="15sp"
+                    android:paddingLeft="10dp"
+                    android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" android:id="@+id/transfer_fee_proposal" android:layout_weight="0.5"/>
+            </LinearLayout>
+        </LinearLayout>
 
-        <EditText
-                android:text="  "
-                android:layout_width="0dp"
-                android:inputType="number"
-                android:layout_height="match_parent" android:id="@+id/transfer_fee_total_salary_proposal" android:layout_weight="0.15"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:background="@drawable/box_border"
+                android:layout_width="match_parent"
+                android:id="@+id/transfer_fee_salary_layout"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:layout_height="40dp">
+            <TextView
+                    android:text="Offered salary:"
+                    android:textSize="15sp"
+                    android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" android:id="@+id/transfer_fee_salary" android:layout_weight="0.4"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:background="@drawable/box_border"
+                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.6">
+                <TextView
+                        android:text="$"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"
+                        android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" android:layout_weight="0.1"/>
+                <TextView
+                        android:text="7000"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"
+                        android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" android:id="@+id/transfer_fee_salary_proposal" android:layout_weight="0.5"/>
+
+                <TextView
+                        android:text="for a season"
+                        android:textSize="7sp"
+                        android:paddingBottom="10dp"
+                        android:gravity="bottom|right"
+                        android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" android:layout_weight="0.4"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:id="@+id/transfer_fee_total_salary_layout"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/box_border"
+                android:layout_height="40dp">
+
+            <TextView
+                    android:text="Offer salary: "
+                    android:textSize="15sp"
+                    android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" android:id="@+id/transfer_fee_total_salary" android:layout_weight="0.4"/>
+
+            <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:background="@drawable/box_border"
+                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6">
+
+                <TextView
+                        android:text="$"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"
+                        android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" android:layout_weight="0.1"/>
+
+                <EditText
+                        android:text=""
+                        android:layout_width="0dp"
+                        android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                        android:background="#00FFFFFF"
+                        android:inputType="number"
+                        android:layout_height="match_parent" android:id="@+id/transfer_fee_total_salary_proposal" android:layout_weight="0.5"/>
+
+                <TextView
+                        android:text="for a season"
+                        android:textSize="7sp"
+                        android:textColor="@color/text_color"
+                        android:gravity="bottom|right"
+                        android:paddingBottom="10dp"
+                        android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" android:layout_weight="0.4"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -115,10 +208,13 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:id="@+id/transfer_fee_submit_layout"
+            android:background="#00FFFFFF"
             android:layout_height="40dp">
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="submit"/>
+
+        <ImageButton
+                android:src="@drawable/offer_confirm_btn"
+                android:layout_marginLeft="10dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" android:id="@+id/offer_to_roster_btn"/>
     </LinearLayout>
 </LinearLayout>

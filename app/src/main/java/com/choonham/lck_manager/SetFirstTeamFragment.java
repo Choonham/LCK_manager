@@ -38,7 +38,7 @@ public class SetFirstTeamFragment extends Fragment {
 
     RequestQueue requestQueue;
 
-    String getFirstRosterUrl = "http://59.17.192.100:8100/apiDataServer/getFirstPlayerList";
+    String getFirstRosterUrl = "http://59.17.192.100:8100/apiDataServer/getFirstPlayerList?key=this00is00lck00manager00api00key";
 
     Bundle data;
 
