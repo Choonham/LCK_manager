@@ -13,11 +13,15 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.common.JsonArrayRequest;
+import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
+import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.choonham.lck_manager.room.AppDatabase;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,11 +40,15 @@ public class SetFirstTeamFragment extends Fragment {
 
     ListView faPlayerListView;
 
+    UserDAO userDAO;
+
     RequestQueue requestQueue;
 
     String getFirstRosterUrl = "http://59.17.192.100:8100/apiDataServer/getFirstPlayerList?key=this00is00lck00manager00api00key";
 
-    Bundle data;
+    UserEntity userEntity = null;
+
+    AppDatabase db;
 
     ProgressDialog customProgressDialog;
 
@@ -68,6 +76,8 @@ public class SetFirstTeamFragment extends Fragment {
         customProgressDialog.show();
 
         int seasonCode = getArguments().getInt("seasonCode");
+
+        userEntity = getArguments().getParcelable("userEntity");
 
         requestQueue = Common.getRequestQueueInstance(getContext());
 
@@ -156,6 +166,11 @@ public class SetFirstTeamFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MainActivity.class);
+                db = AppDatabase.getInstance(getContext());
+
+                userDAO = db.userDAO();
+
+                insertUserIDInfo(userEntity);
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -175,5 +190,32 @@ public class SetFirstTeamFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void insertUserIDInfo(UserEntity userEntity) {
+
+        userDAO.insertUserEntity(userEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(insertValue -> {
+                    Log.d("Insert data: ", insertValue.toString());
+                    checkInsertYN(insertValue);
+                })
+                .doOnError(error -> {
+                    Log.e("insert error :", error.getMessage());
+                })
+                .subscribe();
+    }
+
+
+    private void checkInsertYN(Long insertCode) {
+        userDAO.loadUserEntityById(insertCode)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Log.d("insertedID", loadValue.getUserId());
+                })
+                .doOnError(error -> {
+                    Log.e("check error :", error.getMessage());
+                })
+                .subscribe();
     }
 }

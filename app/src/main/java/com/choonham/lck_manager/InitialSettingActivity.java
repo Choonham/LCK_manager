@@ -1,10 +1,12 @@
 package com.choonham.lck_manager;
 
+import android.content.Intent;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.android.volley.RequestQueue;
 import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
 import javax.annotation.Nullable;
@@ -15,13 +17,30 @@ public class InitialSettingActivity extends AppCompatActivity {
     SetFirstTeamFragment setFirstTeamFragment;
     SetNicknameAndSeasonFragment setNicknameAndSeasonFragment;
 
+    UserEntity userEntity = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_initial_setting);
 
-        setNicknameAndSeasonFragment = (SetNicknameAndSeasonFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.SetNicknameAndSeasonFragment);
+        Intent intent = getIntent();
+
+        userEntity = intent.getParcelableExtra("userEntity");
+
+        //Log.e("널", userEntity.getUserName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("userEntity", userEntity);
+        ///bundle.putParcelable("userEntity", userEntity);
+
+        setNicknameAndSeasonFragment = new SetNicknameAndSeasonFragment();
+        setNicknameAndSeasonFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, setNicknameAndSeasonFragment).commit();
+        //getSupportFragmentManager().findFragmentById(R.id.SetNicknameAndSeasonFragment);
+
         setFirstTeamFragment = new SetFirstTeamFragment();
     }
 

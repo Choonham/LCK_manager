@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = null;
     private static final int RC_SIGN_IN = 9001;
 
+    UserEntity userEntity = null;
+
 
 
     @Override
@@ -116,6 +118,12 @@ public class LoginActivity extends AppCompatActivity {
                 String personId = account.getId();
                 String personEmail = account.getEmail();
 
+                userEntity = new UserEntity();
+
+                userEntity.setUserId(personId);
+                userEntity.setUserName(personName);
+                userEntity.setUserEmail(personEmail);
+
                 firebaseAuthWithGoogle(account);
 
                 userDAO.countUserEntitiesByUserID(personId)
@@ -124,17 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("count: ", count.toString());
 
                             if (count == 0) {
-                                UserEntity userEntity = new UserEntity();
-                                userEntity.setUserId(personId);
-                                userEntity.setUserEmail(personEmail);
-                                userEntity.setUserName(personName);
-
-                                insertUserIDInfo(userEntity);
-
                                 Intent intent = new Intent(this, InitialSettingActivity.class);
-                                intent.putExtra("userId", personId);
-                                intent.putExtra("userEmail", personEmail);
-                                intent.putExtra("userName", personName);
+                                intent.putExtra("userEntity", userEntity);
 
                                 startActivity(intent);
                             }
@@ -196,32 +195,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 });
-    }
-
-    private void insertUserIDInfo(UserEntity userEntity) {
-
-        userDAO.insertUserEntity(userEntity)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(insertValue -> {
-                    Log.d("Insert data: ", insertValue.toString());
-                    checkInsertYN(insertValue);
-                })
-                .doOnError(error -> {
-                    Log.e("insert error :", error.getMessage());
-                })
-                .subscribe();
-    }
-
-    private void checkInsertYN(Long insertCode) {
-        userDAO.loadUserEntityById(insertCode)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    Log.d("insertedID", loadValue.getUserId());
-                })
-                .doOnError(error -> {
-                    Log.e("check error :", error.getMessage());
-                })
-                .subscribe();
     }
 
 
