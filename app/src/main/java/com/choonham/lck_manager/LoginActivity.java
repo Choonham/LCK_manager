@@ -123,8 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 userEntity.setUserId(personId);
                 userEntity.setUserName(personName);
                 userEntity.setUserEmail(personEmail);
-
-                firebaseAuthWithGoogle(account);
+                userEntity.setUserMoney(10000000);
 
                 userDAO.countUserEntitiesByUserID(personId)
                         .subscribeOn(Schedulers.io())
@@ -136,6 +135,8 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("userEntity", userEntity);
 
                                 startActivity(intent);
+                            } else {
+                                firebaseAuthWithGoogle(account);
                             }
 
                         })

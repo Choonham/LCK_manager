@@ -116,7 +116,7 @@
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textAlignment="viewEnd"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_window_fame_lv_title"
+                android:layout_height="match_parent" android:id="@+id/first_team_window_fame_lv_title"
                 android:layout_weight="0.3"
                 tools:ignore="RtlCompat"/>
         <TextView
@@ -126,7 +126,7 @@
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textAlignment="viewStart"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_window_fame_lv"
+                android:layout_height="match_parent" android:id="@+id/first_teamtransfer_window_fame_lv"
                 android:layout_weight="0.2"
                 tools:ignore="RtlCompat"/>
         <TextView
@@ -135,17 +135,24 @@
                 android:theme="@style/Theme.LCK_manager.commonTextTheme"
                 android:textAlignment="viewEnd"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_window_money_title"
+                android:layout_height="match_parent" android:id="@+id/first_team_transfer_window_money_title"
                 android:layout_weight="0.3"
                 tools:ignore="RtlCompat"/>
         <TextView
-                android:text="$20"
+                android:text="$"
+                android:textSize="15sp"
                 android:paddingLeft="10dp"
-                android:textSize="20sp"
-                android:theme="@style/Theme.LCK_manager.commonTextTheme"
+                android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:layout_weight="0.1"/>
+        <TextView
+                android:text="20"
+                android:paddingLeft="10dp"
+                android:textSize="13sp"
+                android:theme="@style/Theme.LCK_manager.commonTextThemeCenterLeft"
                 android:textAlignment="viewStart"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" android:id="@+id/transfer_window_money" android:layout_weight="0.2"
+                android:layout_height="match_parent" android:id="@+id/first_team_transfer_window_money" android:layout_weight="0.3"
                 tools:ignore="RtlCompat"/>
     </LinearLayout>
     <Button

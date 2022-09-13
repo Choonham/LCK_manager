@@ -13,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class SetNicknameAndSeasonFragment extends Fragment {
     static RequestQueue requestQueue;
 
     UserEntity userEntity;
+
+    EditText teamNameBox = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,12 +75,21 @@ public class SetNicknameAndSeasonFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle result = new Bundle();
-                result.putInt("seasonCode", springSeasonCode);
-                result.putString("teamName", "teamName");
-                result.putParcelable("userEntity", userEntity);
+                teamNameBox = getActivity().findViewById(R.id.team_name_input);
+                String teamName = teamNameBox.getText().toString();
 
-                initialSettingActivity.onFragmentChanged(1, result);
+                if(teamName.equals("")) {
+                    Snackbar.make(view, "팀명을 입력해주세요.", Snackbar.LENGTH_LONG).show();
+                } else if(springSeasonCode == 1) {
+                    Snackbar.make(view, "현재 2015시즌은 선택할 수 없습니다.", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Bundle result = new Bundle();
+                    result.putInt("seasonCode", springSeasonCode);
+                    result.putString("teamName", "teamName");
+                    result.putParcelable("userEntity", userEntity);
+
+                    initialSettingActivity.onFragmentChanged(1, result);
+                }
             }
         });
 

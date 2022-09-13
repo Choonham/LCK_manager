@@ -31,6 +31,8 @@ public class Common {
     // HTTP 요청을 위한 RequestQueue 를 static 으로 선언
     private static RequestQueue requestQueue;
 
+    public static double startMoney = 50000;
+
     public static int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};
 
     int[] positionIcons2 = {
@@ -52,6 +54,7 @@ public class Common {
 
     private Common() {};
 
+
     /**
      * get RequestQueue Instance
      *
@@ -71,6 +74,7 @@ public class Common {
     }
 
     public Intent getPlayerInfoPopUpIntent(List<JoinedPlayer> playerList, int index, View selectedView, ActivityTagEnum tag, Context context, int popupFlag){
+
         Intent intent = new Intent(context, PlayerInfoPopUpActivity.class);
 
         TextView season;
@@ -213,4 +217,5 @@ public class Common {
 
         return instance;
     }
+
 }

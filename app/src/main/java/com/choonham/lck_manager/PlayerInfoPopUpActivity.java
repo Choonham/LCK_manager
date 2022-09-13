@@ -4,18 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import com.choonham.lck_manager.common.Common;
-import com.choonham.lck_manager.entity.ChampionCounterEntity;
+import com.choonham.lck_manager.common.PlayerInfoListener;
+import com.choonham.lck_manager.common.PlayerInfoModel;
+import com.choonham.lck_manager.common.SetFirstTeamModel;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
-public class PlayerInfoPopUpActivity extends Activity {
+import java.util.Set;
+
+public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListener {
     private final ActivityTagEnum TAG = ActivityTagEnum.PLAYER_INFO_POPUP_ACTIVITY;
 
     private float avg;
@@ -28,6 +31,8 @@ public class PlayerInfoPopUpActivity extends Activity {
 
     ImageButton offerToFABtn;
     ImageButton releaseBtn;
+
+    SetFirstTeamModel setFirstTeamModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,11 @@ public class PlayerInfoPopUpActivity extends Activity {
 
         LinearLayout mostFiveLinearLayout = findViewById(R.id.most_five_linear_layout);
 
+        setFirstTeamModel = SetFirstTeamModel.getInstance();
+
         if(tag.equals(ActivityTagEnum.TRANSFER_WINDOW) || tag.equals(ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT)) {
+
+            PlayerInfoModel.createInstance(this);
             parentLayout.post(new Runnable()
             {
                 @Override
@@ -89,6 +98,8 @@ public class PlayerInfoPopUpActivity extends Activity {
                             intent.putExtra("playerEntity", playerEntity);
                             intent.putExtra("seasonEntity", seasonEntity);
                             startActivity(intent);
+
+                            finish();
                         }
                     });
                     constraintLayout.addView(offerBtn, 0);
@@ -227,5 +238,12 @@ public class PlayerInfoPopUpActivity extends Activity {
         StatusPentagonView statusPentagonView = new StatusPentagonView(this, view.getWidth(), view.getHeight(), avg);
         ConstraintLayout status_pentagon_layout = findViewById(R.id.status_pentagon_layout);
         status_pentagon_layout.addView(statusPentagonView);
+    }
+
+    @Override
+    public void onConfirm() {
+        setFirstTeamModel.onConfirm();
+
+        finish();
     }
 }

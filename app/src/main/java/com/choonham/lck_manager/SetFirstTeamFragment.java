@@ -10,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.android.volley.*;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.choonham.lck_manager.common.Common;
-import com.choonham.lck_manager.common.JsonArrayRequest;
+import com.choonham.lck_manager.common.*;
 import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
@@ -21,24 +19,27 @@ import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.choonham.lck_manager.room.AppDatabase;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.snackbar.Snackbar;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class SetFirstTeamFragment extends Fragment {
+public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListener {
 
     private final ActivityTagEnum TAG = ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT;
     private List<JoinedPlayer> playerEntityList;
+    private List<JoinedPlayer> myTeamList;
 
     ListView faPlayerListView;
+
+    ListView myTeamListView;
 
     UserDAO userDAO;
 
@@ -52,6 +53,12 @@ public class SetFirstTeamFragment extends Fragment {
 
     ProgressDialog customProgressDialog;
 
+    TextView moneyView = null;
+
+    int selectedIndex_fa = 0;
+
+    int selectedIndex_myTeam = 0;
+
     public JSONObject getJsonObject(){
         HashMap<String, String> params = new HashMap<String, String>();
         return new JSONObject(params);
@@ -60,12 +67,14 @@ public class SetFirstTeamFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_first_team, container, false);
 
         Button button = rootView.findViewById(R.id.set_first_team_button);
 
-        Common common = Common.getInstance();
+        moneyView = rootView.findViewById(R.id.first_team_transfer_window_money);
+        moneyView.setText(Double.toString(Common.startMoney));
+
+        myTeamList = new ArrayList<>();
 
         // 로딩창 객체 생성
         customProgressDialog = new ProgressDialog(getContext());
@@ -82,10 +91,13 @@ public class SetFirstTeamFragment extends Fragment {
         requestQueue = Common.getRequestQueueInstance(getContext());
 
         faPlayerListView = rootView.findViewById(R.id.FA_player_list_view);
+        myTeamListView = rootView.findViewById(R.id.selected_player_list_view);
 
         ObjectMapper mapper = new ObjectMapper();
 
         JSONObject jsonParams = new JSONObject();
+
+        SetFirstTeamModel.createInstance(this);
 
         try {
             jsonParams.put("seasonCode", seasonCode);
@@ -182,6 +194,9 @@ public class SetFirstTeamFragment extends Fragment {
         faPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+
+                selectedIndex_fa = i;
+
                 Common common = Common.getInstance();
                 Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
 
@@ -208,14 +223,41 @@ public class SetFirstTeamFragment extends Fragment {
 
 
     private void checkInsertYN(Long insertCode) {
+        AtomicReference<UserEntity> value = new AtomicReference<>();
+
         userDAO.loadUserEntityById(insertCode)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
                     Log.d("insertedID", loadValue.getUserId());
+                    value.set(loadValue);
                 })
                 .doOnError(error -> {
                     Log.e("check error :", error.getMessage());
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+    }
+
+    @Override
+    public void onConfirm() {
+        JoinedPlayer selectPlayer = playerEntityList.get(selectedIndex_fa);
+
+        for(JoinedPlayer player : myTeamList) {
+            if(selectPlayer.playerEntity.getPosition() == player.playerEntity.getPosition()) {
+                Toast.makeText(getContext(), "동일한 포지션의 선수가 이미 존재합니다.", Toast.LENGTH_LONG).show();
+
+                return;
+            }
+        }
+
+        myTeamList.add(playerEntityList.remove(selectedIndex_fa));
+
+        MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
+        MainRosterAdapter myTeamListAdapter = new MainRosterAdapter(getContext(), myTeamList);
+
+        faPlayerListView.setAdapter(faPlayerListAdapter);
+        myTeamListView.setAdapter(myTeamListAdapter);
+
+        moneyView.setText(Double.toString(Common.startMoney));
     }
 }
