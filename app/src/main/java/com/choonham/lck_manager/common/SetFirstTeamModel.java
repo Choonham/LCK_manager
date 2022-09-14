@@ -29,4 +29,8 @@ public class SetFirstTeamModel {
         setFirstTeamListener.onConfirm();
     }
 
+    public void onRelease() {
+        setFirstTeamListener.onRelease();
+    }
+
 }

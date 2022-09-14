@@ -208,6 +208,24 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
             }
         });
 
+        myTeamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
+                selectedIndex_myTeam = i;
+
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+
+                intent.putExtra("tag", TAG);
+                intent.putExtra("playerEntity", myTeamList.get(selectedIndex_myTeam).playerEntity);
+                intent.putExtra("seasonEntity", myTeamList.get(selectedIndex_myTeam).seasonEntity);
+                intent.putExtra("isMyTeam", true);
+
+                startActivity(intent);
+
+            }
+        });
+
+
         return rootView;
     }
 
@@ -255,6 +273,19 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         }
 
         myTeamList.add(playerEntityList.remove(selectedIndex_fa));
+
+        MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
+        MainRosterAdapter myTeamListAdapter = new MainRosterAdapter(getContext(), myTeamList);
+
+        faPlayerListView.setAdapter(faPlayerListAdapter);
+        myTeamListView.setAdapter(myTeamListAdapter);
+
+        moneyView.setText(Double.toString(Common.startMoney));
+    }
+
+    @Override
+    public void onRelease() {
+        playerEntityList.add(myTeamList.remove(selectedIndex_myTeam));
 
         MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
         MainRosterAdapter myTeamListAdapter = new MainRosterAdapter(getContext(), myTeamList);

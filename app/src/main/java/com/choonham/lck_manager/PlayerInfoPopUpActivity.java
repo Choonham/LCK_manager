@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,10 +22,11 @@ import java.util.Set;
 public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListener {
     private final ActivityTagEnum TAG = ActivityTagEnum.PLAYER_INFO_POPUP_ACTIVITY;
 
-    private float avg;
-    private float stability;
+    private double avg;
+    private double stability;
 
     ImageButton offerBtn;
+    ImageButton cancelBtn;
 
     ImageButton toSubBtn;
     ImageButton toMainBtn;
@@ -102,15 +104,48 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
                             finish();
                         }
                     });
-                    constraintLayout.addView(offerBtn, 0);
+
+                    cancelBtn = new ImageButton(getApplicationContext());
+                    cancelBtn.setImageResource(R.drawable.release_btn);
+                    cancelBtn.setBackgroundColor(Color.TRANSPARENT);
+
+                    cancelBtn.setPadding(0,0,0,0);
+
+                    cancelBtn.setId(Button.generateViewId());
+                    cancelBtn.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view)
+                        {
+                            double feeIndex1 = playerEntity.getOutSmart() + playerEntity.getPhysical();
+                            double feeIndex2 = playerEntity.getLaneStrength() + playerEntity.getTeamFight();
+
+                            Common.startMoney +=
+                                    feeIndex1 * feeIndex2 * playerEntity.getStability() * playerEntity.getFameLv() * 10;
+
+                            setFirstTeamModel.onRelease();
+                            finish();
+                        }
+                    });
+
+                    ImageButton imageButton = null;
+                    boolean isMyTeam = intent.getBooleanExtra("isMyTeam", false);
+
+                    if(!isMyTeam) {
+                        imageButton = offerBtn;
+                    } else {
+                        imageButton = cancelBtn;
+                    }
+
+
+                    constraintLayout.addView(imageButton, 0);
 
                     ConstraintSet constraintSet = new ConstraintSet();
                     constraintSet.clone(constraintLayout);
 
-                    constraintSet.connect(offerBtn.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 100);
-                    constraintSet.connect(offerBtn.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM, 0);
-                    constraintSet.connect(offerBtn.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT, 0);
-                    constraintSet.connect(offerBtn.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT, 0);
+                    constraintSet.connect(imageButton.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 100);
+                    constraintSet.connect(imageButton.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(imageButton.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT, 0);
+                    constraintSet.connect(imageButton.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT, 0);
 
                     constraintSet.applyTo(constraintLayout);
 
@@ -208,8 +243,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
         }
 
-        avg = Float.parseFloat(intent.getStringExtra("playerAvg"));
-        stability = Float.parseFloat(intent.getStringExtra("playerStability"));
+        avg = (playerEntity.getStability() + playerEntity.getTeamFight() + playerEntity.getOutSmart() + playerEntity.getPhysical())/4;
+        stability = playerEntity.getStability();
 
         TextView playerName = findViewById(R.id.player_info_name);
         TextView playerSeason = findViewById(R.id.player_info_season);
@@ -235,7 +270,7 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     public void onWindowFocusChanged(boolean hasFocus) {
         View view = findViewById(R.id.status_pentagon_layout);
 
-        StatusPentagonView statusPentagonView = new StatusPentagonView(this, view.getWidth(), view.getHeight(), avg);
+        StatusPentagonView statusPentagonView = new StatusPentagonView(this, view.getWidth(), view.getHeight(), (float) avg);
         ConstraintLayout status_pentagon_layout = findViewById(R.id.status_pentagon_layout);
         status_pentagon_layout.addView(statusPentagonView);
     }
