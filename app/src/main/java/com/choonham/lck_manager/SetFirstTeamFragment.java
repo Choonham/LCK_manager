@@ -45,7 +45,11 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     RequestQueue requestQueue;
 
-    String getFirstRosterUrl = "http://59.17.192.100:8100/apiDataServer/getFirstPlayerList?key=this00is00lck00manager00api00key";
+    String url = Common.REST_API_URL + "getFirstPlayerList";
+
+    String apiKey = Common.REST_API_KEY;
+
+    String getFirstRosterUrl = url + "?key=" + apiKey;
 
     UserEntity userEntity = null;
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.google.android.material.snackbar.Snackbar;
@@ -105,7 +106,14 @@ public class SetNicknameAndSeasonFragment extends Fragment {
      * @param {String} seasonCode
      */
     public void makeLoginRequest(String userName, String userId, String userNickName, String seasonCode) {
-        String url = "http://59.17.192.100:8100/apiDataServer/regUser?key=this00is00lck00manager00api00key";
+
+        String firstUrl = Common.REST_API_URL + "regUser";
+
+        String apiKey = Common.REST_API_KEY;
+
+        String url = firstUrl + "?key=" + apiKey;
+
+        //String url = firstUrl + "http://59.17.192.100:8100/apiDataServer/regUser?key=this00is00lck00manager00api00key";
 
         // 요청을 보내기 위한 StringRequest 객체 생성
         StringRequest request = new StringRequest(Request.Method.POST, url,
