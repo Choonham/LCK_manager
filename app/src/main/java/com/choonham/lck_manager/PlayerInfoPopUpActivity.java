@@ -36,6 +36,15 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
     SetFirstTeamModel setFirstTeamModel;
 
+    TextView stabilityView;
+    TextView physicalView;
+    TextView outSmartView;
+    TextView laneStrengthView;
+    TextView teamFightView;
+
+    PlayerEntity playerEntity;
+    SeasonEntity seasonEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +67,23 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         String name = intent.getStringExtra("playerName");
         int positionIconID = intent.getIntExtra("positionIcon", 0);*/
 
-        PlayerEntity playerEntity = intent.getParcelableExtra("playerEntity");
-        SeasonEntity seasonEntity = intent.getParcelableExtra("seasonEntity");
+        playerEntity = intent.getParcelableExtra("playerEntity");
+        seasonEntity = intent.getParcelableExtra("seasonEntity");
 
         String season = (seasonEntity.getSeasonForShort());
         String name = playerEntity.getPlayerName();
+
+        stabilityView = findViewById(R.id.player_stat_stability_index);
+        physicalView = findViewById(R.id.player_stat_physical_index);
+        outSmartView = findViewById(R.id.player_stat_operation_index);
+        laneStrengthView = findViewById(R.id.player_stat_lane_index);
+        teamFightView = findViewById(R.id.player_stat_team_fight_index);
+
+        stabilityView.setText("[" + Double.toString(playerEntity.getStability()) + "]");
+        physicalView.setText("[" + Double.toString(playerEntity.getPhysical()) + "]");
+        outSmartView.setText("[" + Double.toString(playerEntity.getOutSmart()) + "]");
+        laneStrengthView.setText("[" + Double.toString(playerEntity.getLaneStrength()) + "]");
+        teamFightView.setText("[" + Double.toString(playerEntity.getTeamFight()) + "]");
 
         ActivityTagEnum tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
 
@@ -270,7 +291,15 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     public void onWindowFocusChanged(boolean hasFocus) {
         View view = findViewById(R.id.status_pentagon_layout);
 
-        StatusPentagonView statusPentagonView = new StatusPentagonView(this, view.getWidth(), view.getHeight(), (float) avg);
+        StatusPentagonView statusPentagonView = new StatusPentagonView(this,
+                view.getWidth(),
+                view.getHeight(),
+                (float) playerEntity.getStability(),
+                (float) playerEntity.getPhysical(),
+                (float) playerEntity.getOutSmart(),
+                (float) playerEntity.getLaneStrength(),
+                (float) playerEntity.getTeamFight()
+        );
         ConstraintLayout status_pentagon_layout = findViewById(R.id.status_pentagon_layout);
         status_pentagon_layout.addView(statusPentagonView);
     }
