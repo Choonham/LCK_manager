@@ -11,6 +11,7 @@ import com.choonham.lck_manager.common.JsonArrayRequest;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ public class RosterService {
 
     private List<JoinedPlayer> playerEntityList;
 
+    private int rtnVal = 0;
     /**
      * 선택한 시즌에 맞는 첫 로스터 후보를 불러오는 메서드
      */
@@ -104,4 +106,57 @@ public class RosterService {
 
         return playerEntityList;
     }
+
+    /**
+     * 선택한 스타트 팀 로스터 등록
+     */
+    public int regFirstRoster(RequestQueue requestQueue, List<JoinedPlayer> playerEntityList) throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String url = Common.REST_API_URL + "regFirstRoster";
+
+        String apiKey = Common.REST_API_KEY;
+
+        String regFirstRosterUrl = url + "?key=" + apiKey;
+
+        for(JoinedPlayer player : playerEntityList) {
+
+            JSONObject playerJson = new JSONObject();
+            JSONObject seasonJson = new JSONObject();
+
+            playerJson = mapper.convertValue(player.playerEntity, JSONObject.class);
+            seasonJson = mapper.convertValue(player.seasonEntity, JSONObject.class);
+
+            playerJson.put("seasonCode", seasonJson);
+            //jsonParams = mapper.convertValue(player, JSONObject.class);
+
+            jsonArray.put(playerJson);
+        }
+
+        com.android.volley.toolbox.JsonArrayRequest request = new com.android.volley.toolbox.JsonArrayRequest(
+                Request.Method.POST,
+                regFirstRosterUrl,
+                jsonArray,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("팀 로스터 등록 완료: ", response.toString());
+                        rtnVal = Integer.parseInt(response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("팀 로스터 등록 에러: ", error.toString());
+                    }
+                }
+        );
+
+        requestQueue.add(request);
+
+        return rtnVal;
+    }
 }
+
