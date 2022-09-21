@@ -6,8 +6,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(tableName = "player")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerEntity implements Parcelable {
 
     public PlayerEntity() {

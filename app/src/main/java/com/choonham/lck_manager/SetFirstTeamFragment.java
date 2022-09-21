@@ -1,5 +1,6 @@
 package com.choonham.lck_manager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.choonham.lck_manager.room.AppDatabase;
+import com.choonham.lck_manager.service.LoginService;
+import com.choonham.lck_manager.service.RosterService;
+import com.choonham.lck_manager.service.VolleyCallBack;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -63,6 +67,14 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     int selectedIndex_myTeam = 0;
 
+    LoginService loginService;
+
+    RosterService rosterService;
+
+    int apiUserCode = 0;
+
+    Context context;
+
     public JSONObject getJsonObject(){
         HashMap<String, String> params = new HashMap<String, String>();
         return new JSONObject(params);
@@ -78,6 +90,9 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         moneyView = rootView.findViewById(R.id.first_team_transfer_window_money);
         moneyView.setText(Double.toString(Common.startMoney));
 
+        loginService = new LoginService();
+        rosterService = new RosterService();
+
         myTeamList = new ArrayList<>();
 
         // 로딩창 객체 생성
@@ -89,109 +104,79 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         customProgressDialog.show();
 
         int seasonCode = getArguments().getInt("seasonCode");
+        String teamName = getArguments().getString("teamCode");
 
         userEntity = getArguments().getParcelable("userEntity");
 
-        requestQueue = Common.getRequestQueueInstance(getContext());
+        //requestQueue = Common.getRequestQueueInstance(getContext());
 
         faPlayerListView = rootView.findViewById(R.id.FA_player_list_view);
         myTeamListView = rootView.findViewById(R.id.selected_player_list_view);
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        JSONObject jsonParams = new JSONObject();
-
         SetFirstTeamModel.createInstance(this);
 
-        try {
-            jsonParams.put("seasonCode", seasonCode);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        context = getContext();
 
-        // Building a request
-        JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.POST,
-                getFirstRosterUrl,
-                // Using a variable for the domain is great for testing,
-                jsonParams,
-                new Response.Listener<JSONArray>() {
+        rosterService.getFirstTransferList(context, seasonCode,
+                new VolleyCallBack() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("응답 ->", response.toString());
+                    public void onLoad() {
+                        playerEntityList = rosterService.getPlayerEntityList();
 
-                        // Handle the response
-                        try {
-                            playerEntityList = new ArrayList<>();
-                            //PlayerEntity[] playerEntityArray = mapper.readValue((DataInput) response, PlayerEntity[].class);
-                            for(int i = 0; i < response.length(); i++) {
-                                JSONObject json = (JSONObject) response.get(i);
+                        MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
 
-                                JoinedPlayer joinedPlayer = new JoinedPlayer();
+                        faPlayerListView.setAdapter(faPlayerListAdapter);
 
-                                PlayerEntity player = new PlayerEntity();
-                                SeasonEntity seasonEntity = new SeasonEntity();
-
-                                player.setPlayerName((String) json.get("playerName"));
-                                player.setPlayerCode((Integer) json.get("playerCode"));
-
-                                JSONObject season = (JSONObject) json.get("seasonCode");
-                                seasonEntity.setSeasonCode((Integer) season.get("seasonCode"));
-                                seasonEntity.setSeasonName((String) season.get("seasonName"));
-                                seasonEntity.setSeasonForShort((String) season.get("seasonForShort"));
-
-                                player.setPosition((Integer) json.get("position"));
-                                player.setPhysical((Double) json.get("physical"));
-                                player.setLaneStrength((Double) json.get("laneStrength"));
-                                player.setStability((Double) json.get("stability"));
-                                player.setOutSmart((Double) json.get("outSmart"));
-                                player.setTeamFight((Double) json.get("teamFight"));
-                                player.setFameLv((Integer) json.get("fameLv"));
-
-                                joinedPlayer.playerEntity = player;
-                                joinedPlayer.seasonEntity = seasonEntity;
-
-                                playerEntityList.add(joinedPlayer);
-                            }
-
-                            MainRosterAdapter faPlayerListAdapter = new MainRosterAdapter(getContext(), playerEntityList);
-
-                            faPlayerListView.setAdapter(faPlayerListAdapter);
-
-                            customProgressDialog.dismiss();
-
-                        } catch (Exception e) {
-                            Log.e("JSON parsing Error: ", e.getMessage());
-                        }
-                    }
-                },
-
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("에러 ->", error.getMessage());
-                        // Handle the error
+                        customProgressDialog.dismiss();
                     }
                 });
-
-        // RequestQueue 의 add()메서드를 사용하여 요청 보냄
-        requestQueue.add(request);
-        //playerEntityList = common.getTempPlayerList(1);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                db = AppDatabase.getInstance(getContext());
+                customProgressDialog.show();
 
-                userDAO = db.userDAO();
+                try {
+                    loginService.regUserToServer(context, userEntity,
+                            new VolleyCallBack() {
+                                @Override
+                                public void onLoad() throws JSONException {
+                                    apiUserCode = loginService.getRtnVal();
 
-                insertUserIDInfo(userEntity);
+                                    userEntity.setApiUserCode(apiUserCode);
 
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    rosterService.regTeamCode(context, userEntity, teamName,
+                                            new VolleyCallBack() {
+                                                @Override
+                                                public void onLoad() throws JSONException {
+                                                    int teamCode = rosterService.getRtnVal();
+                                                    rosterService.regFirstRoster(context, myTeamList, teamCode, userEntity,
+                                                            new VolleyCallBack() {
+                                                                @Override
+                                                                public void onLoad() throws JSONException {
+                                                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                                                    db = AppDatabase.getInstance(getContext());
 
-                startActivity(intent);
+                                                                    userDAO = db.userDAO();
+
+                                                                    insertUserIDInfo(userEntity);
+
+                                                                    customProgressDialog.dismiss();
+
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                                                    startActivity(intent);
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
+                            });
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
 

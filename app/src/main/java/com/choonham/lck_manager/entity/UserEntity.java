@@ -5,8 +5,10 @@ import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(tableName = "user")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserEntity implements Parcelable{
 
     public UserEntity() {
@@ -43,6 +45,9 @@ public class UserEntity implements Parcelable{
     @ColumnInfo(name = "apiver")
     private int apiVer;
 
+    @ColumnInfo(name = "api_user_code")
+    private int apiUserCode;
+
     protected UserEntity(Parcel in) {
         userCode = in.readInt();
         userId = in.readString();
@@ -54,6 +59,7 @@ public class UserEntity implements Parcelable{
         seasonCode = in.readInt();
         matchNum = in.readInt();
         apiVer = in.readInt();
+        apiUserCode = in.readInt();
     }
 
     public static final Creator<UserEntity> CREATOR = new Creator<UserEntity>() {
@@ -148,6 +154,14 @@ public class UserEntity implements Parcelable{
         this.matchNum = matchNum;
     }
 
+    public int getApiUserCode() {
+        return apiUserCode;
+    }
+
+    public void setApiUserCode(int apiUserCode) {
+        this.apiUserCode = apiUserCode;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -165,5 +179,6 @@ public class UserEntity implements Parcelable{
         parcel.writeInt(seasonCode);
         parcel.writeInt(matchNum);
         parcel.writeInt(apiVer);
+        parcel.writeInt(apiUserCode);
     }
 }

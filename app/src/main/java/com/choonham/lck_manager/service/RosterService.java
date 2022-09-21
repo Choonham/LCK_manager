@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.service;
 
+import android.content.Context;
 import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,6 +11,7 @@ import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.common.JsonArrayRequest;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
+import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -27,8 +29,10 @@ public class RosterService {
     /**
      * 선택한 시즌에 맞는 첫 로스터 후보를 불러오는 메서드
      */
-    public List<JoinedPlayer> getFirstTransferList(RequestQueue requestQueue, int seasonCode) {
+    public void getFirstTransferList(Context context, int seasonCode, final VolleyCallBack volleyCallBack) {
         JSONObject jsonParams = new JSONObject();
+
+        RequestQueue requestQueue = Common.getRequestQueueInstance(context);
 
         String url = Common.REST_API_URL + "getFirstPlayerList";
 
@@ -36,11 +40,15 @@ public class RosterService {
 
         String getFirstRosterUrl = url + "?key=" + apiKey;
 
+        playerEntityList = new ArrayList<>();
+
         try {
             jsonParams.put("seasonCode", seasonCode);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        Log.e("뭐지2", "뭐지");
 
         // Building a request
         JsonArrayRequest request = new JsonArrayRequest(
@@ -55,7 +63,6 @@ public class RosterService {
 
                         // Handle the response
                         try {
-                            playerEntityList = new ArrayList<>();
                             //PlayerEntity[] playerEntityArray = mapper.readValue((DataInput) response, PlayerEntity[].class);
                             for(int i = 0; i < response.length(); i++) {
                                 JSONObject json = (JSONObject) response.get(i);
@@ -85,6 +92,8 @@ public class RosterService {
                                 joinedPlayer.seasonEntity = seasonEntity;
 
                                 playerEntityList.add(joinedPlayer);
+
+                                volleyCallBack.onLoad();
                             }
 
                         } catch (Exception e) {
@@ -103,17 +112,15 @@ public class RosterService {
 
         // RequestQueue 의 add()메서드를 사용하여 요청 보냄
         requestQueue.add(request);
-
-        return playerEntityList;
     }
 
     /**
      * 선택한 스타트 팀 로스터 등록
      */
-    public int regFirstRoster(RequestQueue requestQueue, List<JoinedPlayer> playerEntityList) throws JSONException {
-        JSONArray jsonArray = new JSONArray();
+    public void regFirstRoster(Context context, List<JoinedPlayer> playerEntityList, int teamCode, UserEntity userEntity, final VolleyCallBack volleyCallBack) throws JSONException {
+        RequestQueue requestQueue = Common.getRequestQueueInstance(context);
 
-        ObjectMapper mapper = new ObjectMapper();
+        JSONArray jsonArray = new JSONArray();
 
         String url = Common.REST_API_URL + "regFirstRoster";
 
@@ -124,14 +131,15 @@ public class RosterService {
         for(JoinedPlayer player : playerEntityList) {
 
             JSONObject playerJson = new JSONObject();
-            JSONObject seasonJson = new JSONObject();
+            //JSONObject seasonJson = new JSONObject();
 
-            playerJson = mapper.convertValue(player.playerEntity, JSONObject.class);
-            seasonJson = mapper.convertValue(player.seasonEntity, JSONObject.class);
+            //playerJson = mapper.convertValue(player.playerEntity, JSONObject.class);
+            //seasonJson = mapper.convertValue(player.seasonEntity, JSONObject.class);
 
-            playerJson.put("seasonCode", seasonJson);
-            //jsonParams = mapper.convertValue(player, JSONObject.class);
-
+            playerJson.put("teamCode", teamCode);
+            //playerJson.put("userCode", player.playerEntity.getPlayerCode());
+            playerJson.put("userCode", userEntity.getApiUserCode());
+            playerJson.put("mainEntry", 1);
             jsonArray.put(playerJson);
         }
 
@@ -144,6 +152,12 @@ public class RosterService {
                     public void onResponse(JSONArray response) {
                         Log.d("팀 로스터 등록 완료: ", response.toString());
                         rtnVal = Integer.parseInt(response.toString());
+
+                        try {
+                            volleyCallBack.onLoad();
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -155,8 +169,65 @@ public class RosterService {
         );
 
         requestQueue.add(request);
+    }
 
+    public void regTeamCode(Context context, UserEntity userEntity, String teamName, final VolleyCallBack volleyCallBack) throws JSONException {
+        RequestQueue requestQueue = Common.getRequestQueueInstance(context);
+
+        String url = Common.REST_API_URL + "regTeam";
+
+        String apiKey = Common.REST_API_KEY;
+
+        String regFirstRosterUrl = url + "?key=" + apiKey;
+
+        JSONObject jsonParam = new JSONObject();
+
+        jsonParam.put("seasonCode", userEntity.getSeasonCode());
+        jsonParam.put("userCode", userEntity.getApiUserCode());
+        jsonParam.put("teamName",teamName);
+
+        com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(
+                Request.Method.POST,
+                regFirstRosterUrl,
+                jsonParam,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("팀 등록 완료: ", response.toString());
+                        rtnVal = Integer.parseInt(response.toString());
+
+                        try {
+                            volleyCallBack.onLoad();
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("팀 등록 에러: ", error.toString());
+                    }
+                }
+        );
+
+        requestQueue.add(request);
+    }
+
+    public List<JoinedPlayer> getPlayerEntityList() {
+        return playerEntityList;
+    }
+
+    public void setPlayerEntityList(List<JoinedPlayer> playerEntityList) {
+        this.playerEntityList = playerEntityList;
+    }
+
+    public int getRtnVal() {
         return rtnVal;
+    }
+
+    public void setRtnVal(int rtnVal) {
+        this.rtnVal = rtnVal;
     }
 }
 

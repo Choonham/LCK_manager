@@ -5,9 +5,11 @@ import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.android.material.textfield.TextInputLayout;
 
 @Entity(tableName = "season")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SeasonEntity implements Parcelable {
     public SeasonEntity() {
     }
