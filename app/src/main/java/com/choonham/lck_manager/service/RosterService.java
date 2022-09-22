@@ -149,7 +149,6 @@ public class RosterService {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d("팀 로스터 등록 완료: ", response.toString());
-                        rtnVal = Integer.parseInt(response.toString());
 
                         try {
                             volleyCallBack.onLoad();
@@ -192,9 +191,9 @@ public class RosterService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("팀 등록 완료: ", response.toString());
-                        rtnVal = Integer.parseInt(response.toString());
 
                         try {
+                            rtnVal = Integer.parseInt((String)response.get("teamCode"));
                             volleyCallBack.onLoad();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);

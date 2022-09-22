@@ -46,7 +46,13 @@ public class LoginService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("유저 등록 완료: ", response.toString());
-                        rtnVal = Integer.parseInt(response.toString());
+
+                        try {
+                            rtnVal = Integer.parseInt((String)response.get("userCode"));
+
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
 
                         try {
                             volleyCallBack.onLoad();
