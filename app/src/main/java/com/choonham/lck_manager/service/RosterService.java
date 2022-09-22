@@ -136,7 +136,7 @@ public class RosterService {
 
             playerJson.put("teamCode", teamCode);
             //playerJson.put("userCode", player.playerEntity.getPlayerCode());
-            playerJson.put("userCode", userEntity.getApiUserCode());
+            playerJson.put("playerCode", player.playerEntity.getPlayerCode());
             playerJson.put("mainEntry", 1);
             jsonArray.put(playerJson);
         }
@@ -181,6 +181,10 @@ public class RosterService {
 
         jsonParam.put("seasonCode", userEntity.getSeasonCode());
         jsonParam.put("userCode", userEntity.getApiUserCode());
+
+        if(teamName == null) {
+            teamName = "GG232";
+        }
         jsonParam.put("teamName",teamName);
 
         com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(

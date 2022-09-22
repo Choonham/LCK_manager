@@ -86,7 +86,7 @@ public class SetNicknameAndSeasonFragment extends Fragment {
                 } else {
                     Bundle result = new Bundle();
                     result.putInt("seasonCode", springSeasonCode);
-                    result.putString("teamName", "teamName");
+                    result.putString("teamName", teamName);
                     result.putParcelable("userEntity", userEntity);
 
                     initialSettingActivity.onFragmentChanged(1, result);

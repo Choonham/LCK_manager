@@ -34,42 +34,47 @@ public class LoginService {
 
         String regUserUrl = url + "?key=" + apiKey;
 
-        JSONObject playerJson = new JSONObject();
+        JSONObject playerJson;
 
-        playerJson = mapper.convertValue(userEntity, JSONObject.class);
+        try{
+            playerJson = new JSONObject(mapper.writeValueAsString(userEntity));
 
-        com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(
-                Request.Method.POST,
-                regUserUrl,
-                playerJson,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("유저 등록 완료: ", response.toString());
+            com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(
+                    Request.Method.POST,
+                    regUserUrl,
+                    playerJson,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("유저 등록 완료: ", response.toString());
 
-                        try {
-                            rtnVal = Integer.parseInt((String)response.get("userCode"));
+                            try {
+                                rtnVal = Integer.parseInt((String)response.get("userCode"));
 
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            try {
+                                volleyCallBack.onLoad();
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-
-                        try {
-                            volleyCallBack.onLoad();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("유저 등록 에러: ", error.toString());
                         }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("유저 등록 에러: ", error.toString());
-                    }
-                }
-        );
+            );
 
-        requestQueue.add(request);
+            requestQueue.add(request);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     public int getRtnVal() {

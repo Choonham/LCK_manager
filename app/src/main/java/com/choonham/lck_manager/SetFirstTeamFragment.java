@@ -104,7 +104,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         customProgressDialog.show();
 
         int seasonCode = getArguments().getInt("seasonCode");
-        String teamName = getArguments().getString("teamCode");
+        String teamName = getArguments().getString("teamName");
 
         userEntity = getArguments().getParcelable("userEntity");
 
