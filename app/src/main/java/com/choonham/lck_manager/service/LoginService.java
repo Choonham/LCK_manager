@@ -9,6 +9,8 @@ import com.android.volley.VolleyError;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +26,7 @@ public class LoginService {
         RequestQueue requestQueue = Common.getRequestQueueInstance(context);
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         String url = Common.REST_API_URL + "regUser";
 

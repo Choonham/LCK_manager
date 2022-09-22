@@ -48,8 +48,6 @@ public class RosterService {
             throw new RuntimeException(e);
         }
 
-        Log.e("뭐지2", "뭐지");
-
         // Building a request
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.POST,

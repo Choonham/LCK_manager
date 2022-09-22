@@ -72,8 +72,9 @@ public class Common {
         // RequestQueue 객체 생성
         if(requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context);
+            contextForChecking = context;
         } else {
-            if(!contextForChecking.getClass().equals(context.getClass())) {
+            if(!contextForChecking.equals(context)) {
                 requestQueue = Volley.newRequestQueue(context);
             }
         }
