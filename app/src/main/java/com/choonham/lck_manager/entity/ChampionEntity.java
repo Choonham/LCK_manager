@@ -12,7 +12,7 @@ public class ChampionEntity implements Parcelable {
     public ChampionEntity() {
     }
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "champion_code")
     private int championCode;
 
@@ -32,16 +32,25 @@ public class ChampionEntity implements Parcelable {
     private double oneVsOneStrength;
     private double initiating;
     private double poking;
+
+    private double nuking;
+    private double util;
+    private double cc;
+    private double gank;
+    private double tank;
+
+    private double dps;
+
     private int type;
 
-    @ColumnInfo(name = "to_six_potential")
-    private double toSixPotential;
+    private double potential1;
 
-    @ColumnInfo(name = "to_elv_potential")
-    private double toElvPotential;
+    private double potential2;
 
-    @ColumnInfo(name = "to_sixteen_potential")
-    private double toSixteenPotential;
+    private double potential3;
+
+    @ColumnInfo(name = "win_rate")
+    private double winRate;
 
     protected ChampionEntity(Parcel in) {
         championCode = in.readInt();
@@ -52,31 +61,17 @@ public class ChampionEntity implements Parcelable {
         oneVsOneStrength = in.readDouble();
         initiating = in.readDouble();
         poking = in.readDouble();
+        nuking = in.readDouble();
+        util = in.readDouble();
+        cc = in.readDouble();
+        gank = in.readDouble();
+        tank = in.readDouble();
+        dps = in.readDouble();
         type = in.readInt();
-        toSixPotential = in.readDouble();
-        toElvPotential = in.readDouble();
-        toSixteenPotential = in.readDouble();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(championCode);
-        dest.writeString(championName);
-        dest.writeDouble(laneStrength);
-        dest.writeDouble(teamFight);
-        dest.writeDouble(splitPush);
-        dest.writeDouble(oneVsOneStrength);
-        dest.writeDouble(initiating);
-        dest.writeDouble(poking);
-        dest.writeInt(type);
-        dest.writeDouble(toSixPotential);
-        dest.writeDouble(toElvPotential);
-        dest.writeDouble(toSixteenPotential);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        potential1 = in.readDouble();
+        potential2 = in.readDouble();
+        potential3 = in.readDouble();
+        winRate = in.readDouble();
     }
 
     public static final Creator<ChampionEntity> CREATOR = new Creator<ChampionEntity>() {
@@ -155,6 +150,54 @@ public class ChampionEntity implements Parcelable {
         this.poking = poking;
     }
 
+    public double getNuking() {
+        return nuking;
+    }
+
+    public void setNuking(double nuking) {
+        this.nuking = nuking;
+    }
+
+    public double getUtil() {
+        return util;
+    }
+
+    public void setUtil(double util) {
+        this.util = util;
+    }
+
+    public double getCc() {
+        return cc;
+    }
+
+    public void setCc(double cc) {
+        this.cc = cc;
+    }
+
+    public double getGank() {
+        return gank;
+    }
+
+    public void setGank(double gank) {
+        this.gank = gank;
+    }
+
+    public double getTank() {
+        return tank;
+    }
+
+    public void setTank(double tank) {
+        this.tank = tank;
+    }
+
+    public double getDps() {
+        return dps;
+    }
+
+    public void setDps(double dps) {
+        this.dps = dps;
+    }
+
     public int getType() {
         return type;
     }
@@ -163,27 +206,63 @@ public class ChampionEntity implements Parcelable {
         this.type = type;
     }
 
-    public double getToSixPotential() {
-        return toSixPotential;
+    public double getPotential1() {
+        return potential1;
     }
 
-    public void setToSixPotential(double toSixPotential) {
-        this.toSixPotential = toSixPotential;
+    public void setPotential1(double potential1) {
+        this.potential1 = potential1;
     }
 
-    public double getToElvPotential() {
-        return toElvPotential;
+    public double getPotential2() {
+        return potential2;
     }
 
-    public void setToElvPotential(double toElvPotential) {
-        this.toElvPotential = toElvPotential;
+    public void setPotential2(double potential2) {
+        this.potential2 = potential2;
     }
 
-    public double getToSixteenPotential() {
-        return toSixteenPotential;
+    public double getPotential3() {
+        return potential3;
     }
 
-    public void setToSixteenPotential(double toSixteenPotential) {
-        this.toSixteenPotential = toSixteenPotential;
+    public void setPotential3(double potential3) {
+        this.potential3 = potential3;
+    }
+
+    public double getWinRate() {
+        return winRate;
+    }
+
+    public void setWinRate(double winRate) {
+        this.winRate = winRate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(championCode);
+        dest.writeString(championName);
+        dest.writeDouble(laneStrength);
+        dest.writeDouble(teamFight);
+        dest.writeDouble(splitPush);
+        dest.writeDouble(oneVsOneStrength);
+        dest.writeDouble(initiating);
+        dest.writeDouble(poking);
+        dest.writeDouble(nuking);
+        dest.writeDouble(util);
+        dest.writeDouble(cc);
+        dest.writeDouble(gank);
+        dest.writeDouble(tank);
+        dest.writeDouble(dps);
+        dest.writeInt(type);
+        dest.writeDouble(potential1);
+        dest.writeDouble(potential2);
+        dest.writeDouble(potential3);
+        dest.writeDouble(winRate);
     }
 }

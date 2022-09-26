@@ -15,7 +15,7 @@ public class PlayerEntity implements Parcelable {
     public PlayerEntity() {
     }
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "player_code")
     private int playerCode;
 

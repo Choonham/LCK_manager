@@ -34,16 +34,6 @@ public class SetNicknameAndSeasonFragment extends Fragment {
     EditText teamNameBox = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        // RequestQueue 객체 생성
-        if (requestQueue == null) {
-//            requestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_nickname_and_season, container, false);

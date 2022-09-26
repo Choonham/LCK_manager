@@ -16,6 +16,9 @@ public class TeamEntity implements Parcelable {
     @ColumnInfo(name = "team_code")
     private int teamCode;
 
+    @ColumnInfo(name = "api_team_code")
+    private int apiTeamCode;
+
     @ColumnInfo(name = "user_code")
     private int userCode;
 
@@ -25,19 +28,28 @@ public class TeamEntity implements Parcelable {
     @ColumnInfo(name = "team_name")
     private String teamName;
 
-    @ColumnInfo(name = "main_roster_code")
-    private int mainRosterCode;
+    @ColumnInfo(name = "season_code")
+    private int seasonCode;
 
-    @ColumnInfo(name = "sub_roster_code")
-    private int subRosterCode;
+    @ColumnInfo(name = "win_rate", defaultValue = "0")
+    private double winRate;
+
+    @ColumnInfo(name = "total_wins", defaultValue = "0")
+    private int totalWins;
+
+    @ColumnInfo(name = "total_loses", defaultValue = "0")
+    private int totalLoses;
 
     protected TeamEntity(Parcel in) {
         teamCode = in.readInt();
         userCode = in.readInt();
         userType = in.readInt();
         teamName = in.readString();
-        mainRosterCode = in.readInt();
-        subRosterCode = in.readInt();
+        seasonCode = in.readInt();
+        winRate = in.readDouble();
+        totalWins = in.readInt();
+        totalLoses = in.readInt();
+        apiTeamCode = in.readInt();
     }
 
     public static final Creator<TeamEntity> CREATOR = new Creator<TeamEntity>() {
@@ -84,20 +96,44 @@ public class TeamEntity implements Parcelable {
         this.teamName = teamName;
     }
 
-    public int getMainRosterCode() {
-        return mainRosterCode;
+    public int getSeasonCode() {
+        return seasonCode;
     }
 
-    public void setMainRosterCode(int mainRosterCode) {
-        this.mainRosterCode = mainRosterCode;
+    public void setSeasonCode(int seasonCode) {
+        this.seasonCode = seasonCode;
     }
 
-    public int getSubRosterCode() {
-        return subRosterCode;
+    public double getWinRate() {
+        return winRate;
     }
 
-    public void setSubRosterCode(int subRosterCode) {
-        this.subRosterCode = subRosterCode;
+    public void setWinRate(double winRate) {
+        this.winRate = winRate;
+    }
+
+    public int getTotalWins() {
+        return totalWins;
+    }
+
+    public void setTotalWins(int totalWins) {
+        this.totalWins = totalWins;
+    }
+
+    public int getTotalLoses() {
+        return totalLoses;
+    }
+
+    public void setTotalLoses(int totalLoses) {
+        this.totalLoses = totalLoses;
+    }
+
+    public int getApiTeamCode() {
+        return apiTeamCode;
+    }
+
+    public void setApiTeamCode(int apiTeamCode) {
+        this.apiTeamCode = apiTeamCode;
     }
 
     @Override
@@ -111,7 +147,10 @@ public class TeamEntity implements Parcelable {
         parcel.writeInt(userCode);
         parcel.writeInt(userType);
         parcel.writeString(teamName);
-        parcel.writeInt(mainRosterCode);
-        parcel.writeInt(subRosterCode);
+        parcel.writeInt(seasonCode);
+        parcel.writeDouble(winRate);
+        parcel.writeInt(totalWins);
+        parcel.writeInt(totalLoses);
+        parcel.writeInt(apiTeamCode);
     }
 }

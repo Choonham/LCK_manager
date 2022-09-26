@@ -4,9 +4,7 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import com.choonham.lck_manager.dao.NewsAndIssueDAO;
-import com.choonham.lck_manager.dao.TestDAO;
-import com.choonham.lck_manager.dao.UserDAO;
+import com.choonham.lck_manager.dao.*;
 import com.choonham.lck_manager.entity.*;
 
 @Database(entities = {
@@ -24,8 +22,9 @@ import com.choonham.lck_manager.entity.*;
         UserEntity.class,
         UserRecordEntity.class,
         NewsAndIssueEntity.class,
-        NewsEffectsEntity.class
-}, version = 4, exportSchema = false)
+        NewsEffectsEntity.class,
+        SeasonEntity.class
+}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase database;
@@ -48,4 +47,12 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NewsAndIssueDAO newsAndIssueDAO();
 
     public abstract UserDAO userDAO();
+
+    public abstract SeasonDAO seasonDAO();
+
+    public abstract PlayerDAO playerDAO();
+
+    public abstract TeamDAO teamDAO();
+
+    public abstract RosterDAO rosterDAO();
 }

@@ -4,17 +4,18 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.RosterEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
-import com.choonham.lck_manager.entity.UserEntity;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
-@Dao
-public interface SeasonDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Maybe<Long> insertSeasonData(SeasonEntity seasonEntity);
+import java.util.List;
 
-    @Query("SELECT * FROM season s WHERE s.season_code = :seasonCode")
-    Single<SeasonEntity> loadSeasonEntityByCode(Long seasonCode);
+@Dao
+public interface RosterDAO {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Maybe<Long> insertRosterData(RosterEntity roster);
+
+    @Query("SELECT * FROM roster r WHERE r.team_code = :teamCode")
+    Single<List<RosterEntity>> loadRosterListByTeamCode(Long teamCode);
 }

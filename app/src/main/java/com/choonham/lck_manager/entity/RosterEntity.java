@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "main_roster")
+@Entity(tableName = "roster")
 public class RosterEntity implements Parcelable {
 
     public RosterEntity() {
@@ -15,6 +15,9 @@ public class RosterEntity implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "roster_code")
     private int rosterCode;
+
+    @ColumnInfo(name = "api_roster_code")
+    private int apiRosterCode;
 
     @ColumnInfo(name = "player_code")
     private int playerCode;
@@ -34,6 +37,7 @@ public class RosterEntity implements Parcelable {
         mainOrder = in.readInt();
         teamCode = in.readInt();
         mainEntry = in.readInt();
+        apiRosterCode = in.readInt();
     }
 
     public static final Creator<RosterEntity> CREATOR = new Creator<RosterEntity>() {
@@ -88,6 +92,14 @@ public class RosterEntity implements Parcelable {
         this.mainEntry = mainEntry;
     }
 
+    public int getApiRosterCode() {
+        return apiRosterCode;
+    }
+
+    public void setApiRosterCode(int apiRosterCode) {
+        this.apiRosterCode = apiRosterCode;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -100,5 +112,6 @@ public class RosterEntity implements Parcelable {
         parcel.writeInt(mainOrder);
         parcel.writeInt(teamCode);
         parcel.writeInt(mainEntry);
+        parcel.writeInt(apiRosterCode);
     }
 }

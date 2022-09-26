@@ -9,9 +9,7 @@ import com.android.volley.VolleyError;
 import com.choonham.lck_manager.MainRosterAdapter;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.common.JsonArrayRequest;
-import com.choonham.lck_manager.entity.PlayerEntity;
-import com.choonham.lck_manager.entity.SeasonEntity;
-import com.choonham.lck_manager.entity.UserEntity;
+import com.choonham.lck_manager.entity.*;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -24,6 +22,8 @@ import java.util.List;
 public class RosterService {
 
     private List<JoinedPlayer> playerEntityList;
+
+    private List<RosterEntity> rosterList;
 
     private int rtnVal = 0;
     /**
@@ -58,7 +58,7 @@ public class RosterService {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d("응답 ->", response.toString());
-
+                        playerEntityList.clear();
                         // Handle the response
                         try {
                             //PlayerEntity[] playerEntityArray = mapper.readValue((DataInput) response, PlayerEntity[].class);
@@ -95,7 +95,7 @@ public class RosterService {
                             }
 
                         } catch (Exception e) {
-                            Log.e("JSON parsing Error: ", e.getMessage());
+                            Log.e("getFirstTransferList JSON parsing Error: ", e.getMessage());
                         }
                     }
                 },
@@ -182,6 +182,7 @@ public class RosterService {
         jsonParam.put("seasonCode", userEntity.getSeasonCode());
         jsonParam.put("userCode", userEntity.getApiUserCode());
 
+
         if(teamName == null) {
             teamName = "GG232";
         }
@@ -215,6 +216,80 @@ public class RosterService {
         requestQueue.add(request);
     }
 
+    public void getRosterListBySeason(Context context, int seasonCode, final VolleyCallBack volleyCallBack) {
+        JSONObject jsonParams = new JSONObject();
+
+        RequestQueue requestQueue = Common.getRequestQueueInstance(context);
+
+        String url = Common.REST_API_URL + "getTeamRosterBySeasonCode";
+
+        String apiKey = Common.REST_API_KEY;
+
+        String getFirstRosterUrl = url + "?key=" + apiKey;
+
+        rosterList = new ArrayList<>();
+
+        try {
+            jsonParams.put("seasonCode", seasonCode);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Building a request
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.POST,
+                getFirstRosterUrl,
+                // Using a variable for the domain is great for testing,
+                jsonParams,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("getRosterListBySeason 응답 ->", response.toString());
+                        // Handle the response
+                        try {
+
+                            //PlayerEntity[] playerEntityArray = mapper.readValue((DataInput) response, PlayerEntity[].class);
+                            for(int i = 0; i < response.length(); i++) {
+                                JSONObject json = (JSONObject) response.get(i);
+
+                                RosterEntity roster = new RosterEntity();
+
+                                roster.setApiRosterCode((Integer) json.get("mainRosterCode"));
+                                Log.e("Roster Code", Integer.toString((Integer) json.get("mainRosterCode")));
+                                roster.setTeamCode((Integer) json.getJSONObject("team").get("teamCode"));
+
+                                if(json.isNull("player")) {
+                                    roster.setPlayerCode(99999);
+                                } else {
+                                    roster.setPlayerCode((Integer) json.getJSONObject("player").get("playerCode"));
+                                }
+
+                                roster.setMainOrder((Integer) json.get("mainOrder"));
+                                roster.setMainEntry((Integer) json.get("mainEntry"));
+
+                                rosterList.add(roster);
+
+                            }
+                            volleyCallBack.onLoad();
+
+                        } catch (Exception e) {
+                            Log.e("getRosterListBySeason JSON parsing Error: ", e.getMessage());
+                        }
+                    }
+                },
+
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("에러 ->", error.getMessage());
+                        // Handle the error
+                    }
+                });
+
+        // RequestQueue 의 add()메서드를 사용하여 요청 보냄
+        requestQueue.add(request);
+    }
+
     public List<JoinedPlayer> getPlayerEntityList() {
         return playerEntityList;
     }
@@ -229,6 +304,14 @@ public class RosterService {
 
     public void setRtnVal(int rtnVal) {
         this.rtnVal = rtnVal;
+    }
+
+    public List<RosterEntity> getRosterList() {
+        return rosterList;
+    }
+
+    public void setRosterList(List<RosterEntity> rosterList) {
+        this.rosterList = rosterList;
     }
 }
 

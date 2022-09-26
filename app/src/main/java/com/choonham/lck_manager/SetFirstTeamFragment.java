@@ -12,16 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.android.volley.*;
 import com.choonham.lck_manager.common.*;
+import com.choonham.lck_manager.dao.RosterDAO;
+import com.choonham.lck_manager.dao.TeamDAO;
 import com.choonham.lck_manager.dao.UserDAO;
-import com.choonham.lck_manager.entity.PlayerEntity;
-import com.choonham.lck_manager.entity.SeasonEntity;
-import com.choonham.lck_manager.entity.UserEntity;
+import com.choonham.lck_manager.entity.*;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.choonham.lck_manager.room.AppDatabase;
-import com.choonham.lck_manager.service.LoginService;
-import com.choonham.lck_manager.service.RosterService;
-import com.choonham.lck_manager.service.VolleyCallBack;
+import com.choonham.lck_manager.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -47,6 +45,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     UserDAO userDAO;
 
+    RosterDAO rosterDAO;
+
     RequestQueue requestQueue;
 
     String url = Common.REST_API_URL + "getFirstPlayerList";
@@ -68,8 +68,10 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
     int selectedIndex_myTeam = 0;
 
     LoginService loginService;
-
     RosterService rosterService;
+    TeamService teamService;
+    PlayerService playerService;
+    ChampionService championService;
 
     int apiUserCode = 0;
 
@@ -92,8 +94,13 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
         loginService = new LoginService();
         rosterService = new RosterService();
+        playerService = new PlayerService();
+        championService = new ChampionService();
+        teamService = new TeamService();
 
         myTeamList = new ArrayList<>();
+
+        db = AppDatabase.getInstance(getContext());
 
         // 로딩창 객체 생성
         customProgressDialog = new ProgressDialog(getContext());
@@ -117,6 +124,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
         context = getContext();
 
+        loginService.regSeasonData(getContext());
+
         rosterService.getFirstTransferList(context, seasonCode,
                 new VolleyCallBack() {
                     @Override
@@ -138,41 +147,83 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                 try {
                     loginService.regUserToServer(context, userEntity,
+                    new VolleyCallBack() {
+                        @Override
+                        public void onLoad() throws JSONException {
+                            apiUserCode = loginService.getRtnVal();
+
+                            userEntity.setApiUserCode(apiUserCode);
+
+                            rosterService.regTeamCode(context, userEntity, teamName,
                             new VolleyCallBack() {
                                 @Override
                                 public void onLoad() throws JSONException {
-                                    apiUserCode = loginService.getRtnVal();
+                                    int teamCode = rosterService.getRtnVal();
 
-                                    userEntity.setApiUserCode(apiUserCode);
+                                    rosterService.regFirstRoster(context, myTeamList, teamCode, userEntity,
+                                    new VolleyCallBack() {
+                                        @Override
+                                        public void onLoad() throws JSONException {
 
-                                    rosterService.regTeamCode(context, userEntity, teamName,
-                                            new VolleyCallBack() {
+                                            playerService.getSeasonPlayerList(context, seasonCode, new VolleyCallBack() {
+                                                        @Override
+                                                        public void onLoad() throws JSONException {
+                                                            Log.e("선수", playerService.getPlayerEntityList().get(1).playerEntity.getPlayerName());
+                                                        }
+                                                    });
+
+                                            championService.getChampionList(context, new VolleyCallBack() {
                                                 @Override
                                                 public void onLoad() throws JSONException {
-                                                    int teamCode = rosterService.getRtnVal();
-                                                    rosterService.regFirstRoster(context, myTeamList, teamCode, userEntity,
-                                                            new VolleyCallBack() {
-                                                                @Override
-                                                                public void onLoad() throws JSONException {
-                                                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                                                    db = AppDatabase.getInstance(getContext());
-
-                                                                    userDAO = db.userDAO();
-
-                                                                    insertUserIDInfo(userEntity);
-
-                                                                    customProgressDialog.dismiss();
-
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                                                    startActivity(intent);
-                                                                }
-                                                            });
+                                                    Log.e("챔피언", championService.getChampionList().get(1).getChampionName());
                                                 }
                                             });
+
+                                            teamService.getTeamListBySeason(context, seasonCode,
+                                                new VolleyCallBack() {
+                                                    @Override
+                                                    public void onLoad() throws JSONException {
+                                                        List<TeamEntity> teamList = teamService.getTeamList();
+                                                        for(TeamEntity team : teamList) {
+                                                            insertTeamInfo(team);
+                                                        }
+
+                                                        rosterService.getRosterListBySeason(context, seasonCode,
+                                                                new VolleyCallBack() {
+                                                                    @Override
+                                                                    public void onLoad() throws JSONException {
+                                                                        List<RosterEntity> rosterList = rosterService.getRosterList();
+
+                                                                        rosterDAO = db.rosterDAO();
+
+                                                                        for(RosterEntity roster : rosterList) {
+                                                                            Log.e("로스터 이름: ", Integer.toString(roster.getPlayerCode()));
+                                                                            insertRosterData(roster);
+                                                                        }
+
+                                                                        Intent intent = new Intent(getContext(), MainActivity.class);
+
+                                                                        userDAO = db.userDAO();
+
+                                                                        insertUserIDInfo(userEntity);
+
+                                                                        customProgressDialog.dismiss();
+
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                                                        startActivity(intent);
+                                                                    }
+                                                                });
+                                                    }
+                                                });
+
+                                        }
+                                    });
                                 }
                             });
+                        }
+                    });
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -228,6 +279,20 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 .subscribe();
     }
 
+    private void insertRosterData(RosterEntity rosterEntity) {
+
+        rosterDAO.insertRosterData(rosterEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(insertValue -> {
+                    Log.d("Insert data: ", String.valueOf(insertValue));
+                })
+                .doOnError(error -> {
+                    Log.e("insert error :", error.getMessage());
+                })
+                .subscribe();
+    }
+
+
 
     private void checkInsertYN(Long insertCode) {
         AtomicReference<UserEntity> value = new AtomicReference<>();
@@ -240,6 +305,21 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 })
                 .doOnError(error -> {
                     Log.e("check error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    private void insertTeamInfo(TeamEntity team) {
+        TeamDAO teamDAO = db.teamDAO();
+
+        teamDAO.insertTeamData(team)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Log.d("inserted Team", String.valueOf(loadValue));
+                })
+                .doOnError(error -> {
+                    Log.e("insert error :", error.getMessage());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
