@@ -12,6 +12,7 @@ import com.choonham.lck_manager.common.JsonArrayRequest;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.entity.TeamEntity;
+import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -38,57 +39,55 @@ public class TeamService{
     /**
      * User Code, 팀 정보 등록
      */
-    public int regTeam(RequestQueue requestQueue, int userCode, String teamName, int seasonCode) {
-        JSONObject jsonParams = new JSONObject();
+    public void regTeamCode(Context context, UserEntity userEntity, String teamName, final VolleyCallBack volleyCallBack) throws JSONException {
+        RequestQueue requestQueue = Common.getRequestQueueInstance(context);
 
         String url = Common.REST_API_URL + "regTeam";
 
         String apiKey = Common.REST_API_KEY;
 
-        String regTeamUrl = url + "?key=" + apiKey;
+        String regFirstRosterUrl = url + "?key=" + apiKey;
 
-        try {
-            jsonParams.put("seasonCode", seasonCode);
-            jsonParams.put("teamName", teamName);
-            jsonParams.put("userCode", userCode);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+        JSONObject jsonParam = new JSONObject();
+
+        jsonParam.put("seasonCode", userEntity.getSeasonCode());
+        jsonParam.put("userCode", userEntity.getApiUserCode());
+
+
+        if(teamName == null) {
+            teamName = "GG232";
         }
+        jsonParam.put("teamName",teamName);
 
-        JsonObjectRequest request = new JsonObjectRequest(
+        com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(
                 Request.Method.POST,
-                regTeamUrl,
-                // Using a variable for the domain is great for testing,
-                jsonParams,
+                regFirstRosterUrl,
+                jsonParam,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Handle the response
+                        Log.d("팀 등록 완료: ", response.toString());
+
                         try {
-                            Log.d("응답 ->", response.toString());
-                            rtnVal = Integer.parseInt(response.toString());
-                        } catch (Exception e) {
-                            Log.e("regTeam JSON parsing Error: ", e.getMessage());
+                            rtnVal = Integer.parseInt((String)response.get("teamCode"));
+                            volleyCallBack.onLoad();
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
                         }
                     }
-
                 },
-
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("에러 ->", error.getMessage());
-                        // Handle the error
+                        Log.d("팀 등록 에러: ", error.toString());
                     }
-                });
+                }
+        );
 
-        // RequestQueue 의 add()메서드를 사용하여 요청 보냄
         requestQueue.add(request);
-
-        return rtnVal;
     }
 
-    public void getTeamListBySeason(Context context, int seasonCode, final VolleyCallBack volleyCallBack){
+    public void getTeamListBySeason(Context context, int seasonCode, int userCode, final VolleyCallBack volleyCallBack){
         JSONObject jsonParams = new JSONObject();
 
         RequestQueue requestQueue = Common.getRequestQueueInstance(context);
@@ -101,6 +100,7 @@ public class TeamService{
 
         try {
             jsonParams.put("seasonCode", seasonCode);
+            jsonParams.put("userCode", userCode);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

@@ -94,6 +94,7 @@ public class PlayerService {
                                 player.setOutSmart((Double) json.get("outSmart"));
                                 player.setTeamFight((Double) json.get("teamFight"));
                                 player.setFameLv((Integer) json.get("fameLv"));
+                                player.setSeasonCode((Integer) season.get("seasonCode"));
 
                                 joinedPlayer.playerEntity = player;
                                 joinedPlayer.seasonEntity = seasonEntity;

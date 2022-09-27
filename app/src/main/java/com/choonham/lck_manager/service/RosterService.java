@@ -168,54 +168,6 @@ public class RosterService {
         requestQueue.add(request);
     }
 
-    public void regTeamCode(Context context, UserEntity userEntity, String teamName, final VolleyCallBack volleyCallBack) throws JSONException {
-        RequestQueue requestQueue = Common.getRequestQueueInstance(context);
-
-        String url = Common.REST_API_URL + "regTeam";
-
-        String apiKey = Common.REST_API_KEY;
-
-        String regFirstRosterUrl = url + "?key=" + apiKey;
-
-        JSONObject jsonParam = new JSONObject();
-
-        jsonParam.put("seasonCode", userEntity.getSeasonCode());
-        jsonParam.put("userCode", userEntity.getApiUserCode());
-
-
-        if(teamName == null) {
-            teamName = "GG232";
-        }
-        jsonParam.put("teamName",teamName);
-
-        com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(
-                Request.Method.POST,
-                regFirstRosterUrl,
-                jsonParam,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("팀 등록 완료: ", response.toString());
-
-                        try {
-                            rtnVal = Integer.parseInt((String)response.get("teamCode"));
-                            volleyCallBack.onLoad();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("팀 등록 에러: ", error.toString());
-                    }
-                }
-        );
-
-        requestQueue.add(request);
-    }
-
     public void getRosterListBySeason(Context context, int seasonCode, final VolleyCallBack volleyCallBack) {
         JSONObject jsonParams = new JSONObject();
 

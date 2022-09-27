@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.android.volley.*;
 import com.choonham.lck_manager.common.*;
-import com.choonham.lck_manager.dao.RosterDAO;
-import com.choonham.lck_manager.dao.TeamDAO;
-import com.choonham.lck_manager.dao.UserDAO;
+import com.choonham.lck_manager.dao.*;
 import com.choonham.lck_manager.entity.*;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
@@ -46,6 +44,10 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
     UserDAO userDAO;
 
     RosterDAO rosterDAO;
+
+    ChampionDAO championDAO;
+
+    PlayerDAO playerDAO;
 
     RequestQueue requestQueue;
 
@@ -153,8 +155,10 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                             apiUserCode = loginService.getRtnVal();
 
                             userEntity.setApiUserCode(apiUserCode);
+                            userEntity.setSeasonCode(seasonCode);
 
-                            rosterService.regTeamCode(context, userEntity, teamName,
+
+                            teamService.regTeamCode(context, userEntity, teamName,
                             new VolleyCallBack() {
                                 @Override
                                 public void onLoad() throws JSONException {
@@ -168,18 +172,28 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                                             playerService.getSeasonPlayerList(context, seasonCode, new VolleyCallBack() {
                                                         @Override
                                                         public void onLoad() throws JSONException {
-                                                            Log.e("선수", playerService.getPlayerEntityList().get(1).playerEntity.getPlayerName());
+                                                            playerDAO = db.playerDAO();
+
+                                                            for(JoinedPlayer joinedPlayer : playerService.getPlayerEntityList()) {
+                                                                insertPlayerEntity(joinedPlayer.playerEntity);
+                                                            }
+
                                                         }
                                                     });
 
                                             championService.getChampionList(context, new VolleyCallBack() {
                                                 @Override
                                                 public void onLoad() throws JSONException {
-                                                    Log.e("챔피언", championService.getChampionList().get(1).getChampionName());
+                                                    championDAO = db.championDAO();
+
+                                                    for(ChampionEntity champion : championService.getChampionList()) {
+                                                        insertChampionEntity(champion);
+                                                    }
+
                                                 }
                                             });
 
-                                            teamService.getTeamListBySeason(context, seasonCode,
+                                            teamService.getTeamListBySeason(context, seasonCode, userEntity.getApiUserCode(),
                                                 new VolleyCallBack() {
                                                     @Override
                                                     public void onLoad() throws JSONException {
@@ -197,7 +211,6 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                                                                         rosterDAO = db.rosterDAO();
 
                                                                         for(RosterEntity roster : rosterList) {
-                                                                            Log.e("로스터 이름: ", Integer.toString(roster.getPlayerCode()));
                                                                             insertRosterData(roster);
                                                                         }
 
@@ -275,6 +288,30 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 })
                 .doOnError(error -> {
                     Log.e("insert error :", error.getMessage());
+                })
+                .subscribe();
+    }
+
+    private void insertChampionEntity(ChampionEntity championEntity) {
+        championDAO.insertChampionEntity(championEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(insertValue -> {
+                    Log.d("Insert champ data: ", insertValue.toString());
+                })
+                .doOnError(error -> {
+                    Log.e("insert champ error :", error.getMessage());
+                })
+                .subscribe();
+    }
+
+    private void insertPlayerEntity(PlayerEntity playerEntity) {
+        playerDAO.insertPlayerEntity(playerEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(insertValue -> {
+                    Log.d("Insert player data: ", insertValue.toString());
+                })
+                .doOnError(error -> {
+                    Log.e("insert player error :", error.getMessage());
                 })
                 .subscribe();
     }
