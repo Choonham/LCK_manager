@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.PlayerDAO;
 import com.choonham.lck_manager.dao.RosterDAO;
+import com.choonham.lck_manager.dao.TeamDAO;
+import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.RosterEntity;
 import com.choonham.lck_manager.entity.UserEntity;
@@ -43,6 +45,10 @@ public class TeamRoster extends Fragment {
     boolean isMainRosterLoad = false;
     boolean isSubRosterLoad = false;
 
+    boolean isTeamCodeLoad = false;
+
+    int teamCode = 0;
+
     TextView playerName;
     TextView playerSeason;
 
@@ -61,9 +67,6 @@ public class TeamRoster extends Fragment {
         mainPlayerList = new ArrayList<>();
         subPlayerList = new ArrayList<>();
 
-        loadMainRoster();
-        loadSubRoster();
-
         // 로딩창 객체 생성
         customProgressDialog = new ProgressDialog(getContext());
 
@@ -72,9 +75,14 @@ public class TeamRoster extends Fragment {
 
         customProgressDialog.show();
 
-        while(!isMainRosterLoad || !isSubRosterLoad) {
+        loadTeamCodeByUserCode();
 
-        }
+        while(!isTeamCodeLoad) {}
+
+        loadMainRoster();
+        loadSubRoster();
+
+        while(!isMainRosterLoad || !isSubRosterLoad) {}
 
         customProgressDialog.dismiss();
 
@@ -139,12 +147,43 @@ public class TeamRoster extends Fragment {
         return view;
     }
 
+    public void loadTeamCodeByUserCode() {
+        UserDAO userDAO = db.userDAO();
+
+        userDAO.loadUserEntityById(1)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(userEntity -> {
+
+                    TeamDAO teamDAO = db.teamDAO();
+                    Log.e("유저 코드", String.valueOf(userEntity.getApiUserCode()));
+                    teamDAO.loadTeamDataByUserCode(userEntity.getApiUserCode())
+                            .subscribeOn(Schedulers.io())
+                            .doOnSuccess(loadValue -> {
+
+                                teamCode = loadValue.getApiTeamCode();
+                                Log.e("팀 코드", String.valueOf(teamCode));
+                                isTeamCodeLoad = true;
+                            })
+                            .doOnError(error -> {
+                                Log.e("loadMainRoster error 2:", error.getMessage());
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
+                })
+                .doOnError(error -> {
+                    Log.e("loadMainRoster error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
+    }
+
     public void loadMainRoster() {
         RosterDAO rosterDAO = db.rosterDAO();
         PlayerDAO playerDAO = db.playerDAO();
         //AtomicReference<RosterEntity> value = new AtomicReference<>();
-
-        rosterDAO.loadRosterListByTeamCode(0, 1)
+        Log.e("팀 코드2", String.valueOf(teamCode));
+        rosterDAO.loadRosterListByTeamCode(teamCode, 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
                     for(RosterEntity rosterEntity : loadValue) {
@@ -152,6 +191,7 @@ public class TeamRoster extends Fragment {
                         playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
                                 .subscribeOn(Schedulers.io())
                                 .doOnSuccess(player -> {
+                                    Log.e("선수 코드", String.valueOf(player.playerEntity.getPlayerCode()));
                                     mainPlayerList.add(player);
                                 })
                                 .doOnError(error -> {
@@ -177,7 +217,7 @@ public class TeamRoster extends Fragment {
         PlayerDAO playerDAO = db.playerDAO();
         //AtomicReference<RosterEntity> value = new AtomicReference<>();
 
-        rosterDAO.loadRosterListByTeamCode(0, 0)
+        rosterDAO.loadRosterListByTeamCode(teamCode, 0)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
                     for(RosterEntity rosterEntity : loadValue) {

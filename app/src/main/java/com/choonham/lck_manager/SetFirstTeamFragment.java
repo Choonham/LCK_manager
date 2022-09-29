@@ -154,7 +154,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                             new VolleyCallBack() {
                                 @Override
                                 public void onLoad() throws JSONException {
-                                    int teamCode = rosterService.getRtnVal();
+                                    int teamCode = teamService.getRtnVal();
 
                                     rosterService.regFirstRoster(context, myTeamList, teamCode, userEntity,
                                     new VolleyCallBack() {
@@ -326,7 +326,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
     private void checkInsertYN(Long insertCode) {
         AtomicReference<UserEntity> value = new AtomicReference<>();
 
-        userDAO.loadUserEntityById(insertCode)
+        userDAO.loadUserEntityById(insertCode.intValue())
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
                     Log.d("insertedID", loadValue.getUserId());

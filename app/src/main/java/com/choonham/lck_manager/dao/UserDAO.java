@@ -16,7 +16,7 @@ public interface UserDAO {
     Maybe<Long> insertUserEntity(UserEntity userEntity);
 
     @Query("SELECT * FROM user u WHERE u.user_code = :userCode")
-    Single<UserEntity> loadUserEntityById(Long userCode);
+    Single<UserEntity> loadUserEntityById(int userCode);
 
     @Query("SELECT COUNT(*) FROM user u WHERE u.user_id = :userID")
     Single<Integer> countUserEntitiesByUserID(String userID);

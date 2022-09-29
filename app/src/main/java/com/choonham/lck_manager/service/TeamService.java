@@ -36,6 +36,10 @@ public class TeamService{
         this.teamList = teamList;
     }
 
+    public int getRtnVal() {
+        return rtnVal;
+    }
+
     /**
      * User Code, 팀 정보 등록
      */
