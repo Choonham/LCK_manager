@@ -1,6 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +10,19 @@ import android.view.ViewGroup;
 import android.widget.*;
 import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.RosterEntity;
+import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.choonham.lck_manager.room.AppDatabase;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TeamRoster extends Fragment {
 
@@ -25,14 +33,23 @@ public class TeamRoster extends Fragment {
     ListView teamMainRosterListView;
     ListView teamSubRosterListView;
 
+    ProgressDialog customProgressDialog;
+
+    AppDatabase db;
+
+    boolean temp;
+
     TextView playerName;
     TextView playerSeason;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.team_roster, container, false);
+
+        temp = false;
+
+        db = AppDatabase.getInstance(getContext());
 
         Common common = Common.getInstance();
         playerEntityList = common.getTempPlayerList(0);
@@ -43,6 +60,22 @@ public class TeamRoster extends Fragment {
 
         teamSubRosterListView = view.findViewById(R.id.sub_roster_list);
         /*teamSubRosterListView.addHeaderView(header, null, false);*/
+
+        loadMainRoster();
+
+        // 로딩창 객체 생성
+        customProgressDialog = new ProgressDialog(getContext());
+
+        // 로딩창 배경 투명하게
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        customProgressDialog.show();
+
+        while(!temp) {
+            Log.d("temp22", String.valueOf(temp));
+        }
+
+        customProgressDialog.dismiss();
 
         teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
         teamSubRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
@@ -92,5 +125,26 @@ public class TeamRoster extends Fragment {
         });
 
         return view;
+    }
+
+    public List<JoinedPlayer> loadMainRoster() {
+        RosterDAO rosterDAO = db.rosterDAO();
+        AtomicReference<RosterEntity> value = new AtomicReference<>();
+
+        rosterDAO.loadRosterListByTeamCode(0, 1)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Log.d("temp", String.valueOf(temp));
+                    temp = true;
+                    Log.d("temp", String.valueOf(temp));
+                    //Log.d("insertedID", loadValue.getUserId());
+                    //value.set(loadValue.get(0));
+                })
+                .doOnError(error -> {
+                    Log.e("check error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        return null;
     }
 }

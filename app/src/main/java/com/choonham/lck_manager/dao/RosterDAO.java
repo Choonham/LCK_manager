@@ -16,6 +16,7 @@ public interface RosterDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Maybe<Long> insertRosterData(RosterEntity roster);
 
-    @Query("SELECT * FROM roster r WHERE r.team_code = :teamCode")
-    Single<List<RosterEntity>> loadRosterListByTeamCode(Long teamCode);
+    @Query("SELECT * FROM roster r WHERE r.team_code = :teamCode AND r.main_entry = :mainEntry")
+    Single<List<RosterEntity>> loadRosterListByTeamCode(int teamCode, int mainEntry);
+
 }

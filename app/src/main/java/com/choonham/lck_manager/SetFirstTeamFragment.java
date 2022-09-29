@@ -49,14 +49,6 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     PlayerDAO playerDAO;
 
-    RequestQueue requestQueue;
-
-    String url = Common.REST_API_URL + "getFirstPlayerList";
-
-    String apiKey = Common.REST_API_KEY;
-
-    String getFirstRosterUrl = url + "?key=" + apiKey;
-
     UserEntity userEntity = null;
 
     AppDatabase db;
