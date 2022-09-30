@@ -9,13 +9,13 @@ import android.view.*;
 import android.widget.*;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import com.choonham.lck_manager.common.Common;
-import com.choonham.lck_manager.common.PlayerInfoListener;
-import com.choonham.lck_manager.common.PlayerInfoModel;
-import com.choonham.lck_manager.common.SetFirstTeamModel;
+import com.choonham.lck_manager.common.*;
+import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.room.AppDatabase;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Set;
 
@@ -35,6 +35,7 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     ImageButton releaseBtn;
 
     SetFirstTeamModel setFirstTeamModel;
+    TeamRosterModel teamRosterModel;
 
     TextView stabilityView;
     TextView physicalView;
@@ -44,6 +45,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
     PlayerEntity playerEntity;
     SeasonEntity seasonEntity;
+
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +120,10 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
                         @Override
                         public void onClick(View view)
                         {
-                            Intent intent = new Intent(getApplicationContext(),PlayerProposalActivity.class);
-                            intent.putExtra("playerEntity", playerEntity);
-                            intent.putExtra("seasonEntity", seasonEntity);
-                            startActivity(intent);
+                            Intent intent2 = new Intent(getApplicationContext(),PlayerProposalActivity.class);
+                            intent2.putExtra("playerEntity", playerEntity);
+                            intent2.putExtra("seasonEntity", seasonEntity);
+                            startActivity(intent2);
 
                             finish();
                         }
@@ -177,6 +180,9 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
             /*parentLayout.setLayoutParams(layoutParams);*/
         } else if(tag.equals(ActivityTagEnum.TEAM_ROSTER_MAIN)){
+
+            teamRosterModel = TeamRosterModel.getInstance();
+
             LinearLayout.LayoutParams paramsTemp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -196,6 +202,10 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             mostFiveLinearLayout.addView(toSubBtn);
 
         } else if(tag.equals(ActivityTagEnum.TEAM_ROSTER_SUB)){
+            teamRosterModel = TeamRosterModel.getInstance();
+
+            db = AppDatabase.getInstance(getApplicationContext());
+
             LinearLayout.LayoutParams paramsTemp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -211,6 +221,30 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             toMainBtn.setPadding(0,0,50,0);
 
             toMainBtn.setLayoutParams(paramsTemp);
+
+            int teamCode = intent.getIntExtra("teamCode", 0);
+            Log.e("teamCode", String.valueOf(teamCode));
+
+            toMainBtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    RosterDAO rosterDAO = db.rosterDAO();
+
+                    rosterDAO.updateRosterData(1, playerEntity.getPlayerCode(), teamCode)
+                            .subscribeOn(Schedulers.io())
+                            .doOnSuccess(insertValue -> {
+                                Log.d("Roster Update!: ", String.valueOf(insertValue));
+
+                                teamRosterModel.onEntryChange();
+                            })
+                            .doOnError(error -> {
+                                Log.e("Roster Update error :", error.getMessage());
+                            })
+                            .subscribe();
+                }
+            });
 
             mostFiveLinearLayout.addView(toMainBtn);
 

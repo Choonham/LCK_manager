@@ -1,5 +1,6 @@
 package com.choonham.lck_manager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.common.TeamRosterListener;
+import com.choonham.lck_manager.common.TeamRosterModel;
 import com.choonham.lck_manager.dao.PlayerDAO;
 import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.dao.TeamDAO;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TeamRoster extends Fragment {
+public class TeamRoster extends Fragment implements TeamRosterListener {
 
     private ActivityTagEnum tag;
 
@@ -49,6 +52,8 @@ public class TeamRoster extends Fragment {
 
     int teamCode = 0;
 
+    TeamRosterModel teamRosterModel;
+
     TextView playerName;
     TextView playerSeason;
 
@@ -62,10 +67,10 @@ public class TeamRoster extends Fragment {
 
         db = AppDatabase.getInstance(getContext());
 
-        Common common = Common.getInstance();
-
         mainPlayerList = new ArrayList<>();
         subPlayerList = new ArrayList<>();
+
+        TeamRosterModel.createInstance(this);
 
         // 로딩창 객체 생성
         customProgressDialog = new ProgressDialog(getContext());
@@ -79,8 +84,7 @@ public class TeamRoster extends Fragment {
 
         while(!isTeamCodeLoad) {}
 
-        loadMainRoster();
-        loadSubRoster();
+        loadRosters();
 
         while(!isMainRosterLoad || !isSubRosterLoad) {}
 
@@ -108,6 +112,7 @@ public class TeamRoster extends Fragment {
 
                 Common common = Common.getInstance();
                 Intent intent = common.getPlayerInfoPopUpIntent(mainPlayerList, i, selectedView, tag, getContext(), 0);
+                intent.putExtra("teamCode", teamCode);
 
                 startActivity(intent);
             }
@@ -139,6 +144,7 @@ public class TeamRoster extends Fragment {
 
                 Common common = Common.getInstance();
                 Intent intent = common.getPlayerInfoPopUpIntent(subPlayerList, i, selectedView, tag, getContext(), 0);
+                intent.putExtra("teamCode", teamCode);
 
                 startActivity(intent);
             }
@@ -147,12 +153,21 @@ public class TeamRoster extends Fragment {
         return view;
     }
 
+    public void loadRosters() {
+
+        loadMainRoster();
+        loadSubRoster();
+
+    }
+
     public void loadTeamCodeByUserCode() {
         UserDAO userDAO = db.userDAO();
 
         userDAO.loadUserEntityById(1)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(userEntity -> {
+
+                    isTeamCodeLoad = false;
 
                     TeamDAO teamDAO = db.teamDAO();
                     Log.e("유저 코드", String.valueOf(userEntity.getApiUserCode()));
@@ -186,6 +201,8 @@ public class TeamRoster extends Fragment {
         rosterDAO.loadRosterListByTeamCode(teamCode, 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
+                    isMainRosterLoad = false;
+
                     for(RosterEntity rosterEntity : loadValue) {
                         /*JoinedPlayer player = playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode());*/
                         playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
@@ -220,6 +237,9 @@ public class TeamRoster extends Fragment {
         rosterDAO.loadRosterListByTeamCode(teamCode, 0)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
+
+                    isSubRosterLoad = false;
+
                     for(RosterEntity rosterEntity : loadValue) {
                         /*JoinedPlayer player = playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode());*/
                         playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
@@ -245,4 +265,30 @@ public class TeamRoster extends Fragment {
                 .subscribe();
     }
 
+    @Override
+    public void onEntryChange() {
+        isMainRosterLoad = false;
+        isSubRosterLoad = false;
+
+        loadRosters();
+
+        while(!isMainRosterLoad || !isSubRosterLoad) {}
+
+        mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
+        subRosterAdapter = new MainRosterAdapter(getContext(), subPlayerList);
+
+        teamMainRosterListView.setAdapter(mainRosterAdapter);
+        teamSubRosterListView.setAdapter(subRosterAdapter);
+
+    }
+
+    @Override
+    public void onRelease() {
+
+    }
+
+    @Override
+    public void toFA() {
+
+    }
 }
