@@ -25,9 +25,9 @@ public class TeamRosterModel {
         mInstance = null;
     }
 
-    public void onEntryChange() {
-        teamRosterListener.onEntryChange();
-    }
+    public void toSub() {teamRosterListener.toSub();}
+
+    public void toMain() {teamRosterListener.toMain();}
 
     public void onRelease() {
         teamRosterListener.onRelease();

@@ -1,7 +1,9 @@
 package com.choonham.lck_manager.common;
 
 public interface TeamRosterListener {
-    void onEntryChange();
+    void toSub();
+
+    void toMain();
 
     void onRelease();
 

@@ -35,6 +35,8 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
     private ActivityTagEnum tag;
 
+    private int selectedIndex = 0;
+
     private List<JoinedPlayer> mainPlayerList;
     private List<JoinedPlayer> subPlayerList;
 
@@ -121,26 +123,10 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
         teamSubRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                /*Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
-                TextView season = selectedView.findViewById(R.id.player_season_for_list);
-                TextView name = selectedView.findViewById(R.id.player_name_for_list);
-                ImageView positionIcon = selectedView.findViewById(R.id.main_roster_position_icon);
-
-                int drawableRef = (int) positionIcon.getTag();
-
-                intent.putExtra("playerSeason", season.getText());
-                intent.putExtra("playerName", name.getText());
-                intent.putExtra("positionIcon", drawableRef);
-
-                TextView avg = selectedView.findViewById(R.id.player_avg_for_list);
-                TextView stability = selectedView.findViewById(R.id.player_stability_for_list);
-                intent.putExtra("playerAvg", avg.getText());
-                intent.putExtra("playerStability", stability.getText());
-                intent.putExtra("tag", TAG);
-
-                startActivity(intent);*/
 
                 tag = ActivityTagEnum.TEAM_ROSTER_SUB;
+
+                selectedIndex = i;
 
                 Common common = Common.getInstance();
                 Intent intent = common.getPlayerInfoPopUpIntent(subPlayerList, i, selectedView, tag, getContext(), 0);
@@ -203,6 +189,7 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                 .doOnSuccess(loadValue -> {
                     isMainRosterLoad = false;
 
+                    Log.e("사이즈", String.valueOf(loadValue.size()));
                     for(RosterEntity rosterEntity : loadValue) {
                         /*JoinedPlayer player = playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode());*/
                         playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
@@ -210,6 +197,7 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                                 .doOnSuccess(player -> {
                                     Log.e("선수 코드", String.valueOf(player.playerEntity.getPlayerCode()));
                                     mainPlayerList.add(player);
+                                    //if(mainPlayerList.size() == loadValue.size())  isMainRosterLoad = true;
                                 })
                                 .doOnError(error -> {
                                     Log.e("loadMainRoster error 1:", error.getMessage());
@@ -219,6 +207,7 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                     }
 
                     isMainRosterLoad = true;
+
                     //Log.d("insertedID", loadValue.getUserId());
                     //value.set(loadValue.get(0));
                 })
@@ -239,13 +228,15 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                 .doOnSuccess(loadValue -> {
 
                     isSubRosterLoad = false;
-
+                    Log.e("사이즈2", String.valueOf(loadValue.size()));
                     for(RosterEntity rosterEntity : loadValue) {
                         /*JoinedPlayer player = playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode());*/
                         playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
                                 .subscribeOn(Schedulers.io())
                                 .doOnSuccess(player -> {
                                     subPlayerList.add(player);
+
+                                    //if(subPlayerList.size() == loadValue.size())
                                 })
                                 .doOnError(error -> {
                                     Log.e("loadSubRoster error 1:", error.getMessage());
@@ -255,6 +246,7 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                     }
 
                     isSubRosterLoad = true;
+
                     //Log.d("insertedID", loadValue.getUserId());
                     //value.set(loadValue.get(0));
                 })
@@ -266,20 +258,25 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
     }
 
     @Override
-    public void onEntryChange() {
-        isMainRosterLoad = false;
-        isSubRosterLoad = false;
+    public void toSub() {
+        subPlayerList.add(mainPlayerList.remove(selectedIndex));
 
-        loadRosters();
+        MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
+        MainRosterAdapter sub = new MainRosterAdapter(getContext(), subPlayerList);
 
-        while(!isMainRosterLoad || !isSubRosterLoad) {}
+        teamMainRosterListView.setAdapter(main);
+        teamSubRosterListView.setAdapter(sub);
+    }
 
-        mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
-        subRosterAdapter = new MainRosterAdapter(getContext(), subPlayerList);
+    @Override
+    public void toMain() {
+        mainPlayerList.add(subPlayerList.remove(selectedIndex));
 
-        teamMainRosterListView.setAdapter(mainRosterAdapter);
-        teamSubRosterListView.setAdapter(subRosterAdapter);
+        MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
+        MainRosterAdapter sub = new MainRosterAdapter(getContext(), subPlayerList);
 
+        teamMainRosterListView.setAdapter(main);
+        teamSubRosterListView.setAdapter(sub);
     }
 
     @Override

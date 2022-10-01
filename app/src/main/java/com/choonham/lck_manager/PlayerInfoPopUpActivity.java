@@ -181,6 +181,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             /*parentLayout.setLayoutParams(layoutParams);*/
         } else if(tag.equals(ActivityTagEnum.TEAM_ROSTER_MAIN)){
 
+            db = AppDatabase.getInstance(getApplicationContext());
+
             teamRosterModel = TeamRosterModel.getInstance();
 
             LinearLayout.LayoutParams paramsTemp = new LinearLayout.LayoutParams(
@@ -198,6 +200,28 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             toSubBtn.setPadding(0,0,50,0);
 
             toSubBtn.setLayoutParams(paramsTemp);
+
+            int teamCode = intent.getIntExtra("teamCode", 0);
+            toSubBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RosterDAO rosterDAO = db.rosterDAO();
+
+                    rosterDAO.updateRosterData(0, playerEntity.getPlayerCode(), teamCode)
+                            .subscribeOn(Schedulers.io())
+                            .doOnSuccess(insertValue -> {
+                                Log.d("Roster Update!: ", String.valueOf(insertValue));
+                            })
+                            .doOnError(error -> {
+                                Log.e("Roster Update error :", error.getMessage());
+                            })
+                            .subscribe();
+
+                    teamRosterModel.toSub();
+
+                    finish();
+                }
+            });
 
             mostFiveLinearLayout.addView(toSubBtn);
 
@@ -236,13 +260,15 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
                             .subscribeOn(Schedulers.io())
                             .doOnSuccess(insertValue -> {
                                 Log.d("Roster Update!: ", String.valueOf(insertValue));
-
-                                teamRosterModel.onEntryChange();
                             })
                             .doOnError(error -> {
                                 Log.e("Roster Update error :", error.getMessage());
                             })
                             .subscribe();
+
+                    teamRosterModel.toMain();
+
+                    finish();
                 }
             });
 
