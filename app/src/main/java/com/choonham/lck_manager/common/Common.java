@@ -46,6 +46,10 @@ public class Common {
     // HTTP 요청을 위한 RequestQueue 를 static 으로 선언
     private static RequestQueue requestQueue;
 
+    public static int CURR_SEASON_CODE;
+
+    public static int CURR_USER_CODE = 1;
+
     public static double startMoney = 50000;
 
     public static int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};

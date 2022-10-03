@@ -118,13 +118,13 @@ public class LoginService {
                             try {
                                 rtnVal = Integer.parseInt((String)response.get("userCode"));
 
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
 
                             try {
                                 volleyCallBack.onLoad();
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
                         }

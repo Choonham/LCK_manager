@@ -8,6 +8,8 @@ import com.choonham.lck_manager.entity.TeamEntity;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
+import java.util.List;
+
 @Dao
 public interface TeamDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -18,4 +20,7 @@ public interface TeamDAO {
 
     @Query("SELECT * FROM team t WHERE t.user_code = :userCode")
     Single<TeamEntity> loadTeamDataByUserCode(int userCode);
+
+    @Query("SELECT * FROM team t WHERE t.season_code = :seasonCode")
+    Single<List<TeamEntity>> loadAllTeamBySeasonCode(int seasonCode);
 }

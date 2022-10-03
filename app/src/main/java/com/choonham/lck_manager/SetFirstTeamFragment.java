@@ -26,9 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListener {
@@ -71,10 +70,6 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     Context context;
 
-    public JSONObject getJsonObject(){
-        HashMap<String, String> params = new HashMap<String, String>();
-        return new JSONObject(params);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -197,7 +192,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                                                         rosterService.getRosterListBySeason(context, seasonCode,
                                                                 new VolleyCallBack() {
                                                                     @Override
-                                                                    public void onLoad() throws JSONException {
+                                                                    public void onLoad() throws Exception {
                                                                         List<RosterEntity> rosterList = rosterService.getRosterList();
 
                                                                         rosterDAO = db.rosterDAO();
@@ -210,7 +205,13 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                                                                         userDAO = db.userDAO();
 
+                                                                        userEntity.setMatchNum(1);
+
                                                                         insertUserIDInfo(userEntity);
+
+                                                                        setLeagueScheduleMap(setLeagueSchedule(teamList));
+
+
 
                                                                         customProgressDialog.dismiss();
 
@@ -229,7 +230,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                             });
                         }
                     });
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
@@ -389,4 +390,124 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
         moneyView.setText(Double.toString(Common.startMoney));
     }
+
+    public void setLeagueScheduleMap(List<TeamEntity[]> leagueScheduleList) throws Exception{
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = formatter.parse("2022-01-12");
+        /*   Date endDate = formatter.parse("2022-02-18");*/
+
+        LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+        /*Calendar end = Calendar.getInstance();
+        end.setTime(endDate);*/
+
+        Date date = start.getTime();
+        int matchNum = 1;
+        int matchDay = 1;
+
+        for(int i = 1; i <= 55;) {
+
+            Calendar temp = Calendar.getInstance();
+            temp.setTime(date);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd E요일");
+            String strNowDate = simpleDateFormat.format(date);
+
+            int day = temp.get(Calendar.DAY_OF_WEEK);
+
+            if(day >= 4 || day == 1) {
+
+                for(int j = 0; j <= 1; j++) {
+                    if(leagueScheduleList.size() > 0) {
+                        TeamEntity[] tempMatch = leagueScheduleList.remove(0);
+
+                        LeagueScheduleEntity leagueScheduleEntity = new LeagueScheduleEntity();
+
+                        leagueScheduleEntity.setTeamCodeA(tempMatch[0].getApiTeamCode());
+                        Log.e("팀팀코코드드", String.valueOf(tempMatch[0].getApiTeamCode()));
+                        leagueScheduleEntity.setTeamCodeB(tempMatch[1].getApiTeamCode());
+
+                        leagueScheduleEntity.setTeamA(tempMatch[0].getTeamName());
+                        leagueScheduleEntity.setTeamB(tempMatch[1].getTeamName());
+                        leagueScheduleEntity.setMatchNum(matchNum);
+                        leagueScheduleEntity.setDate(date);
+
+                        //leagueScheduleEntityList.add(leagueScheduleEntity);
+
+                        leagueScheduleDAO.insertLeagueSchedule(leagueScheduleEntity)
+                                .subscribeOn(Schedulers.io())
+                                .doOnSuccess(loadValue -> {
+                                    Log.d("insertAllLeagueSchedule: ", String.valueOf(loadValue));
+                                })
+                                .doOnError(error -> {
+                                    Log.e("insertAllLeagueSchedule error:", error.getMessage());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+
+                        matchNum = matchNum + 1;
+                    }
+                }
+
+                /*matchDateList.add(strNowDate);*/
+                //matchDateList.add(Integer.toString(matchDay));
+                /*Log.d("dd", matchScheduleList.size() + "||" + matchDateList.size());*/
+                i = i + 2;
+                matchDay ++;
+
+            }
+
+            start.add(Calendar.DATE, 1);
+            date = start.getTime();
+        }
+
+    }
+
+    public ArrayList<TeamEntity[]> setLeagueSchedule(List<TeamEntity> teamList) {
+        List<TeamEntity> tempTeamList = teamList;
+        int teamNum = tempTeamList.size();
+        int[] teamIdArray = new int[teamNum];
+
+        for(int i = 1; i <= teamNum; i++) {
+            teamIdArray[i-1] = i;
+        }
+
+        ArrayList<Integer> groupA = new ArrayList<>();
+        ArrayList<Integer> groupB = new ArrayList<>();
+
+        for(int i = 0; i <= teamIdArray.length-1; i++) {
+            groupA.add(teamIdArray[i]);
+            groupB.add(teamIdArray[i]);
+        }
+
+        groupB.remove(0);
+        groupB.add(0);
+
+        ArrayList<TeamEntity[]> leagueScheduleResult = new ArrayList<TeamEntity[]>();
+
+        while (groupB.contains(11)) {
+            for (int j = 0; j < teamIdArray.length; j++) {
+                /*if(!Objects.equals(groupA.get(j), groupB.get(j))) {*/
+                /*Log.d("DD", groupA.get(j)+ "||" + groupB.get(j));*/
+                int a = groupA.get(j) - 1;
+                int b = groupB.get(j) - 1;
+                if(b >= 0) {
+                    TeamEntity[] aMatch = {tempTeamList.get(a), tempTeamList.get(b)};
+                    /*Log.d("dd", aMatch[0] + "||" +aMatch[1]);*/
+                    leagueScheduleResult.add(aMatch);
+                }
+
+            }
+            /*}*/
+            /*Collections.rotate(groupB, -1);*/
+            groupB.remove(0);
+            groupB.add(0);
+        }
+
+        return leagueScheduleResult;
+    }
+
 }

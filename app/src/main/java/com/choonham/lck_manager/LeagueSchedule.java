@@ -10,9 +10,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.dao.LeagueScheduleDAO;
+import com.choonham.lck_manager.dao.SeasonDAO;
+import com.choonham.lck_manager.dao.TeamDAO;
+import com.choonham.lck_manager.dao.UserDAO;
+import com.choonham.lck_manager.entity.LeagueScheduleEntity;
+import com.choonham.lck_manager.entity.TeamEntity;
+import com.choonham.lck_manager.entity.Temp;
 import com.choonham.lck_manager.entity.TempLeagueSchedule;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.room.AppDatabase;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,9 +33,13 @@ public class LeagueSchedule extends Fragment {
 
     private MaterialCalendarView calendarView;
 
-    String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
+    //String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
+    List<TeamEntity> teamList;
 
-    ArrayList<String[]> leagueScheduleList;
+    ArrayList<TeamEntity[]> leagueScheduleList;
+
+    boolean isTeamListLoad = false;
+    boolean isLeagueScheduleLoad = false;
 
     TextView teamA;
     TextView teamB;
@@ -37,20 +52,42 @@ public class LeagueSchedule extends Fragment {
     ArrayList<TempLeagueSchedule> tempLeagueScheduleList = new ArrayList<>();
     ArrayList<String> matchDateList = new ArrayList<>();
 
+    ArrayList<LeagueScheduleEntity> leagueScheduleEntityList = new ArrayList<>();
+
     ListView leagueScheduleListView;
+
+    AppDatabase db;
+
+    UserDAO userDAO;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.league_schedule, container, false);
 
-        leagueScheduleList = setLeagueSchedule(teamList);
+        teamList = new ArrayList<>();
 
-        try{
+        getMatchDateArray(28);
+
+        db = AppDatabase.getInstance(getContext());
+
+        getMatchData();
+        //getSeasonCode();
+
+        //getTeamList();
+
+        getLeagueSchedule();
+
+        while(!isLeagueScheduleLoad) {}
+
+        //leagueScheduleList = setLeagueSchedule(teamList);
+
+        /*try{
             setLeagueScheduleMap();
         } catch (Exception e) {
             Log.e("error" , e.getMessage());
-        }
+        }*/
 
-        LeagueScheduleAdapter leagueScheduleAdapter = new LeagueScheduleAdapter(tempLeagueScheduleList, matchDateList, getContext());
+        LeagueScheduleAdapter leagueScheduleAdapter = new LeagueScheduleAdapter(leagueScheduleEntityList, matchDateList, getContext());
         leagueScheduleListView = view.findViewById(R.id.league_schedule_list_view);
         leagueScheduleListView.setAdapter(leagueScheduleAdapter);
 
@@ -108,11 +145,19 @@ public class LeagueSchedule extends Fragment {
         return view;
     }
 
+    public void getMatchDateArray(int i) {
+        for(int j = 1; j <= i; j++) {
+            matchDateList.add(Integer.toString(j));
+        }
+    }
+
     public void setLeagueScheduleMap() throws Exception{
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = formatter.parse("2022-01-12");
      /*   Date endDate = formatter.parse("2022-02-18");*/
+
+        LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
 
         Calendar start = Calendar.getInstance();
         start.setTime(startDate);
@@ -137,14 +182,28 @@ public class LeagueSchedule extends Fragment {
 
                 for(int j = 0; j <= 1; j++) {
                     if(leagueScheduleList.size() > 0) {
-                        String[] tempMatch = leagueScheduleList.remove(0);
-                        TempLeagueSchedule leagueSchedule = new TempLeagueSchedule();
-                        leagueSchedule.setTeamA(tempMatch[0]);
-                        leagueSchedule.setTeamB(tempMatch[1]);
-                        leagueSchedule.setMatchNum(matchNum);
-                        leagueSchedule.setDate(date);
+                        TeamEntity[] tempMatch = leagueScheduleList.remove(0);
 
-                        tempLeagueScheduleList.add(leagueSchedule);
+                        LeagueScheduleEntity leagueScheduleEntity = new LeagueScheduleEntity();
+
+                        leagueScheduleEntity.setTeamA(tempMatch[0].getTeamName());
+                        leagueScheduleEntity.setTeamB(tempMatch[1].getTeamName());
+                        leagueScheduleEntity.setMatchNum(matchNum);
+                        leagueScheduleEntity.setDate(date);
+
+                        leagueScheduleEntityList.add(leagueScheduleEntity);
+
+                        leagueScheduleDAO.insertLeagueSchedule(leagueScheduleEntity)
+                                .subscribeOn(Schedulers.io())
+                                .doOnSuccess(loadValue -> {
+                                    Log.d("insertAllLeagueSchedule: ", String.valueOf(loadValue));
+                                })
+                                .doOnError(error -> {
+                                    Log.e("insertAllLeagueSchedule error:", error.getMessage());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+
                         matchNum = matchNum + 1;
                     }
                 }
@@ -163,9 +222,9 @@ public class LeagueSchedule extends Fragment {
 
     }
 
-    public ArrayList<String[]> setLeagueSchedule(String[] teamList) {
-        String[] tempTeamList = teamList;
-        int teamNum = tempTeamList.length;
+    public ArrayList<TeamEntity[]> setLeagueSchedule(List<TeamEntity> teamList) {
+        List<TeamEntity> tempTeamList = teamList;
+        int teamNum = tempTeamList.size();
         int[] teamIdArray = new int[teamNum];
 
         for(int i = 1; i <= teamNum; i++) {
@@ -183,7 +242,7 @@ public class LeagueSchedule extends Fragment {
         groupB.remove(0);
         groupB.add(0);
 
-        ArrayList<String[]> leagueScheduleResult = new ArrayList<String[]>();
+        ArrayList<TeamEntity[]> leagueScheduleResult = new ArrayList<TeamEntity[]>();
 
         while (groupB.contains(11)) {
             for (int j = 0; j < teamIdArray.length; j++) {
@@ -192,7 +251,7 @@ public class LeagueSchedule extends Fragment {
                     int a = groupA.get(j) - 1;
                     int b = groupB.get(j) - 1;
                     if(b >= 0) {
-                        String[] aMatch = {tempTeamList[a], tempTeamList[b]};
+                        TeamEntity[] aMatch = {tempTeamList.get(a), tempTeamList.get(b)};
                         /*Log.d("dd", aMatch[0] + "||" +aMatch[1]);*/
                         leagueScheduleResult.add(aMatch);
                     }
@@ -206,5 +265,78 @@ public class LeagueSchedule extends Fragment {
 
         return leagueScheduleResult;
     }
+
+    public void getSeasonCode() {
+        userDAO = db.userDAO();
+
+        userDAO.loadUserEntityById(1)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Common.CURR_SEASON_CODE = loadValue.getSeasonCode();
+                })
+                .doOnError(error -> {
+                    Log.e("getSeasonCode error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void getTeamList() {
+        TeamDAO teamDAO = db.teamDAO();
+        teamDAO.loadAllTeamBySeasonCode(Common.CURR_SEASON_CODE)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(TeamEntity teamEntity : loadValue) {
+                        teamList.add(teamEntity);
+                    }
+
+                    isTeamListLoad = true;
+                })
+                .doOnError(error -> {
+                    Log.e("getTeamList error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void getMatchData() {
+        Log.e("안녕3", "33");
+        LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
+        leagueScheduleDAO.loadScheduleAgainstTeam(13, 215)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(Temp temp : loadValue) {
+                        Log.e("안녕1", String.valueOf(temp.getAgainst_team()));
+                        Log.e("안녕2", String.valueOf(temp.getTeam_rank()));
+                    }
+
+                })
+                .doOnError(error -> {
+                    Log.e("getTeamList error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void getLeagueSchedule() {
+        LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
+
+        leagueScheduleDAO.loadLeagueSchedule()
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(value -> {
+                    for(LeagueScheduleEntity leagueScheduleEntity : value) {
+                        leagueScheduleEntityList.add(leagueScheduleEntity);
+                    }
+
+                    isLeagueScheduleLoad = true;
+                })
+                .doOnError(error -> {
+                    Log.e("getTeamList error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+
 
 }

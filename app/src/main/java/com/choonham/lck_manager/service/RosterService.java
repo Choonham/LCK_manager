@@ -152,7 +152,7 @@ public class RosterService {
 
                         try {
                             volleyCallBack.onLoad();
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
                     }
