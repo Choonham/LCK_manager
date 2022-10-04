@@ -13,7 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
+import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.NewsAndIssueDAO;
+import com.choonham.lck_manager.dao.TeamDAO;
+import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.NewsAndIssueEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.room.AppDatabase;
@@ -25,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences prefs;
 
+    boolean isSeasonCodeLoaded = false;
+    boolean isTeamCodeLoaded = false;
+
     AppDatabase db;
 
     @Override
@@ -50,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = AppDatabase.getInstance(this);
+
+        getSeasonCode();
+        loadTeamCodeByUserCode();
+
+        while(!isSeasonCodeLoaded || !isTeamCodeLoaded) {}
 
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 
@@ -193,48 +206,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /*private void createDatabase(String name) {
-        database = openOrCreateDatabase(name, MODE_PRIVATE, null);
+    public void getSeasonCode() {
+        UserDAO userDAO = db.userDAO();
+
+        userDAO.loadUserEntityById(1)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    Log.d("호호 시즌", String.valueOf(loadValue.getSeasonCode()));
+                    Common.CURR_SEASON_CODE = loadValue.getSeasonCode();
+
+                    isSeasonCodeLoaded = true;
+                })
+                .doOnError(error -> {
+                    Log.e("getSeasonCode error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
-    private void createTables(Context contect) {
+    public void loadTeamCodeByUserCode() {
+        UserDAO userDAO = db.userDAO();
 
-        if(database == null) {
-            return;
-        }
-        Log.d("데이터베이스 생성 시작!", database.getPath());
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_champion));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_player));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_player_champion_played_data));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_sub_roster));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_team));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_user));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_user_record));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_champion_counter));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_league_schedule));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_main_roster));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_match_data));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_league_rank));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_pog_point));
-        database.execSQL(contect.getResources().getString(R.string.sql_create_table_transfer_window));
-        Log.d("데이터베이스 생성 끝!", database.getPath());
+        userDAO.loadUserEntityById(1)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(userEntity -> {
+
+                    TeamDAO teamDAO = db.teamDAO();
+
+                    teamDAO.loadTeamDataByUserCode(userEntity.getApiUserCode())
+                            .subscribeOn(Schedulers.io())
+                            .doOnSuccess(loadValue -> {
+                                Log.d("호호 팀", String.valueOf(loadValue.getApiTeamCode()));
+                                Common.CURR_TEAM_CODE = loadValue.getApiTeamCode();
+
+                                isTeamCodeLoaded = true;
+                            })
+                            .doOnError(error -> {
+                                Log.e("loadMainRoster error 2:", error.getMessage());
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
+                })
+                .doOnError(error -> {
+                    Log.e("loadMainRoster error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
-
-    public void checkFirstRun(Context context){
-        boolean isFirstRun = prefs.getBoolean("isFirstRun",true);
-        if(isFirstRun)    {
-            createDatabase("lck_manager");
-            createTables(context);
-        }
-    }
-
-    private void testDataInsertAndSelect(AppDatabase db, LeagueSeasonTeamEntity leagueSeasonTeamEntity) {
-        TestDAO testDAO = db.textDao();
-        testDAO.insertLeagueRankEntity(leagueSeasonTeamEntity);
-        List<LeagueSeasonTeamEntity> temp = testDAO.loadAllLeagueRankEntity();
-
-        Log.d("test:", Integer.toString(temp.get(0).getRank()));
-    } */
 
 }
 

@@ -16,15 +16,22 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.dao.LeagueScheduleDAO;
 import com.choonham.lck_manager.dao.NewsAndIssueDAO;
+import com.choonham.lck_manager.dao.TeamDAO;
+import com.choonham.lck_manager.dao.UserDAO;
+import com.choonham.lck_manager.entity.MatchData;
 import com.choonham.lck_manager.entity.NewsAndIssueEntity;
 import com.choonham.lck_manager.entity.NewsEffectsEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedNews;
 import com.choonham.lck_manager.room.AppDatabase;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainView extends Fragment {
@@ -33,19 +40,26 @@ public class MainView extends Fragment {
 
     ListView matchScheduleListView;
 
-    String[] matchScheduleTeamList = {"T1", "DRX", "Gen.G", "KT", "DWG"};
-    int[] matchScheduleResultList = {1, 0, 2, 2, 2};
-    int[] matchScheduleRankList = {1, 4, 2, 6, 2};
+    List<MatchData> matchDataList;
 
     ImageButton matchStartButton;
 
     AppDatabase db;
 
+    boolean isMatchDataLoaded = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_view, container, false);
 
-        MatchScheduleAdapter matchScheduleAdapter = new MatchScheduleAdapter(matchScheduleTeamList, matchScheduleResultList, matchScheduleRankList, getContext());
+        db = AppDatabase.getInstance(getContext());
+        matchDataList = new ArrayList<>();
+
+        getMatchData();
+
+        while(!isMatchDataLoaded) {}
+
+        MatchScheduleAdapter matchScheduleAdapter = new MatchScheduleAdapter(matchDataList, getContext());
         matchScheduleListView = view.findViewById(R.id.match_schedule_list_view);
 
         matchScheduleListView.setAdapter(matchScheduleAdapter);
@@ -180,6 +194,25 @@ public class MainView extends Fragment {
     private Single<List<JoinedNews>> selectNewsAndEffectByCode(AppDatabase db, int newsCode) {
         NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
         return newsAndIssueDAO.loadNewsAndEffectByCode(newsCode);
+    }
+
+    public void getMatchData() {
+        LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
+        leagueScheduleDAO.loadScheduleAgainstTeam(Common.CURR_SEASON_CODE, Common.CURR_TEAM_CODE)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(MatchData temp : loadValue) {
+                        Log.e("호호호호", String.valueOf(temp.getCurr_match()));
+                        matchDataList.add(temp);
+                    }
+
+                    isMatchDataLoaded = true;
+                })
+                .doOnError(error -> {
+                    Log.e("getTeamList error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
 }

@@ -8,7 +8,7 @@
     <TextView
             android:padding="2dp"
             android:text="W"
-            android:textSize="25sp"
+            android:textSize="21sp"
             android:layout_width="0dp"
             android:gravity="center"
             android:textColor="@color/colorDarkBlue"
@@ -16,14 +16,14 @@
     <TextView
             android:padding="2dp"
             android:text="#1"
-            android:textSize="25sp"
+            android:textSize="21sp"
             android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/match_schedule_rank" android:layout_weight="0.15"/>
     <TextView
             android:padding="2dp"
             android:text="T1"
-            android:textSize="25sp"
+            android:textSize="21sp"
             android:theme="@style/Theme.LCK_manager.commonTextTheme"
             android:layout_width="0dp"
             android:layout_height="match_parent" android:id="@+id/match_schedule_team_name" android:layout_weight="0.7"/>

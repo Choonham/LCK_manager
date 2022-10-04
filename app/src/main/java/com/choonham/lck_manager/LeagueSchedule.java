@@ -12,12 +12,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.LeagueScheduleDAO;
-import com.choonham.lck_manager.dao.SeasonDAO;
 import com.choonham.lck_manager.dao.TeamDAO;
 import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.LeagueScheduleEntity;
 import com.choonham.lck_manager.entity.TeamEntity;
-import com.choonham.lck_manager.entity.Temp;
+import com.choonham.lck_manager.entity.MatchData;
 import com.choonham.lck_manager.entity.TempLeagueSchedule;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.room.AppDatabase;
@@ -70,7 +69,6 @@ public class LeagueSchedule extends Fragment {
 
         db = AppDatabase.getInstance(getContext());
 
-        getMatchData();
         //getSeasonCode();
 
         //getTeamList();
@@ -291,25 +289,6 @@ public class LeagueSchedule extends Fragment {
                     }
 
                     isTeamListLoad = true;
-                })
-                .doOnError(error -> {
-                    Log.e("getTeamList error 2:", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
-
-    public void getMatchData() {
-        Log.e("안녕3", "33");
-        LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
-        leagueScheduleDAO.loadScheduleAgainstTeam(13, 215)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    for(Temp temp : loadValue) {
-                        Log.e("안녕1", String.valueOf(temp.getAgainst_team()));
-                        Log.e("안녕2", String.valueOf(temp.getTeam_rank()));
-                    }
-
                 })
                 .doOnError(error -> {
                     Log.e("getTeamList error 2:", error.getMessage());

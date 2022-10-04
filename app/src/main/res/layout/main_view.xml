@@ -94,7 +94,7 @@
         <ListView
                 android:id="@+id/match_schedule_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="232dp"
+                android:layout_height="match_parent"
                 android:headerDividersEnabled="true"
                 android:divider="@drawable/main_roster_divider"
         />

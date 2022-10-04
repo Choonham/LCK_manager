@@ -176,7 +176,6 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-
     }
 
     public void loadMainRoster() {

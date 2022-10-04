@@ -44,6 +44,9 @@ public class LeagueScheduleEntity implements Parcelable {
     @ColumnInfo(name = "play_flag")
     private int playFlag;
 
+    @ColumnInfo(name = "curr_match")
+    private int currMatch;
+
     protected LeagueScheduleEntity(Parcel in) {
         leagueScheduleCode = in.readInt();
         matchNum = in.readInt();
@@ -54,6 +57,7 @@ public class LeagueScheduleEntity implements Parcelable {
         scoreA = in.readInt();
         scoreB = in.readInt();
         playFlag = in.readInt();
+        currMatch = in.readInt();
     }
 
     @Override
@@ -67,6 +71,7 @@ public class LeagueScheduleEntity implements Parcelable {
         dest.writeInt(scoreA);
         dest.writeInt(scoreB);
         dest.writeInt(playFlag);
+        dest.writeInt(currMatch);
     }
 
     @Override
@@ -164,5 +169,13 @@ public class LeagueScheduleEntity implements Parcelable {
 
     public void setPlayFlag(int playFlag) {
         this.playFlag = playFlag;
+    }
+
+    public int getCurrMatch() {
+        return currMatch;
+    }
+
+    public void setCurrMatch(int currMatch) {
+        this.currMatch = currMatch;
     }
 }

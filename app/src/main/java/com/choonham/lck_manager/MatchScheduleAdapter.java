@@ -8,23 +8,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
+import com.choonham.lck_manager.entity.MatchData;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+
+import java.util.List;
 
 public class MatchScheduleAdapter extends BaseAdapter {
 
     private final ActivityTagEnum TAG = ActivityTagEnum.MATCH_SCHEDULE_ADAPTER;
 
-    private String[] matchScheduleTeamList;
-    private int[] matchScheduleResultList;
-    private int[] matchScheduleRankList;
+    private List<MatchData> matchDataList;
 
     private LayoutInflater inflater;
     private Context context;
 
-    public MatchScheduleAdapter(String[] matchScheduleTeamList, int[] matchScheduleResultList, int[] matchScheduleRankList, Context context) {
-        this.matchScheduleTeamList = matchScheduleTeamList;
-        this.matchScheduleResultList = matchScheduleResultList;
-        this.matchScheduleRankList = matchScheduleRankList;
+    private int currMatchIndex = 0;
+
+    public MatchScheduleAdapter(List<MatchData> matchDataList, Context context) {
+        this.matchDataList = matchDataList;
         this.context = context;
 
         inflater = (LayoutInflater.from(context));
@@ -32,7 +33,7 @@ public class MatchScheduleAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return matchScheduleTeamList.length;
+        return matchDataList.size();
     }
 
     @Override
@@ -55,20 +56,20 @@ public class MatchScheduleAdapter extends BaseAdapter {
         TextView matchScheduleTeam = view.findViewById(R.id.match_schedule_team_name);
         TextView matchScheduleRank = view.findViewById(R.id.match_schedule_rank);
 
-        if(matchScheduleResultList[i] == 0) {
+        if(matchDataList.get(i).getPlay_flag() == 1) {
             matchScheduleResult.setText("L");
             matchScheduleResult.setTextColor(Color.BLUE);
-        } else if(matchScheduleResultList[i] == 1) {
+        } else if(matchDataList.get(i).getPlay_flag() == 2) {
             matchScheduleResult.setText("W");
             matchScheduleResult.setTextColor(Color.RED);
         } else {
             matchScheduleResult.setText(" ");
         }
 
-        matchScheduleRank.setText(matchScheduleRankList[i] + "위");
-        matchScheduleTeam.setText(matchScheduleTeamList[i]);
+        matchScheduleRank.setText(matchDataList.get(i).getTeam_rank() + "위");
+        matchScheduleTeam.setText(matchDataList.get(i).getAgainst_team_name());
 
-        if(i == 2) {
+        if(matchDataList.get(i).getCurr_match() == 1) {
             view.findViewById(R.id.match_schedule_list_item).setBackground(ContextCompat.getDrawable(context, R.drawable.list_view_select_border));
         }
 

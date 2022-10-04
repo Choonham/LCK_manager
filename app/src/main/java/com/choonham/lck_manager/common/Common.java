@@ -50,6 +50,8 @@ public class Common {
 
     public static int CURR_USER_CODE = 1;
 
+    public static int CURR_TEAM_CODE;
+
     public static double startMoney = 50000;
 
     public static int[] positionIcons = {R.drawable.position_top_icon, R.drawable.position_jungle_icon, R.drawable.position_mid_icon, R.drawable.position_ad_icon, R.drawable.position_support_icon};

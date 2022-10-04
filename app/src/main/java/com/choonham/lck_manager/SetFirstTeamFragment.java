@@ -408,6 +408,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         int matchNum = 1;
         int matchDay = 1;
 
+        boolean tempBol = false;
+
         for(int i = 1; i <= 55;) {
 
             Calendar temp = Calendar.getInstance();
@@ -426,8 +428,14 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                         LeagueScheduleEntity leagueScheduleEntity = new LeagueScheduleEntity();
 
+                        if(tempMatch[0].getApiTeamCode() == Common.CURR_TEAM_CODE && !tempBol ) {
+                            leagueScheduleEntity.setCurrMatch(1);
+                            tempBol = true;
+                        } else {
+                            leagueScheduleEntity.setCurrMatch(0);
+                        }
+
                         leagueScheduleEntity.setTeamCodeA(tempMatch[0].getApiTeamCode());
-                        Log.e("팀팀코코드드", String.valueOf(tempMatch[0].getApiTeamCode()));
                         leagueScheduleEntity.setTeamCodeB(tempMatch[1].getApiTeamCode());
 
                         leagueScheduleEntity.setTeamA(tempMatch[0].getTeamName());
