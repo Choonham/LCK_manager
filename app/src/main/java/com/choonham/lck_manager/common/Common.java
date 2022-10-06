@@ -255,4 +255,10 @@ public class Common {
         return instance;
     }
 
+    public static void listUpTransferList(int week, int season){
+
+    }
+
+
+
 }

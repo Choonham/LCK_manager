@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import com.choonham.lck_manager.TransferWindow;
 import com.choonham.lck_manager.dao.*;
 import com.choonham.lck_manager.entity.*;
 
@@ -61,4 +62,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract LeagueScheduleDAO leagueScheduleDAO();
 
     public abstract LeagueRankingDAO leagueRankingDAO();
+
+    public  abstract TransferWindowDAO transferWindowDAO();
 }
