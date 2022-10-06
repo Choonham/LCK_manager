@@ -59,4 +59,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ChampionDAO championDAO();
 
     public abstract LeagueScheduleDAO leagueScheduleDAO();
+
+    public abstract LeagueRankingDAO leagueRankingDAO();
 }

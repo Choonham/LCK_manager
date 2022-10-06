@@ -3,6 +3,7 @@ package com.choonham.lck_manager.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +44,18 @@ public class Common {
     double[] tempMainRosterAvgList2 = {112.5, 115.5, 120.2, 117.2, 120.8, 115.5, 120.2, 117.2, 120.8};
     double[] tempMainRosterStabilityList2 = {5.1, 6.8, 9.3, 8.2, 1.3, 6.8, 9.3, 8.2, 1.3};
 
+    public static final String PREFERENCES_NAME = "user_preference";
+
+    private static final String DEFAULT_VALUE_STRING = "";
+
+    private static final boolean DEFAULT_VALUE_BOOLEAN = false;
+
+    private static final int DEFAULT_VALUE_INT = -1;
+
+    private static final long DEFAULT_VALUE_LONG = -1L;
+
+    private static final float DEFAULT_VALUE_FLOAT = -1F;
+
     // HTTP 요청을 위한 RequestQueue 를 static 으로 선언
     private static RequestQueue requestQueue;
 
@@ -74,6 +87,11 @@ public class Common {
     private static Context contextForChecking;
 
     private Common() {};
+
+    public static SharedPreferences getPreferences(Context context) {
+        return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+
+    }
 
     /**
      * get RequestQueue Instance

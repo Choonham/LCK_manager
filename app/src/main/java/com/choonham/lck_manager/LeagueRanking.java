@@ -1,6 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,10 +15,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.dao.LeagueRankingDAO;
+import com.choonham.lck_manager.dao.TeamDAO;
+import com.choonham.lck_manager.entity.MatchData;
 import com.choonham.lck_manager.entity.PlayerEntity;
+import com.choonham.lck_manager.entity.TeamEntity;
+import com.choonham.lck_manager.entity.TeamRank;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.choonham.lck_manager.room.AppDatabase;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeagueRanking extends Fragment {
@@ -28,23 +38,30 @@ public class LeagueRanking extends Fragment {
     String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
     int[] winList = {4, 4, 3, 3, 2, 2, 1, 1, 1, 0, 0};
 
-    String[] pogList = {"Doran", "Faker", "Chovy", "Keria", "DoryDory"};
-    int[] positionIcons = {
-        R.drawable.position_top_icon,
-        R.drawable.position_mid_icon,
-        R.drawable.position_mid_icon,
-        R.drawable.position_support_icon,
-        R.drawable.position_support_icon
-    };
+    Boolean isLeagueRankingLoad = false;
 
-    int[] pogPointList = {400, 400, 300, 200, 100};
+    private List<TeamRank> leagueRanking;
 
     ListView leagueRankingListView;
     ListView pogPointListView;
 
+    AppDatabase db;
+
+    SharedPreferences userPreferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.league_ranking, container, false);
+
+        leagueRanking = new ArrayList<>();
+
+        userPreferences = Common.getPreferences(getContext());
+
+        db = AppDatabase.getInstance(getContext());
+
+        getLeagueRanking(userPreferences.getInt("user_season", 1));
+
+        while(!isLeagueRankingLoad) {}
 
         leagueRankingListView = view.findViewById(R.id.league_ranking_list_view);
         pogPointListView = view.findViewById(R.id.pog_point_list_view);
@@ -52,7 +69,7 @@ public class LeagueRanking extends Fragment {
         Common common = Common.getInstance();
         pogPlayerList = common.getTempPlayerList(2);
 
-        LeagueRankingAdapter leagueRankingAdapter = new LeagueRankingAdapter(teamList, winList, getContext());
+        LeagueRankingAdapter leagueRankingAdapter = new LeagueRankingAdapter(leagueRanking, getContext());
         POGPointAdapter pogPointAdapter = new POGPointAdapter(getContext(), pogPlayerList);
 
         leagueRankingListView.setAdapter(leagueRankingAdapter);
@@ -103,5 +120,29 @@ public class LeagueRanking extends Fragment {
 
         return view;
     }
+
+    public void getLeagueRanking(int season) {
+        LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
+
+        Log.e("getLeagueRanking season: ", String.valueOf(season));
+
+        leagueRankingDAO.loadLeagueRanking(season)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(TeamRank teamEntity : loadValue) {
+                        leagueRanking.add(teamEntity);
+                        Log.e("getLeagueRanking teamEntity: ", String.valueOf(teamEntity.getRank()));
+                    }
+
+                    isLeagueRankingLoad = true;
+                })
+                .doOnError(error -> {
+                    Log.e("getLeagueRanking error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+
 
 }

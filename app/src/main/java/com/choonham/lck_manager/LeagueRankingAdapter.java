@@ -7,27 +7,29 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.choonham.lck_manager.entity.TeamRank;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+
+import java.util.List;
 
 public class LeagueRankingAdapter extends BaseAdapter {
 
     private final ActivityTagEnum TAG = ActivityTagEnum.LEAGUE_RANKING_ADAPTER;
 
-    String[] teamList;
-    int[] winList;
     private LayoutInflater inflater;
     private Context context;
 
-    public LeagueRankingAdapter(String[] teamList, int[] winList, Context context) {
-        this.teamList = teamList;
-        this.winList = winList;
+    private List<TeamRank> teamRankList;
+
+    public LeagueRankingAdapter(List<TeamRank> teamRankList, Context context) {
+        this.teamRankList = teamRankList;
         this.context = context;
         inflater = (LayoutInflater.from(context));
     }
 
     @Override
     public int getCount() {
-        return teamList.length;
+        return teamRankList.size();
     }
 
     @Override
@@ -54,11 +56,11 @@ public class LeagueRankingAdapter extends BaseAdapter {
         TextView teamWD = view.findViewById(R.id.team_win_diff_league_ranking);
 
         teamRank.setText(Integer.toString(i+1));
-        teamName.setText(teamList[i]);
-        teamWins.setText(Integer.toString(winList[i]));
-        teamLoses.setText(Integer.toString(4- winList[i]));
-        teamWR.setText(String.format("%.1f", (float)winList[i]/4));
-        teamWD.setText(Integer.toString((int) (winList[i] * ((Math.random() *2) + 1))));
+        teamName.setText(teamRankList.get(i).getTeam_name());
+        teamWins.setText(String.valueOf(teamRankList.get(i).getTotal_wins()));
+        teamLoses.setText(String.valueOf(teamRankList.get(i).getTotal_loses()));
+        teamWR.setText(String.valueOf(teamRankList.get(i).getWin_rate()));
+        teamWD.setText(String.valueOf(teamRankList.get(i).getTotal_wins() - teamRankList.get(i).getTotal_loses()));
 
         return view;
     }

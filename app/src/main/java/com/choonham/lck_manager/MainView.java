@@ -3,7 +3,9 @@ package com.choonham.lck_manager;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,11 +48,15 @@ public class MainView extends Fragment {
 
     AppDatabase db;
 
+    SharedPreferences userPreferences;
+
     boolean isMatchDataLoaded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_view, container, false);
+
+        userPreferences = Common.getPreferences(getContext());
 
         db = AppDatabase.getInstance(getContext());
         matchDataList = new ArrayList<>();
@@ -63,6 +69,8 @@ public class MainView extends Fragment {
         matchScheduleListView = view.findViewById(R.id.match_schedule_list_view);
 
         matchScheduleListView.setAdapter(matchScheduleAdapter);
+
+        matchScheduleListView.smoothScrollToPosition(userPreferences.getInt("curr_match_index", 1));
 
         LinearLayout newsLayout = view.findViewById(R.id.news);
         newsLayout.setOnClickListener(new View.OnClickListener() {
@@ -197,12 +205,15 @@ public class MainView extends Fragment {
     }
 
     public void getMatchData() {
+
+        Log.e("getMatchData season: ", String.valueOf(userPreferences.getInt("user_season", 1)));
+        Log.e("getMatchData season: ", String.valueOf(userPreferences.getInt("user_team_code", 1)));
+
         LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
-        leagueScheduleDAO.loadScheduleAgainstTeam(Common.CURR_SEASON_CODE, Common.CURR_TEAM_CODE)
+        leagueScheduleDAO.loadScheduleAgainstTeam(userPreferences.getInt("user_season", 1), userPreferences.getInt("user_team_code", 1))
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
                     for(MatchData temp : loadValue) {
-                        Log.e("호호호호", String.valueOf(temp.getCurr_match()));
                         matchDataList.add(temp);
                     }
 

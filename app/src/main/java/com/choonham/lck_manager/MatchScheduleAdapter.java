@@ -1,6 +1,7 @@
 package com.choonham.lck_manager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
+import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.entity.MatchData;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 
@@ -71,6 +73,12 @@ public class MatchScheduleAdapter extends BaseAdapter {
 
         if(matchDataList.get(i).getCurr_match() == 1) {
             view.findViewById(R.id.match_schedule_list_item).setBackground(ContextCompat.getDrawable(context, R.drawable.list_view_select_border));
+
+            SharedPreferences userPreferences = Common.getPreferences(inflater.getContext());
+            SharedPreferences.Editor editor = userPreferences.edit();
+
+            editor.putInt("curr_match_index", i);
+            editor.apply();
         }
 
         return view;

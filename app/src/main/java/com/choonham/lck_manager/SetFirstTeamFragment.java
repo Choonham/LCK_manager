@@ -2,6 +2,7 @@ package com.choonham.lck_manager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,6 +71,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     Context context;
 
+    SharedPreferences userPreferences;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +80,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_set_first_team, container, false);
 
         Button button = rootView.findViewById(R.id.set_first_team_button);
+
+        userPreferences = Common.getPreferences(getContext());
 
         moneyView = rootView.findViewById(R.id.first_team_transfer_window_money);
         moneyView.setText(Double.toString(Common.startMoney));
@@ -206,12 +211,25 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                                                                         userDAO = db.userDAO();
 
                                                                         userEntity.setMatchNum(1);
+                                                                        userEntity.setUserFameLv(1);
+                                                                        userEntity.setUserMoney((int) Common.startMoney);
 
                                                                         insertUserIDInfo(userEntity);
 
+                                                                        SharedPreferences.Editor editor = userPreferences.edit();
+
+                                                                        editor.putInt("api_user_code", userEntity.getApiUserCode());
+                                                                        editor.putInt("user_code", userEntity.getUserCode());
+                                                                        editor.putInt("match_num", userEntity.getMatchNum());
+                                                                        editor.putInt("fame_lv", userEntity.getUserFameLv());
+                                                                        editor.putInt("user_money", userEntity.getUserMoney());
+                                                                        editor.putInt("user_season", userEntity.getSeasonCode());
+
+                                                                        editor.commit();
+
+                                                                        Log.e("user_preference", String.valueOf(userPreferences.getInt("user_season", 1)));
+
                                                                         setLeagueScheduleMap(setLeagueSchedule(teamList));
-
-
 
                                                                         customProgressDialog.dismiss();
 
@@ -428,7 +446,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                         LeagueScheduleEntity leagueScheduleEntity = new LeagueScheduleEntity();
 
-                        if(tempMatch[0].getApiTeamCode() == Common.CURR_TEAM_CODE && !tempBol ) {
+                        if(tempMatch[0].getApiTeamCode() == userPreferences.getInt("user_team_code", 1) && !tempBol ) {
                             leagueScheduleEntity.setCurrMatch(1);
                             tempBol = true;
                         } else {

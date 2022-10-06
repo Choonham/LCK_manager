@@ -1,5 +1,6 @@
 package com.choonham.lck_manager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences prefs;
 
+    SharedPreferences userPreferences;
+
     boolean isSeasonCodeLoaded = false;
     boolean isTeamCodeLoaded = false;
 
@@ -59,8 +62,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         db = AppDatabase.getInstance(this);
 
-        getSeasonCode();
-        loadTeamCodeByUserCode();
+        userPreferences = Common.getPreferences(this);
+
+        Log.e("season: ", String.valueOf(userPreferences.getInt("user_season", 1)));
+
+        getSeasonCode(this);
+        loadTeamCodeByUserCode(this);
 
         while(!isSeasonCodeLoaded || !isTeamCodeLoaded) {}
 
@@ -206,14 +213,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void getSeasonCode() {
+    public void getSeasonCode(Context context) {
         UserDAO userDAO = db.userDAO();
 
         userDAO.loadUserEntityById(1)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(loadValue -> {
-                    Log.d("호호 시즌", String.valueOf(loadValue.getSeasonCode()));
-                    Common.CURR_SEASON_CODE = loadValue.getSeasonCode();
+                    //Log.d("호호 시즌", String.valueOf(loadValue.getSeasonCode()));
+                    //Common.CURR_SEASON_CODE = loadValue.getSeasonCode();
+
+                    SharedPreferences userPreferences = Common.getPreferences(context);
+
+                    SharedPreferences.Editor editor = userPreferences.edit();
+
+                    editor.putInt("user_season", loadValue.getSeasonCode());
+
+                    editor.commit();
 
                     isSeasonCodeLoaded = true;
                 })
@@ -224,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .subscribe();
     }
 
-    public void loadTeamCodeByUserCode() {
+    public void loadTeamCodeByUserCode(Context context) {
         UserDAO userDAO = db.userDAO();
 
         userDAO.loadUserEntityById(1)
@@ -236,8 +251,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     teamDAO.loadTeamDataByUserCode(userEntity.getApiUserCode())
                             .subscribeOn(Schedulers.io())
                             .doOnSuccess(loadValue -> {
-                                Log.d("호호 팀", String.valueOf(loadValue.getApiTeamCode()));
-                                Common.CURR_TEAM_CODE = loadValue.getApiTeamCode();
+                                //Log.d("호호 팀", String.valueOf(loadValue.getApiTeamCode()));
+                                //Common.CURR_TEAM_CODE = loadValue.getApiTeamCode();
+
+                                SharedPreferences userPreferences = Common.getPreferences(context);
+
+                                SharedPreferences.Editor editor = userPreferences.edit();
+
+                                editor.putInt("user_team_code", loadValue.getApiTeamCode());
+
+                                editor.commit();
 
                                 isTeamCodeLoaded = true;
                             })
