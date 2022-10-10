@@ -73,6 +73,10 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     SharedPreferences userPreferences;
 
+    boolean loadAllDone = false;
+
+    boolean isInsertDone = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -216,6 +220,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                                                                         insertUserIDInfo(userEntity);
 
+                                                                        while(!isInsertDone) {}
+
                                                                         SharedPreferences.Editor editor = userPreferences.edit();
 
                                                                         editor.putInt("api_user_code", userEntity.getApiUserCode());
@@ -230,6 +236,10 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                                                                         Log.e("user_preference", String.valueOf(userPreferences.getInt("user_season", 1)));
 
                                                                         setLeagueScheduleMap(setLeagueSchedule(teamList));
+
+                                                                        insertFirstTransferWindow(teamCode, seasonCode);
+
+                                                                        while(!loadAllDone) {}
 
                                                                         customProgressDialog.dismiss();
 
@@ -296,6 +306,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 .doOnSuccess(insertValue -> {
                     Log.d("Insert data: ", insertValue.toString());
                     checkInsertYN(insertValue);
+
+                    isInsertDone = true;
                 })
                 .doOnError(error -> {
                     Log.e("insert error :", error.getMessage());
@@ -534,6 +546,40 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         }
 
         return leagueScheduleResult;
+    }
+
+    private void insertFirstTransferWindow(int teamCode, int seasonCode) {
+        TransferWindowDAO transferWindowDAO = db.transferWindowDAO();
+
+        transferWindowDAO.loadPlayerListNotUserTeam(teamCode, seasonCode)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(JoinedPlayer player : loadValue) {
+                        TransferWindowEntity transferWindowEntity = new TransferWindowEntity();
+                        transferWindowEntity.setPlayerCode(player.playerEntity.getPlayerCode());
+                        transferWindowEntity.setWeeks(1);
+                        transferWindowEntity.setMinSalary(player.playerEntity.getFameLv() * 1000);
+                        transferWindowEntity.setSalaryWants((int) (player.playerEntity.getStability() * 1000));
+
+                        transferWindowDAO.insertTransferList(transferWindowEntity)
+                                .subscribeOn(Schedulers.io())
+                                .doOnSuccess(value -> {
+                                    Log.d("insert transfer window entity:", "done");
+                                })
+                                .doOnError(error -> {
+                                    Log.e("insert transfer window entity error :", error.getMessage());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+                    }
+
+                    loadAllDone = true;
+                })
+                .doOnError(error -> {
+                    Log.e("load transfer player list error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
 }

@@ -76,6 +76,9 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         String season = (seasonEntity.getSeasonForShort());
         String name = playerEntity.getPlayerName();
 
+        Log.e("태그 테스트123", season);
+        Log.e("태그 테스트124", name);
+
         stabilityView = findViewById(R.id.player_stat_stability_index);
         physicalView = findViewById(R.id.player_stat_physical_index);
         outSmartView = findViewById(R.id.player_stat_operation_index);
@@ -88,7 +91,14 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         laneStrengthView.setText("[" + Double.toString(playerEntity.getLaneStrength()) + "]");
         teamFightView.setText("[" + Double.toString(playerEntity.getTeamFight()) + "]");
 
+        Log.e("태그 테스트22", "태그");
+
         ActivityTagEnum tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
+        String tagg = (String) intent.getSerializableExtra("11");
+
+        ActivityTagEnum tem = (ActivityTagEnum)intent.getSerializableExtra("1234");
+
+        Log.e("태그 테스트2", tem.toString());
 
         LinearLayout parentLayout = findViewById(R.id.player_info_popup_parent_layout);
         ViewGroup.LayoutParams layoutParams = parentLayout.getLayoutParams();

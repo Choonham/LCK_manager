@@ -26,6 +26,6 @@ public interface TransferWindowDAO {
             "WHERE t.api_team_code NOT IN (:teamCode) AND s.season_code = :seasonCode ORDER BY random() LIMIT 10;")
     Single<List<JoinedPlayer>> loadPlayerListNotUserTeam(int teamCode, int seasonCode);
 
-    @Query("SELECT t.*, p.* FROM transfer_window t INNER JOIN player p ON p.player_code = t.player_code WHERE weeks = :week")
-    Single<List<JoinedTransferWindow>> loadPlayerListNotUserTeam(int week);
+    @Query("SELECT t.*, p.*, s.* FROM transfer_window t INNER JOIN player p ON p.player_code = t.player_code INNER JOIN season s ON s.season_code = p.season_code WHERE weeks = :week")
+    Single<List<JoinedTransferWindow>> loadTransferWindowByWeek(int week);
 }

@@ -22,16 +22,16 @@ public class TransferWindowEntity implements Parcelable {
     private int playerCode;
 
     @ColumnInfo(name = "transfer_fee")
-    private int transferFee;
+    private double transferFee;
 
     @ColumnInfo(name = "salary_wants")
-    private int salaryWants;
+    private double salaryWants;
 
     @ColumnInfo(name = "salary_offer")
-    private int salaryOffer;
+    private double salaryOffer;
 
     @ColumnInfo(name = "min_salary")
-    private int minSalary;
+    private double minSalary;
 
     protected TransferWindowEntity(Parcel in) {
         transferWindowCode = in.readInt();
@@ -79,35 +79,35 @@ public class TransferWindowEntity implements Parcelable {
         this.playerCode = playerCode;
     }
 
-    public int getTransferFee() {
+    public double getTransferFee() {
         return transferFee;
     }
 
-    public void setTransferFee(int transferFee) {
+    public void setTransferFee(double transferFee) {
         this.transferFee = transferFee;
     }
 
-    public int getSalaryWants() {
+    public double getSalaryWants() {
         return salaryWants;
     }
 
-    public void setSalaryWants(int salaryWants) {
+    public void setSalaryWants(double salaryWants) {
         this.salaryWants = salaryWants;
     }
 
-    public int getSalaryOffer() {
+    public double getSalaryOffer() {
         return salaryOffer;
     }
 
-    public void setSalaryOffer(int salaryOffer) {
+    public void setSalaryOffer(double salaryOffer) {
         this.salaryOffer = salaryOffer;
     }
 
-    public int getMinSalary() {
+    public double getMinSalary() {
         return minSalary;
     }
 
-    public void setMinSalary(int minSalary) {
+    public void setMinSalary(double minSalary) {
         this.minSalary = minSalary;
     }
 
@@ -121,9 +121,9 @@ public class TransferWindowEntity implements Parcelable {
         parcel.writeInt(transferWindowCode);
         parcel.writeInt(weeks);
         parcel.writeInt(playerCode);
-        parcel.writeInt(transferFee);
-        parcel.writeInt(salaryWants);
-        parcel.writeInt(salaryOffer);
-        parcel.writeInt(minSalary);
+        parcel.writeDouble(transferFee);
+        parcel.writeDouble(salaryWants);
+        parcel.writeDouble(salaryOffer);
+        parcel.writeDouble(minSalary);
     }
 }
