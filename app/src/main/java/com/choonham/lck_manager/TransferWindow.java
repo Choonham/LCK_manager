@@ -76,6 +76,8 @@ public class TransferWindow extends Fragment {
 
                 Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
 
+                intent.putExtra("tagInt",1122);
+
                 intent.putExtra("tag", ActivityTagEnum.TRANSFER_WINDOW);
 
                 intent.putExtra("playerEntity", transferWindowEntityList.get(i).playerEntity);
@@ -83,10 +85,6 @@ public class TransferWindow extends Fragment {
                 intent.putExtra("seasonEntity", transferWindowEntityList.get(i).seasonEntity);
 
                 intent.putExtra("transferWindowEntity", transferWindowEntityList.get(i).transferWindowEntity);
-
-                intent.putExtra("11", "22");
-
-                Log.e("태그 테스트1", TAG.toString());
 
                 startActivity(intent);
             }

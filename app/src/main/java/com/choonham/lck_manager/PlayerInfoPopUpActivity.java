@@ -76,8 +76,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         String season = (seasonEntity.getSeasonForShort());
         String name = playerEntity.getPlayerName();
 
-        Log.e("태그 테스트123", season);
-        Log.e("태그 테스트124", name);
+       /* Log.e("태그 테스트123", season);
+        Log.e("태그 테스트124", name);*/
 
         stabilityView = findViewById(R.id.player_stat_stability_index);
         physicalView = findViewById(R.id.player_stat_physical_index);
@@ -93,12 +93,17 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
         Log.e("태그 테스트22", "태그");
 
-        ActivityTagEnum tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
-        String tagg = (String) intent.getSerializableExtra("11");
+        ActivityTagEnum tag = ActivityTagEnum.INIT_TAG;
 
-        ActivityTagEnum tem = (ActivityTagEnum)intent.getSerializableExtra("1234");
+        if(intent.hasExtra("tag")) {
+            tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
+        }
 
-        Log.e("태그 테스트2", tem.toString());
+        int tagInt = 0;
+
+        if(intent.hasExtra("tagInt")) {
+            tagInt = intent.getIntExtra("tagInt", 0);
+        }
 
         LinearLayout parentLayout = findViewById(R.id.player_info_popup_parent_layout);
         ViewGroup.LayoutParams layoutParams = parentLayout.getLayoutParams();
@@ -107,7 +112,7 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
         setFirstTeamModel = SetFirstTeamModel.getInstance();
 
-        if(tag.equals(ActivityTagEnum.TRANSFER_WINDOW) || tag.equals(ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT)) {
+        if(tagInt == 1122 || tag.equals(ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT)) {
 
             PlayerInfoModel.createInstance(this);
             parentLayout.post(new Runnable()

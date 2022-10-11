@@ -26,4 +26,6 @@ public enum ActivityTagEnum {
     PLAYER_INFO_POPUP_ACTIVITY,
     TEAM_INFO_ADAPTER,
     PLAYER_PROPOSAL,
+
+    INIT_TAG
 }
