@@ -77,6 +77,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
     boolean isInsertDone = false;
 
+    boolean isLeagueRankingSet = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -233,13 +235,15 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                                                                         editor.commit();
 
-                                                                        Log.e("user_preference", String.valueOf(userPreferences.getInt("user_season", 1)));
-
                                                                         setLeagueScheduleMap(setLeagueSchedule(teamList));
 
                                                                         insertFirstTransferWindow(teamCode, seasonCode);
 
                                                                         while(!loadAllDone) {}
+
+                                                                        updateLeagueRankingList(seasonCode);
+
+                                                                        while(!isLeagueRankingSet) {}
 
                                                                         customProgressDialog.dismiss();
 
@@ -577,6 +581,38 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 })
                 .doOnError(error -> {
                     Log.e("load transfer player list error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void updateLeagueRankingList(int season) {
+        LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
+
+        leagueRankingDAO.loadLeagueRankingList(season)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(TeamRank teamEntity : loadValue) {
+                        LeagueRankingEntity leagueRankingEntity = new LeagueRankingEntity();
+                        leagueRankingEntity.setTeamCode(teamEntity.getTeam_code());
+                        leagueRankingEntity.setRank(teamEntity.getRank());
+
+                        leagueRankingDAO.insertLeagueRanking(leagueRankingEntity)
+                                .subscribeOn(Schedulers.io())
+                                .doOnSuccess(value -> {
+                                    Log.d("updateLeagueRankingEntity",  value.toString());
+                                })
+                                .doOnError(error -> {
+                                    Log.e("updateLeagueRankingList error 1:", error.getMessage());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+                    }
+
+                    isLeagueRankingSet = true;
+                })
+                .doOnError(error -> {
+                    Log.e("updateLeagueRankingList error 2:", error.getMessage());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

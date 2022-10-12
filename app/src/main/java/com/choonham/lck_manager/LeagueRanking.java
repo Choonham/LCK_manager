@@ -22,6 +22,7 @@ import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.TeamEntity;
 import com.choonham.lck_manager.entity.TeamRank;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedLeagueRanking;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.choonham.lck_manager.room.AppDatabase;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -35,12 +36,9 @@ public class LeagueRanking extends Fragment {
 
     private List<JoinedPlayer> pogPlayerList;
 
-    String[] teamList = {"T1", "DRX", "DK", "BRO", "Gen", "KDF", "NS", "LSB", "KT", "HLE", "KMH"};
-    int[] winList = {4, 4, 3, 3, 2, 2, 1, 1, 1, 0, 0};
-
     Boolean isLeagueRankingLoad = false;
 
-    private List<TeamRank> leagueRanking;
+    private List<JoinedLeagueRanking> leagueRanking;
 
     ListView leagueRankingListView;
     ListView pogPointListView;
@@ -59,7 +57,7 @@ public class LeagueRanking extends Fragment {
 
         db = AppDatabase.getInstance(getContext());
 
-        getLeagueRanking(userPreferences.getInt("user_season", 1));
+        loadLeagueRanking();
 
         while(!isLeagueRankingLoad) {}
 
@@ -121,23 +119,20 @@ public class LeagueRanking extends Fragment {
         return view;
     }
 
-    public void getLeagueRanking(int season) {
+    private void loadLeagueRanking() {
         LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
 
-        Log.e("getLeagueRanking season: ", String.valueOf(season));
-
-        leagueRankingDAO.loadLeagueRanking(season)
+        leagueRankingDAO.loadLeagueRanking()
                 .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    for(TeamRank teamEntity : loadValue) {
-                        leagueRanking.add(teamEntity);
-                        Log.e("getLeagueRanking teamEntity: ", String.valueOf(teamEntity.getRank()));
+                .doOnSuccess(value -> {
+                    for(JoinedLeagueRanking entity : value) {
+                        leagueRanking.add(entity);
                     }
 
                     isLeagueRankingLoad = true;
                 })
                 .doOnError(error -> {
-                    Log.e("getLeagueRanking error 2:", error.getMessage());
+                    Log.e("updateLeagueRankingList error 1:", error.getMessage());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

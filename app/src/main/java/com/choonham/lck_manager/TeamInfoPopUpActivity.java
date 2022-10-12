@@ -18,10 +18,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.choonham.lck_manager.common.Common;
+import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
+import com.choonham.lck_manager.room.AppDatabase;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamInfoPopUpActivity extends Activity {
@@ -30,9 +35,32 @@ public class TeamInfoPopUpActivity extends Activity {
     private List<JoinedPlayer> playerEntityList;
     ListView teamInfoListView;
 
+    private List<JoinedPlayer> teamMainRosterList;
+
+    boolean isTeamMainRosterLoad = false;
+
+    AppDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = AppDatabase.getInstance(this);
+
+        isTeamMainRosterLoad = false;
+
+        Intent intent = getIntent();
+
+        String name = intent.getStringExtra("teamName");
+        String rank = intent.getStringExtra("teamRank");
+
+        teamMainRosterList = new ArrayList<>();
+        //Log.e("읭", String.valueOf(intent.getIntExtra("teamCode", 1)));
+        getTeamMainRosterList(intent.getIntExtra("teamCode", 1));
+
+        while(!isTeamMainRosterLoad){
+            Log.e("TeamMainRosterLoad", "Loading...");
+        }
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.team_info_pop_up);
@@ -42,21 +70,17 @@ public class TeamInfoPopUpActivity extends Activity {
 
         params.gravity = Gravity.TOP;
         params.y = 200;
-         /* wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;*/
+        /* wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;*/
         window.setAttributes(params);
-
-        Intent intent = getIntent();
-
-        String name = intent.getStringExtra("teamName");
-        String rank = intent.getStringExtra("teamRank");
 
         intent.putExtra("result", "result");
 
         setResult(Activity.RESULT_OK, intent);
 
         Common common = Common.getInstance();
-        playerEntityList = common.getTempPlayerList(0);
-        TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, playerEntityList);
+        //playerEntityList = common.getTempPlayerList(0);
+
+        TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, teamMainRosterList);
 
         teamInfoListView = findViewById(R.id.team_info_list_view);
         teamInfoListView.setAdapter(teamInfoAdapter);
@@ -72,7 +96,7 @@ public class TeamInfoPopUpActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
 
                 Common common = Common.getInstance();
-                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getApplicationContext(), 1);
+                Intent intent = common.getPlayerInfoPopUpIntent(teamMainRosterList, i, selectedView, TAG, getApplicationContext(), 1);
 
                 startActivity(intent);
             }
@@ -85,6 +109,25 @@ public class TeamInfoPopUpActivity extends Activity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    public void getTeamMainRosterList(int teamCode) {
+
+        RosterDAO rosterDAO = db.rosterDAO();
+        rosterDAO.loadPlayerListByTeamCode(teamCode, 1)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(JoinedPlayer player : loadValue) {
+                        teamMainRosterList.add(player);
+                    }
+
+                    isTeamMainRosterLoad = true;
+                })
+                .doOnError(error -> {
+                    Log.e("getTeamMainRosterList error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
 }

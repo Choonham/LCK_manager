@@ -24,8 +24,9 @@ import com.choonham.lck_manager.entity.*;
         UserRecordEntity.class,
         NewsAndIssueEntity.class,
         NewsEffectsEntity.class,
-        SeasonEntity.class
-}, version = 9, exportSchema = false)
+        SeasonEntity.class,
+        LeagueRankingEntity.class
+}, version = 11, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase database;

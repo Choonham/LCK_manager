@@ -19,15 +19,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
-import com.choonham.lck_manager.dao.LeagueScheduleDAO;
-import com.choonham.lck_manager.dao.NewsAndIssueDAO;
-import com.choonham.lck_manager.dao.TeamDAO;
-import com.choonham.lck_manager.dao.UserDAO;
-import com.choonham.lck_manager.entity.MatchData;
-import com.choonham.lck_manager.entity.NewsAndIssueEntity;
-import com.choonham.lck_manager.entity.NewsEffectsEntity;
+import com.choonham.lck_manager.dao.*;
+import com.choonham.lck_manager.entity.*;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedNews;
+import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.choonham.lck_manager.room.AppDatabase;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
@@ -85,10 +81,14 @@ public class MainView extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
                 Intent intent = new Intent(getContext(), TeamInfoPopUpActivity.class);
-                TextView teamName = selectedView.findViewById(R.id.match_schedule_team_name);
+                /*TextView teamName = selectedView.findViewById(R.id.match_schedule_team_name);
                 TextView teamRank = selectedView.findViewById(R.id.match_schedule_rank);
                 intent.putExtra("teamName", teamName.getText());
-                intent.putExtra("teamRank", teamRank.getText());
+                intent.putExtra("teamRank", teamRank.getText());*/
+
+                intent.putExtra("teamCode", matchDataList.get(i).getAgainst_team());
+                intent.putExtra("teamName", matchDataList.get(i).getAgainst_team_name());
+                intent.putExtra("teamRank", matchDataList.get(i).getTeam_rank());
 
                 mGetContent.launch(intent);
                 /*startActivity(intent);*/
@@ -108,6 +108,7 @@ public class MainView extends Fragment {
                         })
                         .subscribe();
 
+                updateLeagueRankingList(userPreferences.getInt("user_season", 1));
                 /*Single<List<JoinedNews>> selectedData = selectNewsAndEffectByCode(db, 0);
                 selectedData
                         .subscribeOn(Schedulers.io())
@@ -206,9 +207,6 @@ public class MainView extends Fragment {
 
     public void getMatchData() {
 
-        Log.e("getMatchData season: ", String.valueOf(userPreferences.getInt("user_season", 1)));
-        Log.e("getMatchData season: ", String.valueOf(userPreferences.getInt("user_team_code", 1)));
-
         LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
         leagueScheduleDAO.loadScheduleAgainstTeam(userPreferences.getInt("user_season", 1), userPreferences.getInt("user_team_code", 1))
                 .subscribeOn(Schedulers.io())
@@ -221,6 +219,38 @@ public class MainView extends Fragment {
                 })
                 .doOnError(error -> {
                     Log.e("getTeamList error 2:", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    public void updateLeagueRankingList(int season) {
+        LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
+
+        Log.e("getLeagueRanking season: ", String.valueOf(season));
+
+        leagueRankingDAO.loadLeagueRankingList(season)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(loadValue -> {
+                    for(TeamRank teamEntity : loadValue) {
+                        LeagueRankingEntity leagueRankingEntity = new LeagueRankingEntity();
+                        leagueRankingEntity.setTeamCode(teamEntity.getTeam_code());
+                        leagueRankingEntity.setRank(teamEntity.getRank());
+
+                        leagueRankingDAO.insertLeagueRanking(leagueRankingEntity)
+                                .subscribeOn(Schedulers.io())
+                                .doOnSuccess(value -> {
+                                    Log.d("updateLeagueRankingEntity",  value.toString());
+                                })
+                                .doOnError(error -> {
+                                    Log.e("updateLeagueRankingList error 1:", error.getMessage());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+                    }
+                })
+                .doOnError(error -> {
+                    Log.e("updateLeagueRankingList error 2:", error.getMessage());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

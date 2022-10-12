@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.choonham.lck_manager.entity.TeamRank;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
+import com.choonham.lck_manager.joinedEntity.JoinedLeagueRanking;
 
 import java.util.List;
 
@@ -19,9 +20,9 @@ public class LeagueRankingAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
 
-    private List<TeamRank> teamRankList;
+    private List<JoinedLeagueRanking> teamRankList;
 
-    public LeagueRankingAdapter(List<TeamRank> teamRankList, Context context) {
+    public LeagueRankingAdapter(List<JoinedLeagueRanking> teamRankList, Context context) {
         this.teamRankList = teamRankList;
         this.context = context;
         inflater = (LayoutInflater.from(context));
@@ -56,11 +57,11 @@ public class LeagueRankingAdapter extends BaseAdapter {
         TextView teamWD = view.findViewById(R.id.team_win_diff_league_ranking);
 
         teamRank.setText(Integer.toString(i+1));
-        teamName.setText(teamRankList.get(i).getTeam_name());
-        teamWins.setText(String.valueOf(teamRankList.get(i).getTotal_wins()));
-        teamLoses.setText(String.valueOf(teamRankList.get(i).getTotal_loses()));
-        teamWR.setText(String.valueOf(teamRankList.get(i).getWin_rate()));
-        teamWD.setText(String.valueOf(teamRankList.get(i).getTotal_wins() - teamRankList.get(i).getTotal_loses()));
+        teamName.setText(teamRankList.get(i).teamEntity.getTeamName());
+        teamWins.setText(String.valueOf(teamRankList.get(i).teamEntity.getTotalWins()));
+        teamLoses.setText(String.valueOf(teamRankList.get(i).teamEntity.getTotalLoses()));
+        teamWR.setText(String.valueOf(teamRankList.get(i).teamEntity.getWinRate()));
+        teamWD.setText(String.valueOf(teamRankList.get(i).teamEntity.getTotalWins() - teamRankList.get(i).teamEntity.getTotalLoses()));
 
         return view;
     }
