@@ -27,4 +27,11 @@ public interface RosterDAO {
             "WHERE t.api_team_code = :teamCode  AND r.main_entry = :mainEntry")
     Single<List<JoinedPlayer>> loadPlayerListByTeamCode(int teamCode, int mainEntry);
 
+    @Query("SELECT AVG(p.lane_strength + p.out_smart + p.physical + p.team_fight) FROM player p " +
+            "INNER JOIN season s ON p.season_code = s.season_code " +
+            "INNER JOIN roster r ON r.player_code = p.player_code " +
+            "INNER JOIN team t ON t.api_team_code = r.team_code " +
+            "WHERE t.api_team_code = :teamCode  AND r.main_entry = :mainEntry")
+    Single<Integer> getTeamMainRosterAvg(int teamCode, int mainEntry);
+
 }
