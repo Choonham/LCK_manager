@@ -127,6 +127,7 @@ public class LeagueRanking extends Fragment {
                 .doOnSuccess(value -> {
                     for(JoinedLeagueRanking entity : value) {
                         leagueRanking.add(entity);
+                        Log.e("loadLeagueRanking :", entity.teamEntity.getTeamName());
                     }
 
                     isLeagueRankingLoad = true;

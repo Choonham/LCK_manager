@@ -28,10 +28,10 @@ public interface LeagueRankingDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Maybe<Long> insertLeagueRanking(LeagueRankingEntity LeagueRankingEntity);
 
-    @Query("SELECT r.*, t.* FROM  league_ranking r INNER JOIN team t ON t.api_team_code = r.team_code ORDER BY r.rank")
+    @Query("SELECT t.*, r.* FROM  team t INNER JOIN league_ranking r ON t.api_team_code = r.team_code ORDER BY r.rank")
     Single<List<JoinedLeagueRanking>> loadLeagueRanking();
 
-    @Query("SELECT r.*, t.* FROM  league_ranking r INNER JOIN team t ON t.api_team_code = r.team_code WHERE team_code = :teamCode ORDER BY r.rank")
+    @Query("SELECT t.*, r.* FROM  team t INNER JOIN league_ranking r ON t.api_team_code = r.team_code WHERE t.api_team_code = :teamCode")
     Single<JoinedLeagueRanking> loadTeamRanking(int teamCode);
 
 }

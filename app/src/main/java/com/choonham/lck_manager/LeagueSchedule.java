@@ -66,11 +66,11 @@ public class LeagueSchedule extends Fragment {
 
         teamList = new ArrayList<>();
 
+        db = AppDatabase.getInstance(getContext());
+
         leagueRankingDAO = db.leagueRankingDAO();
 
         getMatchDateArray(28);
-
-        db = AppDatabase.getInstance(getContext());
 
         //getSeasonCode();
 
@@ -140,7 +140,7 @@ public class LeagueSchedule extends Fragment {
                 Intent intent = new Intent(getContext(), TeamInfoPopUpActivity.class);
 
                 intent.putExtra("teamName", teamName);
-                intent.putExtra("teanRank", teamRank);
+                intent.putExtra("teamRank", teamRank);
                 intent.putExtra("teamCode", teamCode);
 
                 startActivity(intent);
@@ -155,7 +155,7 @@ public class LeagueSchedule extends Fragment {
             Intent intent = new Intent(getContext(), TeamInfoPopUpActivity.class);
 
             intent.putExtra("teamName", teamName);
-            intent.putExtra("teanRank", teamRank);
+            intent.putExtra("teamRank", teamRank);
             intent.putExtra("teamCode", teamCode);
 
             startActivity(intent);
@@ -207,12 +207,18 @@ public class LeagueSchedule extends Fragment {
     }
 
     public void getTeamARankEntity(int teamCode) {
+        Log.e("getTeamARankEntity", String.valueOf(teamCode));
         leagueRankingDAO.loadTeamRanking(teamCode)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(value -> {
                     teamAEntityWithRank = value;
 
                     isTeamARankLoad = true;
+
+                    Log.e("getTeamARankEntity 1", String.valueOf(value.leagueRankingEntity.getRank()));
+                    Log.e("getTeamARankEntity 2", String.valueOf(value.leagueRankingEntity.getTeamCode()));
+
+                    Log.e("getTeamARankEntity 3", String.valueOf(value.teamEntity.getApiTeamCode()));
                 })
                 .doOnError(error -> {
                     Log.e("getTeamARankEntity error", error.getMessage());
