@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,6 +51,8 @@ public class PlayerProposalActivity extends Activity {
         PlayerEntity playerEntity = intent.getParcelableExtra("playerEntity");
         SeasonEntity seasonEntity = intent.getParcelableExtra("seasonEntity");
 
+        int tagInt = intent.getIntExtra("tagInt", 1);
+
         String name = playerEntity.getPlayerName();
 
         TextView playerName = findViewById(R.id.player_info_name);
@@ -76,10 +79,13 @@ public class PlayerProposalActivity extends Activity {
         offerSalaryView = findViewById(R.id.transfer_fee_total_salary_proposal);
         offerSalaryView.setText(Double.toString(offeredTransferFee/10));
 
-        offerSalaryView.setFocusable(false);
-        offerSalaryView.setEnabled(false);
-        offerSalaryView.setCursorVisible(false);
-        offerSalaryView.setKeyListener(null);
+        if(tagInt != 1122) {
+            offerSalaryView.setFocusable(false);
+            offerSalaryView.setEnabled(false);
+            offerSalaryView.setCursorVisible(false);
+            offerSalaryView.setKeyListener(null);
+        }
+
         offerSalaryView.setBackgroundColor(Color.TRANSPARENT);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +94,7 @@ public class PlayerProposalActivity extends Activity {
                 if(Common.startMoney < Double.parseDouble(offeredTransferFeeView.getText().toString())) {
                     Snackbar.make(v, "자본금이 부족합니다.", Snackbar.LENGTH_LONG).show();
                 } else {
-                    Common.startMoney -= Double.parseDouble(offeredTransferFeeView.getText().toString());
-
-                    playerInfoModel.onConfirm();
+                    playerInfoModel.onConfirm(Double.parseDouble(offeredTransferFeeView.getText().toString()));
                     finish();
                 }
                 //String offeredBox = offeredTransferFeeView.getText().toString();

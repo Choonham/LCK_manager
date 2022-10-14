@@ -17,10 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.LeagueRankingDAO;
 import com.choonham.lck_manager.dao.TeamDAO;
-import com.choonham.lck_manager.entity.MatchData;
-import com.choonham.lck_manager.entity.PlayerEntity;
-import com.choonham.lck_manager.entity.TeamEntity;
-import com.choonham.lck_manager.entity.TeamRank;
+import com.choonham.lck_manager.entity.*;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedLeagueRanking;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
@@ -77,10 +74,12 @@ public class LeagueRanking extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
                 Intent intent = new Intent(getContext(), TeamInfoPopUpActivity.class);
-                TextView teamName = selectedView.findViewById(R.id.team_name_league_ranking);
-                TextView teamRank = selectedView.findViewById(R.id.team_rank_league_ranking);
-                intent.putExtra("teamName", teamName.getText());
-                intent.putExtra("teamRank", teamRank.getText());
+
+                TeamEntity teamEntity = leagueRanking.get(i).teamEntity;
+                LeagueRankingEntity rankEntity = leagueRanking.get(i).leagueRankingEntity;
+                intent.putExtra("teamName", teamEntity.getTeamName());
+                intent.putExtra("teamRank", rankEntity.getRank());
+                intent.putExtra("teamCode", teamEntity.getTeamCode());
 
                 startActivity(intent);
             }
@@ -104,6 +103,8 @@ public class LeagueRanking extends Fragment {
                 intent.putExtra("playerStability", "112.5");
 
                 intent.putExtra("playerEntity", pogPlayerList.get(i).playerEntity);
+
+                intent.putExtra("seasonEntity", pogPlayerList.get(i).seasonEntity);
 
                 intent.putExtra("tag", TAG);
 
@@ -138,6 +139,8 @@ public class LeagueRanking extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
+
+
 
 
 

@@ -45,6 +45,9 @@ public class LeagueSchedule extends Fragment {
     TextView teamAWinInfo;
     TextView teamBWinInfo;
 
+    TextView teamAAvgView;
+    TextView teamBAvgView;
+
     ArrayList<String> matchDateList = new ArrayList<>();
 
     ArrayList<LeagueScheduleEntity> leagueScheduleEntityList = new ArrayList<>();
@@ -98,8 +101,7 @@ public class LeagueSchedule extends Fragment {
         leagueScheduleListView = view.findViewById(R.id.league_schedule_list_view);
         leagueScheduleListView.setAdapter(leagueScheduleAdapter);
 
-        getTeamARankEntity(leagueScheduleEntityList.get(0).getTeamCodeA());
-        getTeamBRankEntity(leagueScheduleEntityList.get(0).getTeamCodeB());
+        getTeamRankEntity(leagueScheduleEntityList.get(0).getTeamCodeA(), leagueScheduleEntityList.get(0).getTeamCodeB());
 
         while(!isTeamARankLoad || !isTeamBRankLoad) {}
 
@@ -112,18 +114,24 @@ public class LeagueSchedule extends Fragment {
         teamAWinInfo = view.findViewById(R.id.match_detail_team_a_record);
         teamBWinInfo = view.findViewById(R.id.match_detail_team_b_record);
 
+        teamAAvgView = view.findViewById(R.id.match_detail_team_a_avg);
+        teamBAvgView = view.findViewById(R.id.match_detail_team_b_avg);
+
         leagueScheduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-                int teamACode = leagueScheduleEntityList.get(i).getTeamCodeA();
-                int teamBCode = leagueScheduleEntityList.get(i).getTeamCodeB();
+                int selectedIndex = (i-1) - (i/3);
 
-                getTeamARankEntity(teamACode);
-                getTeamBRankEntity(teamBCode);
+                int teamACode = leagueScheduleEntityList.get(selectedIndex).getTeamCodeA();
+                int teamBCode = leagueScheduleEntityList.get(selectedIndex).getTeamCodeB();
+
+                getTeamRankEntity(teamACode, teamBCode);
 
                 getTeamMainRosterAvg(teamACode, teamBCode);
 
-                while(!isTeamARankLoad || !isTeamBRankLoad || teamAvgA == 0 || teamAvgB == 0) {}
+                while(!isTeamARankLoad || !isTeamBRankLoad || teamAvgA == 0 || teamAvgB == 0) {
+                    Log.d("Matching Data Loading...", isTeamARankLoad+"||"+isTeamBRankLoad+"||"+teamAvgA+"||"+teamAvgB);
+                }
 
                 TextView teamA = view.findViewById(R.id.match_detail_team_a);
                 TextView teamB = view.findViewById(R.id.match_detail_team_b);
@@ -135,8 +143,8 @@ public class LeagueSchedule extends Fragment {
                 //TextView selectedTeamB = selectedView.findViewById(R.id.league_schedule_team_b);
                 teamB.setText(teamBEntityWithRank.teamEntity.getTeamName());
 
-                teamARank.setText(teamAEntityWithRank.leagueRankingEntity.getRank());
-                teamBRank.setText(teamBEntityWithRank.leagueRankingEntity.getRank());
+                teamARank.setText(teamAEntityWithRank.leagueRankingEntity.getRank()+"위");
+                teamBRank.setText(teamBEntityWithRank.leagueRankingEntity.getRank()+"위");
 
                 int teamAwin = teamAEntityWithRank.teamEntity.getTotalWins();
                 int teamALose = teamAEntityWithRank.teamEntity.getTotalLoses();
@@ -149,6 +157,9 @@ public class LeagueSchedule extends Fragment {
 
                 teamAWinInfo.setText(teamAInfoStr);
                 teamBWinInfo.setText(teamBInfoStr);
+
+                teamAAvgView.setText(String.valueOf(teamAvgA));
+                teamBAvgView.setText(String.valueOf(teamAvgB));
 
                 TextView selectedMatch = selectedView.findViewById(R.id.league_schedule_match_num);
                 matchInfo.setText(selectedMatch.getText());
@@ -230,14 +241,17 @@ public class LeagueSchedule extends Fragment {
                 })
                 .doOnError(error -> {
                     Log.e("getTeamList error 2:", error.getMessage());
+                    isLeagueScheduleLoad = true;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 
-    public void getTeamARankEntity(int teamCode) {
-        Log.e("getTeamARankEntity", String.valueOf(teamCode));
-        leagueRankingDAO.loadTeamRanking(teamCode)
+    public void getTeamRankEntity(int teamACode, int teamBCode) {
+        isTeamARankLoad = false;
+        isTeamBRankLoad = false;
+
+        leagueRankingDAO.loadTeamRanking(teamACode)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(value -> {
                     teamAEntityWithRank = value;
@@ -246,13 +260,12 @@ public class LeagueSchedule extends Fragment {
                 })
                 .doOnError(error -> {
                     Log.e("getTeamARankEntity error", error.getMessage());
+                    isTeamARankLoad = true;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
 
-    public void getTeamBRankEntity(int teamCode) {
-        leagueRankingDAO.loadTeamRanking(teamCode)
+        leagueRankingDAO.loadTeamRanking(teamBCode)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(value -> {
                     teamBEntityWithRank = value;
@@ -261,21 +274,27 @@ public class LeagueSchedule extends Fragment {
                 })
                 .doOnError(error -> {
                     Log.e("getTeamARankEntity error", error.getMessage());
+                    isTeamBRankLoad = true;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 
     public void getTeamMainRosterAvg(int teamACode, int teamBCode) {
+        teamAvgA = 0;
+        teamAvgB = 0;
+
         RosterDAO rosterDAO = db.rosterDAO();
 
         rosterDAO.getTeamMainRosterAvg(teamACode, 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(value -> {
                     teamAvgA = value;
+                    Log.e("getTeamMainRosterAvg A:", String.valueOf(value));
                 })
                 .doOnError(error -> {
                     Log.e("getTeamList error 2:", error.getMessage());
+                    teamAvgA = 999;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -284,9 +303,11 @@ public class LeagueSchedule extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(value -> {
                     teamAvgB = value;
+                    Log.e("getTeamMainRosterAvg B:", String.valueOf(value));
                 })
                 .doOnError(error -> {
                     Log.e("getTeamList error 2:", error.getMessage());
+                    teamAvgB = 999;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

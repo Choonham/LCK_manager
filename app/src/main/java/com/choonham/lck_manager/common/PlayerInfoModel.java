@@ -24,7 +24,7 @@ public class PlayerInfoModel {
         mInstance = null;
     }
 
-    public void onConfirm() {
-        playerInfoListener.onConfirm();
+    public void onConfirm(double OfferTransferFee) {
+        playerInfoListener.onConfirm(OfferTransferFee);
     }
 }

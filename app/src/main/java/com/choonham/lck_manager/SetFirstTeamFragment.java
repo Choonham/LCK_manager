@@ -143,6 +143,10 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(playerEntityList.size() < 5) {
+                    Toast.makeText(getContext(), "창단 선수가 모두 모집되지 않았습니다!", Toast.LENGTH_LONG).show();
+                }
+
                 customProgressDialog.show();
 
                 try {
@@ -390,7 +394,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
     }
 
     @Override
-    public void onConfirm() {
+    public void onConfirm(double OfferTransferFee) {
         JoinedPlayer selectPlayer = playerEntityList.get(selectedIndex_fa);
 
         for(JoinedPlayer player : myTeamList) {
@@ -408,6 +412,8 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
         faPlayerListView.setAdapter(faPlayerListAdapter);
         myTeamListView.setAdapter(myTeamListAdapter);
+
+        Common.startMoney -= OfferTransferFee;
 
         moneyView.setText(Double.toString(Common.startMoney));
     }

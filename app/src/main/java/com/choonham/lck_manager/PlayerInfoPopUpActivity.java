@@ -91,8 +91,6 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         laneStrengthView.setText("[" + Double.toString(playerEntity.getLaneStrength()) + "]");
         teamFightView.setText("[" + Double.toString(playerEntity.getTeamFight()) + "]");
 
-        Log.e("태그 테스트22", "태그");
-
         ActivityTagEnum tag = ActivityTagEnum.INIT_TAG;
 
         if(intent.hasExtra("tag")) {
@@ -113,6 +111,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         setFirstTeamModel = SetFirstTeamModel.getInstance();
 
         if(tagInt == 1122 || tag.equals(ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT)) {
+
+            int temp = tagInt;
 
             PlayerInfoModel.createInstance(this);
             parentLayout.post(new Runnable()
@@ -138,6 +138,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
                             Intent intent2 = new Intent(getApplicationContext(),PlayerProposalActivity.class);
                             intent2.putExtra("playerEntity", playerEntity);
                             intent2.putExtra("seasonEntity", seasonEntity);
+
+                            intent2.putExtra("tagInt", temp);
                             startActivity(intent2);
 
                             finish();
@@ -380,8 +382,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     }
 
     @Override
-    public void onConfirm() {
-        setFirstTeamModel.onConfirm();
+    public void onConfirm(double OfferTransferFee) {
+        setFirstTeamModel.onConfirm(OfferTransferFee);
 
         finish();
     }

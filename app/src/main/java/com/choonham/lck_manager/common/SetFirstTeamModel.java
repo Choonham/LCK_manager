@@ -25,8 +25,8 @@ public class SetFirstTeamModel {
         mInstance = null;
     }
 
-    public void onConfirm() {
-        setFirstTeamListener.onConfirm();
+    public void onConfirm(double offeredTransferFee) {
+        setFirstTeamListener.onConfirm(offeredTransferFee);
     }
 
     public void onRelease() {
