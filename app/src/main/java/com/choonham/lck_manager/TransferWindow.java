@@ -2,6 +2,7 @@ package com.choonham.lck_manager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,11 +43,22 @@ public class TransferWindow extends Fragment {
 
     boolean isTransferListLoad = false;
 
+    SharedPreferences userPreferences;
+
+    TextView userFameLvView;
+
+    TextView userMoneyView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.transfer_window, container, false);
 
+        userPreferences = Common.getPreferences(getContext());
+
         appDatabase = AppDatabase.getInstance(getContext());
+
+        int userFameLv = userPreferences.getInt("fame_lv", 1);
+        int userMoney = userPreferences.getInt("user_money", 0);
 
         //ommon common = Common.getInstance();
         //playerEntityList =  common.getTempPlayerList(1);
@@ -56,6 +68,8 @@ public class TransferWindow extends Fragment {
         loadTransferList();
 
         while(!isTransferListLoad) {}
+
+        refreshUserInfo(view, userFameLv, userMoney);
 
         TransferWindowListAdapter transferWindowListAdapter = new TransferWindowListAdapter(getContext(), transferWindowEntityList);
         transferWindowListView = view.findViewById(R.id.weekly_transfer_window_list_view);
@@ -111,6 +125,14 @@ public class TransferWindow extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+    }
+
+    public void refreshUserInfo(View view, int userFameLv, int userMoney) {
+        userFameLvView = view.findViewById(R.id.transfer_window_fame_lv);
+        userMoneyView = view.findViewById(R.id.transfer_window_money);
+
+        userFameLvView.setText(userFameLv);
+        userMoneyView.setText(userMoney);
     }
 
 
