@@ -35,6 +35,7 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     ImageButton releaseBtn;
 
     SetFirstTeamModel setFirstTeamModel;
+    TransferWindowModel transferWindowModel;
     TeamRosterModel teamRosterModel;
 
     TextView stabilityView;
@@ -47,6 +48,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     SeasonEntity seasonEntity;
 
     AppDatabase db;
+
+    int tagFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +111,17 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
         LinearLayout mostFiveLinearLayout = findViewById(R.id.most_five_linear_layout);
 
-        setFirstTeamModel = SetFirstTeamModel.getInstance();
+        //setFirstTeamModel = SetFirstTeamModel.getInstance();
 
         if(tagInt == 1122 || tag.equals(ActivityTagEnum.SET_FIRST_TEAM_FRAGMENT)) {
+
+            if(tagInt == 1122) {
+                tagFrom = 0;
+                transferWindowModel = TransferWindowModel.getInstance();
+            } else {
+                tagFrom = 1;
+                setFirstTeamModel = SetFirstTeamModel.getInstance();
+            }
 
             int temp = tagInt;
 
@@ -264,7 +275,6 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             toMainBtn.setLayoutParams(paramsTemp);
 
             int teamCode = intent.getIntExtra("teamCode", 0);
-            Log.e("teamCode", String.valueOf(teamCode));
 
             toMainBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -382,8 +392,12 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
     }
 
     @Override
-    public void onConfirm(double OfferTransferFee) {
-        setFirstTeamModel.onConfirm(OfferTransferFee);
+    public void onConfirm(double offerTransferFee) {
+        if(tagFrom == 0) {
+            transferWindowModel.onConfirm(offerTransferFee);
+        } else if(tagFrom ==1) {
+            setFirstTeamModel.onConfirm(offerTransferFee);
+        }
 
         finish();
     }

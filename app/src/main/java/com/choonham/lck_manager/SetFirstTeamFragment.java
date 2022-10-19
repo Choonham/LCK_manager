@@ -144,7 +144,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
             @Override
             public void onClick(View view) {
                 if(playerEntityList.size() < 5) {
-                    Toast.makeText(getContext(), "창단 선수가 모두 모집되지 않았습니다!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "팀 창단 선수가 모두 모집되지 않았습니다!", Toast.LENGTH_LONG).show();
                 }
 
                 customProgressDialog.show();
@@ -236,6 +236,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                                                                         editor.putInt("fame_lv", userEntity.getUserFameLv());
                                                                         editor.putInt("user_money", userEntity.getUserMoney());
                                                                         editor.putInt("user_season", userEntity.getSeasonCode());
+                                                                        editor.putInt("user_team_code", teamCode);
 
                                                                         editor.commit();
 
