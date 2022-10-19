@@ -149,7 +149,9 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
     @Override
     public void onConfirm(double offeredTransferFee) {
 
-        if(offeredTransferFee >  Common.startMoney) {
+        int userMoney = userPreferences.getInt("user_money", 0);
+
+        if(offeredTransferFee >  userMoney) {
             Toast.makeText(getContext(), "선수 영입에 필요한 금액이 부족합니다.", Toast.LENGTH_LONG).show();
 
             return;
@@ -163,14 +165,19 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
         roster.setPlayerCode(joinedTransferWindow.playerEntity.getPlayerCode());
         roster.setTeamCode(userTeamCode);
 
-        Common.startMoney -= offeredTransferFee;
+        userMoney -= offeredTransferFee;
 
-        userMoneyView.setText("$"+Common.startMoney);
+        userMoneyView.setText("$"+userMoney);
+
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.putInt("user_money", userMoney);
 
         TransferWindowListAdapter transferWindowListAdapter = new TransferWindowListAdapter(getContext(), transferWindowEntityList);
         transferWindowListView.setAdapter((ListAdapter) transferWindowListAdapter);
 
         insertRosterData(roster);
+
+        deleteTransferWindowEntity(joinedTransferWindow.transferWindowEntity);
     }
 
     @Override
@@ -188,6 +195,20 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
                 })
                 .doOnError(error -> {
                     Log.e("insert error :", error.getMessage());
+                })
+                .subscribe();
+    }
+
+    public void deleteTransferWindowEntity(TransferWindowEntity transferWindowEntity) {
+        TransferWindowDAO transferWindowDAO = appDatabase.transferWindowDAO();
+
+        transferWindowDAO.deleteTransferWindowEntity(transferWindowEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(insertValue -> {
+                    Log.d("delete data: ", String.valueOf(insertValue));
+                })
+                .doOnError(error -> {
+                    Log.e("delete error :", error.getMessage());
                 })
                 .subscribe();
     }

@@ -1,9 +1,6 @@
 package com.choonham.lck_manager.dao;
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
+import androidx.room.*;
 import com.choonham.lck_manager.TransferWindow;
 import com.choonham.lck_manager.entity.SeasonEntity;
 import com.choonham.lck_manager.entity.TransferWindowEntity;
@@ -28,4 +25,7 @@ public interface TransferWindowDAO {
 
     @Query("SELECT t.*, p.*, s.* FROM transfer_window t INNER JOIN player p ON p.player_code = t.player_code INNER JOIN season s ON s.season_code = p.season_code WHERE weeks = :week")
     Single<List<JoinedTransferWindow>> loadTransferWindowByWeek(int week);
+
+    @Delete
+    Maybe<Integer> deleteTransferWindowEntity(TransferWindowEntity transferWindowEntity);
 }
