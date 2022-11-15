@@ -8,4 +8,6 @@ public interface TeamRosterListener {
     void onRelease();
 
     void toFA();
+
+    void onOffer();
 }

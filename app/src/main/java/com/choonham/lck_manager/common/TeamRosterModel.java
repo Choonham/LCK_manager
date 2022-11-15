@@ -36,4 +36,6 @@ public class TeamRosterModel {
     public void toFA() {
         teamRosterListener.toFA();
     }
+
+    public void onOffer() {teamRosterListener.onOffer();}
 }

@@ -12,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.choonham.lck_manager.common.Common;
-import com.choonham.lck_manager.common.SetFirstTeamModel;
-import com.choonham.lck_manager.common.TransferWindowListener;
-import com.choonham.lck_manager.common.TransferWindowModel;
+import com.choonham.lck_manager.common.*;
 import com.choonham.lck_manager.dao.PlayerDAO;
 import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.dao.TeamDAO;
@@ -55,6 +52,8 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
 
     int userTeamCode;
 
+    TeamRosterModel teamRosterModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.transfer_window, container, false);
@@ -71,6 +70,8 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
         //playerEntityList =  common.getTempPlayerList(1);
 
         transferWindowEntityList = new ArrayList<>();
+
+        teamRosterModel = TeamRosterModel.getInstance();
 
         TransferWindowModel.createInstance(this);
 
@@ -178,6 +179,8 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
         insertRosterData(roster);
 
         deleteTransferWindowEntity(joinedTransferWindow.transferWindowEntity);
+
+        teamRosterModel.onOffer();
     }
 
     @Override

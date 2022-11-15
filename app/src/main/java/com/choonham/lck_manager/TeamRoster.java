@@ -287,4 +287,17 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
     public void toFA() {
 
     }
+
+    @Override
+    public void onOffer() {
+        loadRosters();
+
+        while(!isMainRosterLoad || !isSubRosterLoad) {}
+
+        MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
+        MainRosterAdapter subRosterAdapter = new MainRosterAdapter(getContext(), subPlayerList);
+
+        teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
+        teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter);
+    }
 }
