@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.*;
 import com.choonham.lck_manager.TransferWindow;
 import com.choonham.lck_manager.entity.SeasonEntity;
@@ -21,10 +22,10 @@ public interface TransferWindowDAO {
             "INNER JOIN roster r ON r.player_code = p.player_code " +
             "INNER JOIN team t ON t.api_team_code  = r.team_code " +
             "WHERE t.api_team_code NOT IN (:teamCode) AND s.season_code = :seasonCode ORDER BY random() LIMIT 10;")
-    Single<List<JoinedPlayer>> loadPlayerListNotUserTeam(int teamCode, int seasonCode);
+    LiveData<List<JoinedPlayer>> loadPlayerListNotUserTeam(int teamCode, int seasonCode);
 
     @Query("SELECT t.*, p.*, s.* FROM transfer_window t INNER JOIN player p ON p.player_code = t.player_code INNER JOIN season s ON s.season_code = p.season_code WHERE weeks = :week")
-    Single<List<JoinedTransferWindow>> loadTransferWindowByWeek(int week);
+    LiveData<List<JoinedTransferWindow>> loadTransferWindowByWeek(int week);
 
     @Delete
     Maybe<Integer> deleteTransferWindowEntity(TransferWindowEntity transferWindowEntity);

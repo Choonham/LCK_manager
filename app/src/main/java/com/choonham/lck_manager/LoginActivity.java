@@ -125,25 +125,19 @@ public class LoginActivity extends AppCompatActivity {
                 userEntity.setUserEmail(personEmail);
                 userEntity.setUserMoney(10000000);
 
-                userDAO.countUserEntitiesByUserID(personId)
-                        .subscribeOn(Schedulers.io())
-                        .doOnSuccess(count -> {
-                            Log.d("count: ", count.toString());
+                userDAO.countUserEntitiesByUserID(personId).observe(this, count -> {
+                    Log.d("count: ", count.toString());
 
-                            if (count == 0) {
-                                Intent intent = new Intent(this, InitialSettingActivity.class);
-                                intent.putExtra("userEntity", userEntity);
+                    if (count == 0) {
+                        Intent intent = new Intent(this, InitialSettingActivity.class);
+                        intent.putExtra("userEntity", userEntity);
 
-                                startActivity(intent);
-                            } else {
-                                firebaseAuthWithGoogle(account);
-                            }
+                        startActivity(intent);
+                    } else {
+                        firebaseAuthWithGoogle(account);
+                    }
+                });
 
-                        })
-                        .doOnError(error -> {
-                            Log.e("auth error :", error.getMessage());
-                        })
-                        .subscribe();
             } catch (Exception e) {
                 Log.e("error: ", e.getMessage());
             }

@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.*;
 import com.choonham.lck_manager.entity.*;
@@ -57,14 +58,23 @@ public class MainView extends Fragment {
         db = AppDatabase.getInstance(getContext());
         matchDataList = new ArrayList<>();
 
-        getMatchData();
+        //getMatchData();
 
-        while(!isMatchDataLoaded) {}
+        //while(!isMatchDataLoaded) {}
 
         MatchScheduleAdapter matchScheduleAdapter = new MatchScheduleAdapter(matchDataList, getContext());
         matchScheduleListView = view.findViewById(R.id.match_schedule_list_view);
 
         matchScheduleListView.setAdapter(matchScheduleAdapter);
+
+        db.leagueScheduleDAO().loadScheduleAgainstTeam(userPreferences.getInt("user_season", 1), userPreferences.getInt("user_team_code", 1))
+                .observe(this, loadValue -> {
+                    matchDataList.addAll(loadValue);
+
+                    MatchScheduleAdapter matchScheduleAdapter2 = new MatchScheduleAdapter(matchDataList, getContext());
+
+                    matchScheduleListView.setAdapter(matchScheduleAdapter2);
+                });
 
         matchScheduleListView.smoothScrollToPosition(userPreferences.getInt("curr_match_index", 1));
 
@@ -100,27 +110,36 @@ public class MainView extends Fragment {
         matchStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Single<NewsAndIssueEntity> tempData = selectNewsDataByCode(db);
+                /*Single<NewsAndIssueEntity> tempData = selectNewsDataByCode(db);
                 tempData
                         .subscribeOn(Schedulers.io())
                         .doOnSuccess(data -> {
                             Log.d("SELECT", data.getNewsContent());
                         })
-                        .subscribe();
-
-                updateLeagueRankingList(userPreferences.getInt("user_season", 1));
-                /*Single<List<JoinedNews>> selectedData = selectNewsAndEffectByCode(db, 0);
-                selectedData
-                        .subscribeOn(Schedulers.io())
-                        .doOnSuccess(data -> {
-                            int i = 0;
-                            for(JoinedNews e : data) {
-                                Log.d("JOINED DATA(newsCode): ", Integer.toString(e.newsAndIssueEntity.getNewsCode()));
-                                Log.d("JOINED DATA(effectCode): ", Integer.toString(e.newsEffectsEntities.get(i).getEffectCode()));
-                                i++;
-                            }
-                        })
                         .subscribe();*/
+
+                db.leagueRankingDAO().loadLeagueRankingList(userPreferences.getInt("user_season", 1)).observe(getViewLifecycleOwner(), loadValue -> {
+
+                    for(TeamRank teamEntity : loadValue) {
+                        LeagueRankingEntity leagueRankingEntity = new LeagueRankingEntity();
+                        leagueRankingEntity.setTeamCode(teamEntity.getTeam_code());
+                        leagueRankingEntity.setRank(teamEntity.getRank());
+
+                        db.leagueRankingDAO().insertLeagueRanking(leagueRankingEntity)
+                                .subscribeOn(Schedulers.io())
+                                .doOnSuccess(value -> {
+                                    Log.d("updateLeagueRankingEntity",  value.toString());
+                                })
+                                .doOnError(error -> {
+                                    Log.e("updateLeagueRankingList error 1:", error.getMessage());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe();
+                    }
+                });
+
+
+                //updateLeagueRankingList(userPreferences.getInt("user_season", 1));
             }
         });
 
@@ -174,10 +193,10 @@ public class MainView extends Fragment {
 
     }
 
-    private Single<NewsAndIssueEntity> selectNewsDataByCode(AppDatabase db) {
+    /*private Single<NewsAndIssueEntity> selectNewsDataByCode(AppDatabase db) {
         NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
         return newsAndIssueDAO.loadNews();
-    }
+    }*/
 
     private void insertEffectsData(AppDatabase db) {
         String[] effectContentList = {"경험치 획득량 변경", "스텟 조정: 안정성", "스텟 조정: 한타력"};
@@ -200,12 +219,12 @@ public class MainView extends Fragment {
         }
     }
 
-    private Single<List<JoinedNews>> selectNewsAndEffectByCode(AppDatabase db, int newsCode) {
+    /*private Single<List<JoinedNews>> selectNewsAndEffectByCode(AppDatabase db, int newsCode) {
         NewsAndIssueDAO newsAndIssueDAO = db.newsAndIssueDAO();
         return newsAndIssueDAO.loadNewsAndEffectByCode(newsCode);
-    }
+    }*/
 
-    public void getMatchData() {
+    /*public void getMatchData() {
 
         LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
         leagueScheduleDAO.loadScheduleAgainstTeam(userPreferences.getInt("user_season", 1), userPreferences.getInt("user_team_code", 1))
@@ -222,9 +241,9 @@ public class MainView extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
-    public void updateLeagueRankingList(int season) {
+    /*public void updateLeagueRankingList(int season) {
         LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
 
         Log.e("getLeagueRanking season: ", String.valueOf(season));
@@ -254,6 +273,6 @@ public class MainView extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
 }

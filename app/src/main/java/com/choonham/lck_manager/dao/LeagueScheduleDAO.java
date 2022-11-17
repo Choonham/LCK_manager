@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.*;
 import com.choonham.lck_manager.entity.LeagueScheduleEntity;
 import com.choonham.lck_manager.entity.MatchData;
@@ -14,7 +15,7 @@ public interface LeagueScheduleDAO {
     Maybe<Long> insertLeagueSchedule(LeagueScheduleEntity leagueScheduleEntity);
 
     @Query("SELECT * FROM league_schedule ORDER BY match_num")
-    Single<List<LeagueScheduleEntity>> loadLeagueSchedule();
+    LiveData<List<LeagueScheduleEntity>> loadLeagueSchedule();
 
     @Query("SELECT " +
             "ls.match_num, " +
@@ -37,5 +38,5 @@ public interface LeagueScheduleDAO {
             "FROM league_schedule ls " +
             "WHERE (ls.team_code_a = :teamCode OR ls.team_code_b = :teamCode) " +
             "ORDER BY ls.match_num;")
-    Single<List<MatchData>> loadScheduleAgainstTeam(int seasonCode, int teamCode);
+    LiveData<List<MatchData>> loadScheduleAgainstTeam(int seasonCode, int teamCode);
 }

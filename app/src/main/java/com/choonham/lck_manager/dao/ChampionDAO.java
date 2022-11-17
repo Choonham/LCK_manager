@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -15,5 +16,5 @@ public interface ChampionDAO {
     Maybe<Long> insertChampionEntity(ChampionEntity championEntity);
 
     @Query("SELECT * FROM champion c WHERE c.champion_code = :championCode")
-    Single<ChampionEntity> loadChampionEntityByCode(Long championCode);
+    LiveData<ChampionEntity> loadChampionEntityByCode(Long championCode);
 }

@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.*;
 import com.choonham.lck_manager.entity.NewsAndIssueEntity;
 import com.choonham.lck_manager.entity.NewsEffectsEntity;
@@ -22,7 +23,7 @@ public interface NewsAndIssueDAO {
         Completable deleteNews(NewsAndIssueEntity newsAndIssueEntity);
 
         @Query("SELECT * FROM news_and_issue")
-        Single<NewsAndIssueEntity> loadNews();
+        LiveData<NewsAndIssueEntity> loadNews();
 
         @Query("SELECT " +
                 "t1.news_code, " +
@@ -40,7 +41,7 @@ public interface NewsAndIssueDAO {
         "ON t2.news_code = t1.news_code " +
         "WHERE t1.news_code = :newsCode"
         )
-        Single<List<JoinedNews>> loadNewsAndEffectByCode(int newsCode);
+        LiveData<List<JoinedNews>> loadNewsAndEffectByCode(int newsCode);
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         Maybe<Long> insertEffect(NewsEffectsEntity newsEffectsEntity);

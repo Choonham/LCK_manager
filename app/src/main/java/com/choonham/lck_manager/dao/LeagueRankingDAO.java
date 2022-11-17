@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -23,15 +24,15 @@ public interface LeagueRankingDAO {
                     "OR (total_wins = tt.total_wins AND total_loses = tt.total_loses AND api_team_code > tt.api_team_code)) AND season_code = :seasonCode) as rank FROM team tt " +
                     "WHERE tt.season_code = :seasonCode ) a " +
                     "ORDER BY a.rank ")
-    Single<List<TeamRank>> loadLeagueRankingList(int seasonCode);
+    LiveData<List<TeamRank>> loadLeagueRankingList(int seasonCode);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Maybe<Long> insertLeagueRanking(LeagueRankingEntity LeagueRankingEntity);
 
     @Query("SELECT t.*, r.* FROM  team t INNER JOIN league_ranking r ON t.api_team_code = r.team_code ORDER BY r.rank")
-    Single<List<JoinedLeagueRanking>> loadLeagueRanking();
+    LiveData<List<JoinedLeagueRanking>> loadLeagueRanking();
 
     @Query("SELECT t.*, r.* FROM  team t INNER JOIN league_ranking r ON t.api_team_code = r.team_code WHERE t.api_team_code = :teamCode")
-    Single<JoinedLeagueRanking> loadTeamRanking(int teamCode);
+    LiveData<JoinedLeagueRanking> loadTeamRanking(int teamCode);
 
 }

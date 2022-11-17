@@ -66,10 +66,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.e("season: ", String.valueOf(userPreferences.getInt("user_season", 1)));
 
-        getSeasonCode(this);
-        loadTeamCodeByUserCode(this);
+        //getSeasonCode(this);
+        db.userDAO().loadUserEntityById(1).observe(this, loadValue -> {
+            SharedPreferences userPreferences = Common.getPreferences(this);
 
-        while(!isSeasonCodeLoaded || !isTeamCodeLoaded) {}
+            SharedPreferences.Editor editor = userPreferences.edit();
+
+            editor.putInt("user_season", loadValue.getSeasonCode());
+
+            editor.commit();
+
+            db.teamDAO().loadTeamDataByUserCode(loadValue.getApiUserCode()).observe(this, teamData -> {
+                SharedPreferences userPreferences2 = Common.getPreferences(this);
+
+                SharedPreferences.Editor editor2 = userPreferences2.edit();
+
+                editor2.putInt("user_team_code", teamData.getApiTeamCode());
+
+                editor2.commit();
+            });
+
+        });
+
+        //loadTeamCodeByUserCode(this);
+
+        //while(!isSeasonCodeLoaded || !isTeamCodeLoaded) {}
 
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 
@@ -213,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void getSeasonCode(Context context) {
+   /* public void getSeasonCode(Context context) {
         UserDAO userDAO = db.userDAO();
 
         userDAO.loadUserEntityById(1)
@@ -237,9 +258,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
-    public void loadTeamCodeByUserCode(Context context) {
+   /* public void loadTeamCodeByUserCode(Context context) {
         UserDAO userDAO = db.userDAO();
 
         userDAO.loadUserEntityById(1)
@@ -275,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
 }
 

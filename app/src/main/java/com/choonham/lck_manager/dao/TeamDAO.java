@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -16,11 +17,11 @@ public interface TeamDAO {
     Maybe<Long> insertTeamData(TeamEntity teamEntity);
 
     @Query("SELECT * FROM team t WHERE t.team_code = :teamCode")
-    Single<TeamEntity> loadTeamDataByCode(Long teamCode);
+    LiveData<TeamEntity> loadTeamDataByCode(Long teamCode);
 
     @Query("SELECT * FROM team t WHERE t.user_code = :userCode")
-    Single<TeamEntity> loadTeamDataByUserCode(int userCode);
+    LiveData<TeamEntity> loadTeamDataByUserCode(int userCode);
 
     @Query("SELECT * FROM team t WHERE t.season_code = :seasonCode")
-    Single<List<TeamEntity>> loadAllTeamBySeasonCode(int seasonCode);
+    LiveData<List<TeamEntity>> loadAllTeamBySeasonCode(int seasonCode);
 }

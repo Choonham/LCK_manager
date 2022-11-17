@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -16,9 +17,9 @@ public interface UserDAO {
     Maybe<Long> insertUserEntity(UserEntity userEntity);
 
     @Query("SELECT * FROM user u WHERE u.user_code = :userCode")
-    Single<UserEntity> loadUserEntityById(int userCode);
+    LiveData<UserEntity> loadUserEntityById(int userCode);
 
     @Query("SELECT COUNT(*) FROM user u WHERE u.user_id = :userID")
-    Single<Integer> countUserEntitiesByUserID(String userID);
+    LiveData<Integer> countUserEntitiesByUserID(String userID);
 
 }

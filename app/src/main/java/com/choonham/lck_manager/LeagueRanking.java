@@ -54,9 +54,9 @@ public class LeagueRanking extends Fragment {
 
         db = AppDatabase.getInstance(getContext());
 
-        loadLeagueRanking();
+        //loadLeagueRanking();
 
-        while(!isLeagueRankingLoad) {}
+        //while(!isLeagueRankingLoad) {}
 
         leagueRankingListView = view.findViewById(R.id.league_ranking_list_view);
         pogPointListView = view.findViewById(R.id.pog_point_list_view);
@@ -69,6 +69,13 @@ public class LeagueRanking extends Fragment {
 
         leagueRankingListView.setAdapter(leagueRankingAdapter);
         pogPointListView.setAdapter(pogPointAdapter);
+
+        db.leagueRankingDAO().loadLeagueRanking().observe(getViewLifecycleOwner(), value -> {
+            leagueRanking.addAll(value);
+
+            LeagueRankingAdapter leagueRankingAdapter2 = new LeagueRankingAdapter(leagueRanking, getContext());
+            leagueRankingListView.setAdapter(leagueRankingAdapter2);
+        });
 
         leagueRankingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -120,7 +127,7 @@ public class LeagueRanking extends Fragment {
         return view;
     }
 
-    private void loadLeagueRanking() {
+    /*private void loadLeagueRanking() {
         LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
 
         leagueRankingDAO.loadLeagueRanking()
@@ -138,10 +145,6 @@ public class LeagueRanking extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
-
-
-
-
+    }*/
 
 }

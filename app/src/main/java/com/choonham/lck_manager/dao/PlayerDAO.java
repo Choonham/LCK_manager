@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.*;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
@@ -16,5 +17,5 @@ public interface PlayerDAO {
     Single<PlayerEntity> loadPlayerEntityByCode(int playerCode);*/
 
     @Query("SELECT s.*, p.* FROM player p INNER JOIN season s ON s.season_code = p.season_code WHERE p.player_code = :playerCode")
-    Single<JoinedPlayer> loadPlayerEntityByCode(int playerCode);
+    LiveData<JoinedPlayer> loadPlayerEntityByCode(int playerCode);
 }

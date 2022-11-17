@@ -71,13 +71,11 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
 
         transferWindowEntityList = new ArrayList<>();
 
-        teamRosterModel = TeamRosterModel.getInstance();
-
         TransferWindowModel.createInstance(this);
 
-        loadTransferList();
+        //loadTransferList();
 
-        while(!isTransferListLoad) {}
+        TransferWindowDAO transferWindowDAO = appDatabase.transferWindowDAO();
 
         refreshUserInfo(view, userFameLv, userMoney);
 
@@ -85,6 +83,15 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
         transferWindowListView = view.findViewById(R.id.weekly_transfer_window_list_view);
 
         transferWindowListView.setAdapter((ListAdapter) transferWindowListAdapter);
+
+
+        transferWindowDAO.loadTransferWindowByWeek(1).observe(this, loadValue -> {
+            transferWindowEntityList.addAll(loadValue);
+
+            TransferWindowListAdapter transferWindowListAdapter2 = new TransferWindowListAdapter(getContext(), transferWindowEntityList);
+
+            transferWindowListView.setAdapter((ListAdapter) transferWindowListAdapter2);
+        });
 
         refresh = view.findViewById(R.id.transfer_window_refresh_button);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +126,7 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
         return view;
     }
 
-    public void loadTransferList() {
+    /*public void loadTransferList() {
         TransferWindowDAO transferWindowDAO = appDatabase.transferWindowDAO();
 
         transferWindowDAO.loadTransferWindowByWeek(1)
@@ -136,7 +143,7 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
     public void refreshUserInfo(View view, int userFameLv, int userMoney) {
         userFameLvView = view.findViewById(R.id.transfer_window_fame_lv);
@@ -149,6 +156,8 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
 
     @Override
     public void onConfirm(double offeredTransferFee) {
+
+        teamRosterModel = TeamRosterModel.getInstance();
 
         int userMoney = userPreferences.getInt("user_money", 0);
 

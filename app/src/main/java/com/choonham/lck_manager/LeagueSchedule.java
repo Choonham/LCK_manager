@@ -85,9 +85,9 @@ public class LeagueSchedule extends Fragment {
 
         //getTeamList();
 
-        getLeagueSchedule();
+        //getLeagueSchedule();
 
-        while(!isLeagueScheduleLoad) {}
+        //while(!isLeagueScheduleLoad) {}
 
         //leagueScheduleList = setLeagueSchedule(teamList);
 
@@ -97,13 +97,60 @@ public class LeagueSchedule extends Fragment {
             Log.e("error" , e.getMessage());
         }*/
 
-        LeagueScheduleAdapter leagueScheduleAdapter = new LeagueScheduleAdapter(leagueScheduleEntityList, matchDateList, getContext());
         leagueScheduleListView = view.findViewById(R.id.league_schedule_list_view);
-        leagueScheduleListView.setAdapter(leagueScheduleAdapter);
 
-        getTeamRankEntity(leagueScheduleEntityList.get(0).getTeamCodeA(), leagueScheduleEntityList.get(0).getTeamCodeB());
+        db.leagueScheduleDAO().loadLeagueSchedule().observe(this, value -> {
+            leagueScheduleEntityList.addAll(value);
 
-        while(!isTeamARankLoad || !isTeamBRankLoad) {}
+            LeagueScheduleAdapter leagueScheduleAdapter2 = new LeagueScheduleAdapter(leagueScheduleEntityList, matchDateList, getContext());
+            leagueScheduleListView.setAdapter(leagueScheduleAdapter2);
+
+            db.leagueRankingDAO().loadTeamRanking(leagueScheduleEntityList.get(0).getTeamCodeA()).observe(getViewLifecycleOwner(), value2 -> {
+                teamA.setText(value2.teamEntity.getTeamName());
+
+                teamAEntityWithRank = value2;
+
+                TextView teamA = view.findViewById(R.id.match_detail_team_a);
+
+                //TextView selectedTeamA = selectedView.findViewById(R.id.league_schedule_team_a);
+                teamA.setText(teamAEntityWithRank.teamEntity.getTeamName());
+
+
+                teamARank.setText(teamAEntityWithRank.leagueRankingEntity.getRank()+"위");
+
+                int teamAwin = teamAEntityWithRank.teamEntity.getTotalWins();
+                int teamALose = teamAEntityWithRank.teamEntity.getTotalLoses();
+
+                String teamAInfoStr = teamAwin + "W " + teamALose + "L " + (teamAwin - teamALose);
+
+                teamAWinInfo.setText(teamAInfoStr);
+            });
+
+            db.leagueRankingDAO().loadTeamRanking(leagueScheduleEntityList.get(0).getTeamCodeB()).observe(getViewLifecycleOwner(), value3 -> {
+                teamB.setText(value3.teamEntity.getTeamName());
+
+                teamBEntityWithRank = value3;
+
+                TextView teamB = view.findViewById(R.id.match_detail_team_b);
+
+                //TextView selectedTeamB = selectedView.findViewById(R.id.league_schedule_team_b);
+                teamB.setText(teamBEntityWithRank.teamEntity.getTeamName());
+
+                teamBRank.setText(teamBEntityWithRank.leagueRankingEntity.getRank()+"위");
+
+                int teamBwin = teamBEntityWithRank.teamEntity.getTotalWins();
+                int teamBLose = teamBEntityWithRank.teamEntity.getTotalLoses();
+
+                String teamBInfoStr = teamBwin + "W " + teamBLose + "L " + (teamBwin - teamBLose);
+
+                teamBWinInfo.setText(teamBInfoStr);
+            });
+
+        });
+
+        //getTeamRankEntity(leagueScheduleEntityList.get(0).getTeamCodeA(), leagueScheduleEntityList.get(0).getTeamCodeB());
+
+        //while(!isTeamARankLoad || !isTeamBRankLoad) {}
 
         teamA = view.findViewById(R.id.match_detail_team_a);
         teamB = view.findViewById(R.id.match_detail_team_b);
@@ -125,50 +172,69 @@ public class LeagueSchedule extends Fragment {
                 int teamACode = leagueScheduleEntityList.get(selectedIndex).getTeamCodeA();
                 int teamBCode = leagueScheduleEntityList.get(selectedIndex).getTeamCodeB();
 
-                getTeamRankEntity(teamACode, teamBCode);
+                //getTeamRankEntity(teamACode, teamBCode);
 
-                getTeamMainRosterAvg(teamACode, teamBCode);
+                db.leagueRankingDAO().loadTeamRanking(teamACode).observe(getViewLifecycleOwner(), value -> {
+                    teamAEntityWithRank = value;
 
-                while(!isTeamARankLoad || !isTeamBRankLoad || teamAvgA == 0 || teamAvgB == 0) {
-                    Log.d("Matching Data Loading...", isTeamARankLoad+"||"+isTeamBRankLoad+"||"+teamAvgA+"||"+teamAvgB);
-                }
+                    TextView teamA = view.findViewById(R.id.match_detail_team_a);
 
-                TextView teamA = view.findViewById(R.id.match_detail_team_a);
-                TextView teamB = view.findViewById(R.id.match_detail_team_b);
-                TextView matchInfo = view.findViewById(R.id.league_schedule_match_detail);
+                    //TextView selectedTeamA = selectedView.findViewById(R.id.league_schedule_team_a);
+                    teamA.setText(teamAEntityWithRank.teamEntity.getTeamName());
 
-                //TextView selectedTeamA = selectedView.findViewById(R.id.league_schedule_team_a);
-                teamA.setText(teamAEntityWithRank.teamEntity.getTeamName());
 
-                //TextView selectedTeamB = selectedView.findViewById(R.id.league_schedule_team_b);
-                teamB.setText(teamBEntityWithRank.teamEntity.getTeamName());
+                    teamARank.setText(teamAEntityWithRank.leagueRankingEntity.getRank()+"위");
 
-                teamARank.setText(teamAEntityWithRank.leagueRankingEntity.getRank()+"위");
-                teamBRank.setText(teamBEntityWithRank.leagueRankingEntity.getRank()+"위");
+                    int teamAwin = teamAEntityWithRank.teamEntity.getTotalWins();
+                    int teamALose = teamAEntityWithRank.teamEntity.getTotalLoses();
 
-                int teamAwin = teamAEntityWithRank.teamEntity.getTotalWins();
-                int teamALose = teamAEntityWithRank.teamEntity.getTotalLoses();
+                    String teamAInfoStr = teamAwin + "W " + teamALose + "L " + (teamAwin - teamALose);
 
-                int teamBwin = teamBEntityWithRank.teamEntity.getTotalWins();
-                int teamBLose = teamBEntityWithRank.teamEntity.getTotalLoses();
+                    teamAWinInfo.setText(teamAInfoStr);
+                });
 
-                String teamAInfoStr = teamAwin + "W " + teamALose + "L " + (teamAwin - teamALose);
-                String teamBInfoStr = teamBwin + "W " + teamBLose + "L " + (teamAwin - teamALose);
+                db.leagueRankingDAO().loadTeamRanking(teamBCode).observe(getViewLifecycleOwner(), value -> {
+                    teamBEntityWithRank = value;
 
-                teamAWinInfo.setText(teamAInfoStr);
-                teamBWinInfo.setText(teamBInfoStr);
+                    TextView teamB = view.findViewById(R.id.match_detail_team_b);
+
+                    //TextView selectedTeamB = selectedView.findViewById(R.id.league_schedule_team_b);
+                    teamB.setText(teamBEntityWithRank.teamEntity.getTeamName());
+
+                    teamBRank.setText(teamBEntityWithRank.leagueRankingEntity.getRank()+"위");
+
+                    int teamBwin = teamBEntityWithRank.teamEntity.getTotalWins();
+                    int teamBLose = teamBEntityWithRank.teamEntity.getTotalLoses();
+
+                    String teamBInfoStr = teamBwin + "W " + teamBLose + "L " + (teamBwin - teamBLose);
+
+                    teamBWinInfo.setText(teamBInfoStr);
+                });
+
+                //getTeamMainRosterAvg(teamACode, teamBCode);
+
+                teamAvgA = 0;
+                teamAvgB = 0;
 
                 teamAAvgView.setText(String.valueOf(teamAvgA));
                 teamBAvgView.setText(String.valueOf(teamAvgB));
 
+                db.rosterDAO().getTeamMainRosterAvg(teamACode, 1).observe(getViewLifecycleOwner(), value -> {
+                    teamAAvgView.setText(String.valueOf(teamAvgA));
+                    teamAvgA = value;
+                });
+
+                db.rosterDAO().getTeamMainRosterAvg(teamBCode, 1).observe(getViewLifecycleOwner(), value -> {
+                    teamAvgB = value;
+                    teamBAvgView.setText(String.valueOf(teamAvgB));
+                });
+
+                TextView matchInfo = view.findViewById(R.id.league_schedule_match_detail);
                 TextView selectedMatch = selectedView.findViewById(R.id.league_schedule_match_num);
                 matchInfo.setText(selectedMatch.getText());
 
             }
         });
-
-        teamA.setText(teamAEntityWithRank.teamEntity.getTeamName());
-        teamB.setText(teamBEntityWithRank.teamEntity.getTeamName());
 
         teamA.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +278,7 @@ public class LeagueSchedule extends Fragment {
         }
     }
 
-    public void getSeasonCode() {
+    /*public void getSeasonCode() {
         userDAO = db.userDAO();
 
         userDAO.loadUserEntityById(1)
@@ -226,8 +292,8 @@ public class LeagueSchedule extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
-
-    public void getLeagueSchedule() {
+*/
+    /*public void getLeagueSchedule() {
         LeagueScheduleDAO leagueScheduleDAO = db.leagueScheduleDAO();
 
         leagueScheduleDAO.loadLeagueSchedule()
@@ -245,9 +311,9 @@ public class LeagueSchedule extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
-    public void getTeamRankEntity(int teamACode, int teamBCode) {
+    /*public void getTeamRankEntity(int teamACode, int teamBCode) {
         isTeamARankLoad = false;
         isTeamBRankLoad = false;
 
@@ -278,9 +344,9 @@ public class LeagueSchedule extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
-    public void getTeamMainRosterAvg(int teamACode, int teamBCode) {
+    /*public void getTeamMainRosterAvg(int teamACode, int teamBCode) {
         teamAvgA = 0;
         teamAvgB = 0;
 
@@ -311,7 +377,7 @@ public class LeagueSchedule extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
 
 

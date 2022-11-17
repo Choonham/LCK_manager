@@ -1,5 +1,6 @@
 package com.choonham.lck_manager.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -16,5 +17,5 @@ public interface SeasonDAO {
     Maybe<Long> insertSeasonData(SeasonEntity seasonEntity);
 
     @Query("SELECT * FROM season s WHERE s.season_code = :seasonCode")
-    Single<SeasonEntity> loadSeasonEntityByCode(Long seasonCode);
+    LiveData<SeasonEntity> loadSeasonEntityByCode(Long seasonCode);
 }

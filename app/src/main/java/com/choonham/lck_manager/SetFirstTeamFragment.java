@@ -242,13 +242,49 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                                                                         setLeagueScheduleMap(setLeagueSchedule(teamList));
 
-                                                                        insertFirstTransferWindow(teamCode, seasonCode);
+                                                                        //insertFirstTransferWindow(teamCode, seasonCode);
+                                                                        db.transferWindowDAO().loadPlayerListNotUserTeam(teamCode, seasonCode)
+                                                                            .observe(getViewLifecycleOwner(), loadValue -> {
+                                                                                for(JoinedPlayer player : loadValue) {
+                                                                                    TransferWindowEntity transferWindowEntity = new TransferWindowEntity();
+                                                                                    transferWindowEntity.setPlayerCode(player.playerEntity.getPlayerCode());
+                                                                                    transferWindowEntity.setWeeks(1);
+                                                                                    transferWindowEntity.setMinSalary(player.playerEntity.getFameLv() * 1000);
+                                                                                    transferWindowEntity.setSalaryWants((int) (player.playerEntity.getStability() * 1000));
 
-                                                                        while(!loadAllDone) {}
+                                                                                    db.transferWindowDAO().insertTransferList(transferWindowEntity)
+                                                                                            .subscribeOn(Schedulers.io())
+                                                                                            .doOnSuccess(value -> {
+                                                                                                Log.d("insert transfer window entity:", "done");
+                                                                                            })
+                                                                                            .doOnError(error -> {
+                                                                                                Log.e("insert transfer window entity error :", error.getMessage());
+                                                                                            })
+                                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                                            .subscribe();
+                                                                                }
+                                                                            });
+                                                                        //updateLeagueRankingList(seasonCode);
 
-                                                                        updateLeagueRankingList(seasonCode);
+                                                                        db.leagueRankingDAO().loadLeagueRankingList(seasonCode).observe(getViewLifecycleOwner(), loadValue -> {
 
-                                                                        while(!isLeagueRankingSet) {}
+                                                                            for(TeamRank teamEntity : loadValue) {
+                                                                                LeagueRankingEntity leagueRankingEntity = new LeagueRankingEntity();
+                                                                                leagueRankingEntity.setTeamCode(teamEntity.getTeam_code());
+                                                                                leagueRankingEntity.setRank(teamEntity.getRank());
+
+                                                                                db.leagueRankingDAO().insertLeagueRanking(leagueRankingEntity)
+                                                                                        .subscribeOn(Schedulers.io())
+                                                                                        .doOnSuccess(value -> {
+                                                                                            Log.d("updateLeagueRankingEntity",  value.toString());
+                                                                                        })
+                                                                                        .doOnError(error -> {
+                                                                                            Log.e("updateLeagueRankingList error 1:", error.getMessage());
+                                                                                        })
+                                                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                                                        .subscribe();
+                                                                            }
+                                                                        });
 
                                                                         customProgressDialog.dismiss();
 
@@ -314,7 +350,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(insertValue -> {
                     Log.d("Insert data: ", insertValue.toString());
-                    checkInsertYN(insertValue);
+                    //checkInsertYN(insertValue);
 
                     isInsertDone = true;
                 })
@@ -361,23 +397,6 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 .subscribe();
     }
 
-
-
-    private void checkInsertYN(Long insertCode) {
-        AtomicReference<UserEntity> value = new AtomicReference<>();
-
-        userDAO.loadUserEntityById(insertCode.intValue())
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    Log.d("insertedID", loadValue.getUserId());
-                    value.set(loadValue);
-                })
-                .doOnError(error -> {
-                    Log.e("check error :", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
 
     private void insertTeamInfo(TeamEntity team) {
         TeamDAO teamDAO = db.teamDAO();
@@ -559,7 +578,7 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
         return leagueScheduleResult;
     }
 
-    private void insertFirstTransferWindow(int teamCode, int seasonCode) {
+    /*private void insertFirstTransferWindow(int teamCode, int seasonCode) {
         TransferWindowDAO transferWindowDAO = db.transferWindowDAO();
 
         transferWindowDAO.loadPlayerListNotUserTeam(teamCode, seasonCode)
@@ -591,9 +610,9 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
-    public void updateLeagueRankingList(int season) {
+    /*public void updateLeagueRankingList(int season) {
         LeagueRankingDAO leagueRankingDAO = db.leagueRankingDAO();
 
         leagueRankingDAO.loadLeagueRankingList(season)
@@ -623,6 +642,6 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
 }

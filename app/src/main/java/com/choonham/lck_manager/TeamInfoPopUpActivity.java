@@ -16,7 +16,11 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
@@ -25,15 +29,18 @@ import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
 import com.choonham.lck_manager.room.AppDatabase;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamInfoPopUpActivity extends Activity {
+public class TeamInfoPopUpActivity extends Activity implements LifecycleOwner {
 
     private final ActivityTagEnum TAG = ActivityTagEnum.TEAM_INFO_POPUP_ACTIVITY;
     private List<JoinedPlayer> playerEntityList;
     ListView teamInfoListView;
+
+    private LifecycleRegistry lifecycleRegistry;
 
     private List<JoinedPlayer> teamMainRosterList;
 
@@ -44,6 +51,8 @@ public class TeamInfoPopUpActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        lifecycleRegistry = new LifecycleRegistry(this);
 
         db = AppDatabase.getInstance(this);
 
@@ -56,11 +65,7 @@ public class TeamInfoPopUpActivity extends Activity {
 
         teamMainRosterList = new ArrayList<>();
         //Log.e("읭", String.valueOf(intent.getIntExtra("teamCode", 1)));
-        getTeamMainRosterList(intent.getIntExtra("teamCode", 1));
-
-        while(!isTeamMainRosterLoad){
-            Log.e("TeamMainRosterLoad", "Loading...");
-        }
+        //getTeamMainRosterList(intent.getIntExtra("teamCode", 1));
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.team_info_pop_up);
@@ -80,10 +85,14 @@ public class TeamInfoPopUpActivity extends Activity {
         Common common = Common.getInstance();
         //playerEntityList = common.getTempPlayerList(0);
 
-        TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, teamMainRosterList);
-
         teamInfoListView = findViewById(R.id.team_info_list_view);
-        teamInfoListView.setAdapter(teamInfoAdapter);
+
+        db.rosterDAO().loadPlayerListByTeamCode(intent.getIntExtra("teamCode", 1), 1)
+            .observe(this::getLifecycle, loadValue -> {
+                teamMainRosterList.addAll(loadValue);
+                TeamInfoAdapter teamInfoAdapter = new TeamInfoAdapter(this, teamMainRosterList);
+                teamInfoListView.setAdapter(teamInfoAdapter);
+            });
 
         TextView teamName = findViewById(R.id.team_info_team_name);
         teamName.setText(name);
@@ -111,7 +120,14 @@ public class TeamInfoPopUpActivity extends Activity {
         finish();
     }
 
-    public void getTeamMainRosterList(int teamCode) {
+    @NonNull
+    @NotNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
+
+    /*public void getTeamMainRosterList(int teamCode) {
 
         RosterDAO rosterDAO = db.rosterDAO();
         rosterDAO.loadPlayerListByTeamCode(teamCode, 1)
@@ -128,6 +144,6 @@ public class TeamInfoPopUpActivity extends Activity {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
+    }*/
 
 }
