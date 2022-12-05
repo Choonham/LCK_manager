@@ -45,5 +45,9 @@
         <item name="color">@color/text_color</item>
     </style>
 
+    <style name="ReleaseDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+
 
 </resources>

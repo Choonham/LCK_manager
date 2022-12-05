@@ -19,6 +19,7 @@ import com.choonham.lck_manager.dao.TeamDAO;
 import com.choonham.lck_manager.dao.UserDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.RosterEntity;
+import com.choonham.lck_manager.entity.TransferWindowEntity;
 import com.choonham.lck_manager.entity.UserEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.joinedEntity.JoinedPlayer;
@@ -64,6 +65,8 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
     int userApiCode;
 
+    PlayerEntity selectedPlayer;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -94,11 +97,10 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
         db.userDAO().loadUserEntityById(1).observe(this, userEntity -> {
             userApiCode = userEntity.getApiUserCode();
-
             db.teamDAO().loadTeamDataByUserCode(userApiCode).observe(this, teamEntity -> {
                 teamCode = teamEntity.getApiTeamCode();
-
                 db.rosterDAO().loadRosterListByTeamCode(teamCode, 1).observe(this, loadValue -> {
+                    mainPlayerList.clear();
                     for(RosterEntity rosterEntity : loadValue) {
                         db.playerDAO().loadPlayerEntityByCode(rosterEntity.getPlayerCode()).observe(this, player -> {
                             mainPlayerList.add(player);
@@ -110,12 +112,15 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                 });
 
                 db.rosterDAO().loadRosterListByTeamCode(teamCode, 0).observe(this, loadValue -> {
+                    subPlayerList.clear();
                     for(RosterEntity rosterEntity : loadValue) {
                         db.playerDAO().loadPlayerEntityByCode(rosterEntity.getPlayerCode()).observe(this, player -> {
+                            Log.e("홀리", "홀리");
                             subPlayerList.add(player);
 
                             MainRosterAdapter subRosterAdapter2 = new MainRosterAdapter(getContext(), subPlayerList);
                             teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter2);
+                            Log.e("홀리2", "홀리2");
                         });
                     }
                 });
@@ -141,14 +146,27 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
         teamMainRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View selectedView, int i, long l) {
-
                 tag = ActivityTagEnum.TEAM_ROSTER_MAIN;
 
-                Common common = Common.getInstance();
-                Intent intent = common.getPlayerInfoPopUpIntent(mainPlayerList, i, selectedView, tag, getContext(), 0);
-                intent.putExtra("teamCode", teamCode);
+                selectedIndex = i;
+
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+
+                Bundle b = new Bundle();
+
+                b.putParcelable("playerEntity", mainPlayerList.get(i).playerEntity);
+
+                b.putParcelable("seasonEntity", mainPlayerList.get(i).seasonEntity);
+
+                b.putSerializable("tag", tag);
+
+                b.putInt("teamCode", teamCode);
+
+                intent.putExtra("bundle", b);
 
                 startActivity(intent);
+
+                selectedPlayer = mainPlayerList.get(i).playerEntity;
             }
         });
 
@@ -160,9 +178,23 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
                 selectedIndex = i;
 
-                Common common = Common.getInstance();
-                Intent intent = common.getPlayerInfoPopUpIntent(subPlayerList, i, selectedView, tag, getContext(), 0);
-                intent.putExtra("teamCode", teamCode);
+                Log.e("짜증나", String.valueOf(teamCode));
+
+                selectedPlayer = subPlayerList.get(i).playerEntity;
+
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+
+                Bundle b = new Bundle();
+
+                b.putParcelable("playerEntity", subPlayerList.get(i).playerEntity);
+
+                b.putParcelable("seasonEntity", subPlayerList.get(i).seasonEntity);
+
+                b.putSerializable("tag", tag);
+
+                b.putInt("teamCode", teamCode);
+
+                intent.putExtra("bundle", b);
 
                 startActivity(intent);
             }
@@ -174,13 +206,12 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
     public void loadRosters() {
         mainPlayerList.clear();
         subPlayerList.clear();
-
     }
 
-    public void loadTeamCodeByUserCode() {
+    /*public void loadTeamCodeByUserCode() {
         UserDAO userDAO = db.userDAO();
 
-        /*userDAO.loadUserEntityById(1)
+        userDAO.loadUserEntityById(1)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(userEntity -> {
 
@@ -206,8 +237,8 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
                     Log.e("loadMainRoster error 2:", error.getMessage());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();*/
-    }
+                .subscribe();
+    }*/
 
     /*public void loadMainRoster() {
         RosterDAO rosterDAO = db.rosterDAO();
@@ -291,27 +322,38 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
     public void toSub() {
         subPlayerList.add(mainPlayerList.remove(selectedIndex));
 
-        MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
+        /*MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
         MainRosterAdapter sub = new MainRosterAdapter(getContext(), subPlayerList);
 
         teamMainRosterListView.setAdapter(main);
-        teamSubRosterListView.setAdapter(sub);
+        teamSubRosterListView.setAdapter(sub);*/
     }
 
     @Override
     public void toMain() {
         mainPlayerList.add(subPlayerList.remove(selectedIndex));
 
-        MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
+        /*MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
         MainRosterAdapter sub = new MainRosterAdapter(getContext(), subPlayerList);
 
         teamMainRosterListView.setAdapter(main);
-        teamSubRosterListView.setAdapter(sub);
+        teamSubRosterListView.setAdapter(sub);*/
     }
 
     @Override
     public void onRelease() {
-
+        //JoinedPlayer releasePlayer = subPlayerList.remove(selectedIndex);
+        db.rosterDAO().deleteRosterData(subPlayerList.get(selectedIndex).playerEntity.getPlayerCode(), teamCode)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(value -> {
+                    Log.d("release player:", "done");
+                })
+                .doOnError(error -> {
+                    Log.e("release error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        //subPlayerList.remove(selectedIndex);
     }
 
     @Override
@@ -321,22 +363,42 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
     @Override
     public void onOffer() {
-        isMainRosterLoad = false;
-        isSubRosterLoad = false;
-
-        Log.e("오잉", "오잉");
-
-        loadRosters();
-
-        while(!isMainRosterLoad || !isSubRosterLoad) {
-            Log.d("오잉", "오잉"+String.valueOf(isMainRosterLoad));
-            Log.d("오잉", "오잉"+String.valueOf(isSubRosterLoad));
-        }
-
-        MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
+        /*MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
         MainRosterAdapter subRosterAdapter = new MainRosterAdapter(getContext(), subPlayerList);
 
         teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
-        teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter);
+        teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter);*/
+    }
+
+    @Override
+    public void onConfirm(double offeredTransferFee) {
+        TransferWindowEntity transferWindowEntity = new TransferWindowEntity();
+        transferWindowEntity.setPlayerCode(selectedPlayer.getPlayerCode());
+        transferWindowEntity.setWeeks(1);
+        transferWindowEntity.setMinSalary(selectedPlayer.getFameLv() * 1000);
+        transferWindowEntity.setSalaryWants((int) (selectedPlayer.getStability() * 1000));
+        transferWindowEntity.setTransferFee(offeredTransferFee);
+
+        db.transferWindowDAO().insertTransferList(transferWindowEntity)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(value -> {
+                    Log.d("insert transfer window entity:", "done");
+                })
+                .doOnError(error -> {
+                    Log.e("insert transfer window entity error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
+        db.rosterDAO().deleteRosterData(subPlayerList.get(selectedIndex).playerEntity.getPlayerCode(), teamCode)
+                .subscribeOn(Schedulers.io())
+                .doOnSuccess(value -> {
+                    Log.d("release player:", "done");
+                })
+                .doOnError(error -> {
+                    Log.e("release error :", error.getMessage());
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

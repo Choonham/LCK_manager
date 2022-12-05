@@ -38,4 +38,8 @@ public class TeamRosterModel {
     }
 
     public void onOffer() {teamRosterListener.onOffer();}
+
+    public void onConfirm(double offeredTransferFee) {
+        teamRosterListener.onConfirm(offeredTransferFee);
+    }
 }

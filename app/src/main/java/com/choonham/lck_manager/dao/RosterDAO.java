@@ -15,6 +15,9 @@ public interface RosterDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Maybe<Long> insertRosterData(RosterEntity roster);
 
+    @Query("DELETE FROM roster WHERE team_code = :teamCode AND player_code = :playerCode")
+    Maybe<Integer> deleteRosterData(int playerCode, int teamCode);
+
     @Query("SELECT * FROM roster r WHERE r.team_code = :teamCode AND r.main_entry = :mainEntry")
     LiveData<List<RosterEntity>> loadRosterListByTeamCode(int teamCode, int mainEntry);
 
@@ -34,5 +37,4 @@ public interface RosterDAO {
             "INNER JOIN team t ON t.api_team_code = r.team_code " +
             "WHERE t.api_team_code = :teamCode  AND r.main_entry = :mainEntry")
     LiveData<Integer> getTeamMainRosterAvg(int teamCode, int mainEntry);
-
 }

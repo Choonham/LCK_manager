@@ -159,7 +159,6 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
                             userEntity.setApiUserCode(apiUserCode);
                             userEntity.setSeasonCode(seasonCode);
 
-
                             teamService.regTeamCode(context, userEntity, teamName,
                             new VolleyCallBack() {
                                 @Override
@@ -316,8 +315,20 @@ public class SetFirstTeamFragment extends Fragment implements SetFirstTeamListen
 
                 selectedIndex_fa = i;
 
-                Common common = Common.getInstance();
-                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);
+                /*Common common = Common.getInstance();
+                Intent intent = common.getPlayerInfoPopUpIntent(playerEntityList, i, selectedView, TAG, getContext(), 0);*/
+
+                Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
+
+                Bundle b = new Bundle();
+
+                b.putParcelable("playerEntity", playerEntityList.get(i).playerEntity);
+
+                b.putParcelable("seasonEntity", playerEntityList.get(i).seasonEntity);
+
+                b.putSerializable("tag", TAG);
+
+                intent.putExtra("bundle", b);
 
                 startActivity(intent);
             }

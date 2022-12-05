@@ -79,13 +79,15 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
 
         refreshUserInfo(view, userFameLv, userMoney);
 
-        TransferWindowListAdapter transferWindowListAdapter = new TransferWindowListAdapter(getContext(), transferWindowEntityList);
+        //TransferWindowListAdapter transferWindowListAdapter = new TransferWindowListAdapter(getContext(), transferWindowEntityList);
         transferWindowListView = view.findViewById(R.id.weekly_transfer_window_list_view);
 
-        transferWindowListView.setAdapter((ListAdapter) transferWindowListAdapter);
+        //transferWindowListView.setAdapter((ListAdapter) transferWindowListAdapter);
 
 
         transferWindowDAO.loadTransferWindowByWeek(1).observe(this, loadValue -> {
+            transferWindowEntityList.clear();
+
             transferWindowEntityList.addAll(loadValue);
 
             TransferWindowListAdapter transferWindowListAdapter2 = new TransferWindowListAdapter(getContext(), transferWindowEntityList);
@@ -109,15 +111,19 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
 
                 Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
 
-                intent.putExtra("tagInt",1122);
+                Bundle b = new Bundle();
 
-                intent.putExtra("tag", ActivityTagEnum.TRANSFER_WINDOW);
+                b.putParcelable("playerEntity", transferWindowEntityList.get(i).playerEntity);
 
-                intent.putExtra("playerEntity", transferWindowEntityList.get(i).playerEntity);
+                b.putParcelable("seasonEntity", transferWindowEntityList.get(i).seasonEntity);
 
-                intent.putExtra("seasonEntity", transferWindowEntityList.get(i).seasonEntity);
+                b.putParcelable("transferWindowEntity", transferWindowEntityList.get(i).transferWindowEntity);
 
-                intent.putExtra("transferWindowEntity", transferWindowEntityList.get(i).transferWindowEntity);
+                b.putSerializable("tag", TAG);
+
+                b.putInt("tagInt",1122);
+
+                intent.putExtra("bundle", b);
 
                 startActivity(intent);
             }
@@ -189,7 +195,7 @@ public class TransferWindow extends Fragment implements TransferWindowListener {
 
         deleteTransferWindowEntity(joinedTransferWindow.transferWindowEntity);
 
-        teamRosterModel.onOffer();
+        //teamRosterModel.onOffer();
     }
 
     @Override

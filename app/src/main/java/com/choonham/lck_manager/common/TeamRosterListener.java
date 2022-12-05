@@ -10,4 +10,6 @@ public interface TeamRosterListener {
     void toFA();
 
     void onOffer();
+
+    void onConfirm(double offeredTransferFee);
 }

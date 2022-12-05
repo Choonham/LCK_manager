@@ -1,18 +1,22 @@
 package com.choonham.lck_manager;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import com.choonham.lck_manager.common.*;
 import com.choonham.lck_manager.dao.RosterDAO;
 import com.choonham.lck_manager.entity.PlayerEntity;
 import com.choonham.lck_manager.entity.SeasonEntity;
+import com.choonham.lck_manager.entity.TransferWindowEntity;
 import com.choonham.lck_manager.enums.ActivityTagEnum;
 import com.choonham.lck_manager.room.AppDatabase;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -51,6 +55,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
     int tagFrom;
 
+    TransferWindowEntity transferEntity = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +79,10 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         String name = intent.getStringExtra("playerName");
         int positionIconID = intent.getIntExtra("positionIcon", 0);*/
 
-        playerEntity = intent.getParcelableExtra("playerEntity");
-        seasonEntity = intent.getParcelableExtra("seasonEntity");
+        Bundle b = intent.getBundleExtra("bundle");
+
+        playerEntity = b.getParcelable("playerEntity");
+        seasonEntity = b.getParcelable("seasonEntity");
 
         String season = (seasonEntity.getSeasonForShort());
         String name = playerEntity.getPlayerName();
@@ -94,16 +102,17 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         laneStrengthView.setText("[" + Double.toString(playerEntity.getLaneStrength()) + "]");
         teamFightView.setText("[" + Double.toString(playerEntity.getTeamFight()) + "]");
 
+        Log.e("번들", b.toString());
+
         ActivityTagEnum tag = ActivityTagEnum.INIT_TAG;
 
-        if(intent.hasExtra("tag")) {
-            tag = (ActivityTagEnum)intent.getSerializableExtra("tag");
-        }
+        tag = (ActivityTagEnum) b.getSerializable("tag");
 
         int tagInt = 0;
 
-        if(intent.hasExtra("tagInt")) {
-            tagInt = intent.getIntExtra("tagInt", 0);
+        if(tag == null) {
+            tagInt = b.getInt("tagInt");
+            tag = ActivityTagEnum.INIT_TAG;
         }
 
         LinearLayout parentLayout = findViewById(R.id.player_info_popup_parent_layout);
@@ -118,6 +127,7 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             if(tagInt == 1122) {
                 tagFrom = 0;
                 transferWindowModel = TransferWindowModel.getInstance();
+                //transferEntity = intent.getParcelableExtra("transferWindowEntity");
             } else {
                 tagFrom = 1;
                 setFirstTeamModel = SetFirstTeamModel.getInstance();
@@ -150,7 +160,12 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
                             intent2.putExtra("playerEntity", playerEntity);
                             intent2.putExtra("seasonEntity", seasonEntity);
 
+                            /*if(temp == 1122) {
+                                intent2.putExtra("transferWindowEntity", transferEntity);
+                            }*/
+
                             intent2.putExtra("tagInt", temp);
+
                             startActivity(intent2);
 
                             finish();
@@ -229,7 +244,8 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
             toSubBtn.setLayoutParams(paramsTemp);
 
-            int teamCode = intent.getIntExtra("teamCode", 0);
+            int teamCode = b.getInt("teamCode");
+
             toSubBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -256,6 +272,11 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
         } else if(tag.equals(ActivityTagEnum.TEAM_ROSTER_SUB)){
             teamRosterModel = TeamRosterModel.getInstance();
 
+            PlayerInfoModel.createInstance(this);
+            tagFrom = 2;
+
+            Log.e("여긴", String.valueOf(tagFrom));
+
             db = AppDatabase.getInstance(getApplicationContext());
 
             LinearLayout.LayoutParams paramsTemp = new LinearLayout.LayoutParams(
@@ -274,13 +295,14 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
             toMainBtn.setLayoutParams(paramsTemp);
 
-            int teamCode = intent.getIntExtra("teamCode", 0);
+            int teamCode = b.getInt("teamCode");
 
             toMainBtn.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-
+                    Log.e("뭐지", String.valueOf(playerEntity.getPlayerCode()));
+                    Log.e("뭐지2", String.valueOf(teamCode));
                     RosterDAO rosterDAO = db.rosterDAO();
 
                     rosterDAO.updateRosterData(1, playerEntity.getPlayerCode(), teamCode)
@@ -346,6 +368,59 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
                     parentLayout.setLayoutParams(layoutParams);
                     parentLayout.addView(constraintLayout2);
+
+                    offerToFABtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent2 = new Intent(getApplicationContext(),PlayerProposalActivity.class);
+                            intent2.putExtra("playerEntity", playerEntity);
+                            intent2.putExtra("seasonEntity", seasonEntity);
+
+                            intent2.putExtra("teamRosterEntity", 1);
+                            startActivity(intent2);
+
+                            finish();
+                        }
+                    });
+
+                    releaseBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(PlayerInfoPopUpActivity.this, R.style.ReleaseDialogTheme);
+
+                            View view = LayoutInflater.from(PlayerInfoPopUpActivity.this).inflate(
+                                    R.layout.release_confirm_dialog, (LinearLayout) findViewById(R.id.release_confirm_layout)
+                            );
+
+                            builder.setView(view);
+                            ((TextView)view.findViewById(R.id.release_confirm_msg)).setText("정말 " + playerEntity.getPlayerName() + " 선수를 방출하시겠습니까? \n (방출된 선수는 다시 되돌릴 수 없습니다.)");
+
+                            AlertDialog alertDialog = builder.create();
+
+                            view.findViewById(R.id.release_yes_btn).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    teamRosterModel.onRelease();
+                                    alertDialog.dismiss();
+
+                                    finish();
+                                }
+                            });
+
+                            view.findViewById(R.id.release_no_btn).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
+
+                            if(alertDialog.getWindow() != null) {
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                            }
+
+                            alertDialog.show();
+                        }
+                    });
                 }
             });
 
@@ -353,7 +428,7 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
 
         avg = (playerEntity.getStability() + playerEntity.getTeamFight() + playerEntity.getOutSmart() + playerEntity.getPhysical())/4;
         stability = playerEntity.getStability();
-
+ 
         TextView playerName = findViewById(R.id.player_info_name);
         TextView playerSeason = findViewById(R.id.player_info_season);
         ImageView playerPositionIcon = findViewById(R.id.player_info_position_icon);
@@ -397,8 +472,11 @@ public class PlayerInfoPopUpActivity extends Activity implements PlayerInfoListe
             transferWindowModel.onConfirm(offerTransferFee);
         } else if(tagFrom ==1) {
             setFirstTeamModel.onConfirm(offerTransferFee);
+        } else if(tagFrom == 2) {
+            teamRosterModel.onConfirm(offerTransferFee);
         }
 
         finish();
     }
+
 }

@@ -24,4 +24,5 @@ public interface TeamDAO {
 
     @Query("SELECT * FROM team t WHERE t.season_code = :seasonCode")
     LiveData<List<TeamEntity>> loadAllTeamBySeasonCode(int seasonCode);
+
 }
