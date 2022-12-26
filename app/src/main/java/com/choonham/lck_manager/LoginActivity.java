@@ -126,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
                 userEntity.setUserMoney(10000000);
 
                 userDAO.countUserEntitiesByUserID(personId).observe(this, count -> {
-                    Log.d("count: ", count.toString());
 
                     if (count == 0) {
                         Intent intent = new Intent(this, InitialSettingActivity.class);
@@ -185,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         for (Account account : accounts) {
                             am.removeAccount(account, null, null);
-                            Log.d("removed account: ", account.name);
                         }
 
                     }

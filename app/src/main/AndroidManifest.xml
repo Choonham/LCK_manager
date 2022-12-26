@@ -9,18 +9,21 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-            android:usesCleartextTraffic="true"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_bar_name"
             android:largeHeap="true"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.LCK_manager">
+            android:theme="@style/Theme.LCK_manager"
+            android:usesCleartextTraffic="true">
+        <activity
+                android:name=".MatchPlay"
+                android:exported="true"/>
         <activity
                 android:name=".InitialSettingActivity"
-                android:theme="@style/Theme.LCK_manager.NoActionBar"
-                android:exported="true"/>
+                android:exported="true"
+                android:theme="@style/Theme.LCK_manager.NoActionBar"/>
         <activity
                 android:name=".LoginActivity"
                 android:exported="true"
@@ -48,9 +51,11 @@
                 android:exported="true"
                 android:theme="@style/Theme.LCK_manager.NoActionBar">
         </activity>
-        <activity android:name=".PlayerProposalActivity"
-                  android:exported="true"
-                  android:theme="@android:style/Theme.Dialog"/>
+        <activity
+                android:name=".PlayerProposalActivity"
+                android:exported="true"
+                android:theme="@android:style/Theme.Dialog"/>
+
         <meta-data
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts"/>

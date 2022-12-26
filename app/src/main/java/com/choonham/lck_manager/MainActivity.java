@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userPreferences = Common.getPreferences(this);
 
-        Log.e("season: ", String.valueOf(userPreferences.getInt("user_season", 1)));
-
         //getSeasonCode(this);
         db.userDAO().loadUserEntityById(1).observe(this, loadValue -> {
             SharedPreferences userPreferences = Common.getPreferences(this);

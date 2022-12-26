@@ -48,20 +48,7 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
     AppDatabase db;
 
-    boolean isMainRosterLoad = false;
-    boolean isSubRosterLoad = false;
-
-    boolean isTeamCodeLoad = false;
-
     int teamCode = 0;
-
-    TeamRosterModel teamRosterModel;
-
-    TextView playerName;
-    TextView playerSeason;
-
-    MainRosterAdapter mainRosterAdapter;
-    MainRosterAdapter subRosterAdapter;
 
     int userApiCode;
 
@@ -95,53 +82,9 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
         teamSubRosterListView = view.findViewById(R.id.sub_roster_list);
 
-        db.userDAO().loadUserEntityById(1).observe(this, userEntity -> {
-            userApiCode = userEntity.getApiUserCode();
-            db.teamDAO().loadTeamDataByUserCode(userApiCode).observe(this, teamEntity -> {
-                teamCode = teamEntity.getApiTeamCode();
-                db.rosterDAO().loadRosterListByTeamCode(teamCode, 1).observe(this, loadValue -> {
-                    mainPlayerList.clear();
-                    for(RosterEntity rosterEntity : loadValue) {
-                        db.playerDAO().loadPlayerEntityByCode(rosterEntity.getPlayerCode()).observe(this, player -> {
-                            mainPlayerList.add(player);
-
-                            MainRosterAdapter mainRosterAdapter2 = new MainRosterAdapter(getContext(), mainPlayerList);
-                            teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter2);
-                        });
-                    }
-                });
-
-                db.rosterDAO().loadRosterListByTeamCode(teamCode, 0).observe(this, loadValue -> {
-                    subPlayerList.clear();
-                    for(RosterEntity rosterEntity : loadValue) {
-                        db.playerDAO().loadPlayerEntityByCode(rosterEntity.getPlayerCode()).observe(this, player -> {
-                            Log.e("홀리", "홀리");
-                            subPlayerList.add(player);
-
-                            MainRosterAdapter subRosterAdapter2 = new MainRosterAdapter(getContext(), subPlayerList);
-                            teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter2);
-                            Log.e("홀리2", "홀리2");
-                        });
-                    }
-                });
-
-            });
-        });
-
-        //loadRosters();
-
-        //while(!isMainRosterLoad || !isSubRosterLoad) {}
+        loadRosters();
 
         customProgressDialog.dismiss();
-
-        /*MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
-        MainRosterAdapter subRosterAdapter = new MainRosterAdapter(getContext(), subPlayerList);*/
-
-       //MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), playerEntityList);
-        /*teamSubRosterListView.addHeaderView(header, null, false);*/
-
-        /*teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
-        teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter);*/
 
         teamMainRosterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -178,8 +121,6 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
                 selectedIndex = i;
 
-                Log.e("짜증나", String.valueOf(teamCode));
-
                 selectedPlayer = subPlayerList.get(i).playerEntity;
 
                 Intent intent = new Intent(getContext(), PlayerInfoPopUpActivity.class);
@@ -204,140 +145,61 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
     }
 
     public void loadRosters() {
-        mainPlayerList.clear();
-        subPlayerList.clear();
-    }
+        db.userDAO().loadUserEntityById(1).observe(this, userEntity -> {
+            userApiCode = userEntity.getApiUserCode();
+            db.teamDAO().loadTeamDataByUserCode(userApiCode).observe(this, teamEntity -> {
+                teamCode = teamEntity.getApiTeamCode();
+                db.rosterDAO().loadRosterListByTeamCode(teamCode, 1).observe(this, loadValue -> {
+                    mainPlayerList.clear();
 
-    /*public void loadTeamCodeByUserCode() {
-        UserDAO userDAO = db.userDAO();
-
-        userDAO.loadUserEntityById(1)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(userEntity -> {
-
-                    isTeamCodeLoad = false;
-
-                    TeamDAO teamDAO = db.teamDAO();
-                    Log.e("유저 코드", String.valueOf(userEntity.getApiUserCode()));
-                    teamDAO.loadTeamDataByUserCode(userEntity.getApiUserCode())
-                            .subscribeOn(Schedulers.io())
-                            .doOnSuccess(loadValue -> {
-
-                                teamCode = loadValue.getApiTeamCode();
-                                Log.e("팀 코드", String.valueOf(teamCode));
-                                isTeamCodeLoad = true;
-                            })
-                            .doOnError(error -> {
-                                Log.e("loadMainRoster error 2:", error.getMessage());
-                            })
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
-                })
-                .doOnError(error -> {
-                    Log.e("loadMainRoster error 2:", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }*/
-
-    /*public void loadMainRoster() {
-        RosterDAO rosterDAO = db.rosterDAO();
-        PlayerDAO playerDAO = db.playerDAO();
-        //AtomicReference<RosterEntity> value = new AtomicReference<>();
-        Log.e("팀 코드2", String.valueOf(teamCode));
-        rosterDAO.loadRosterListByTeamCode(teamCode, 1)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    isMainRosterLoad = false;
-
-                    Log.e("사이즈", String.valueOf(loadValue.size()));
-                    for(RosterEntity rosterEntity : loadValue) {
-                        *//*JoinedPlayer player = playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode());*//*
-                        playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
-                                .subscribeOn(Schedulers.io())
-                                .doOnSuccess(player -> {
-                                    Log.e("선수 코드", String.valueOf(player.playerEntity.getPlayerCode()));
-                                    mainPlayerList.add(player);
-                                    //if(mainPlayerList.size() == loadValue.size())  isMainRosterLoad = true;
-                                })
-                                .doOnError(error -> {
-                                    Log.e("loadMainRoster error 1:", error.getMessage());
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe();
+                    if(loadValue.isEmpty()) {
+                        MainRosterAdapter mainRosterAdapter2 = new MainRosterAdapter(getContext(), mainPlayerList);
+                        teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter2);
                     }
 
-                    isMainRosterLoad = true;
-
-                    //Log.d("insertedID", loadValue.getUserId());
-                    //value.set(loadValue.get(0));
-                })
-                .doOnError(error -> {
-                    Log.e("loadMainRoster error 2:", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
-
-    public void loadSubRoster() {
-        RosterDAO rosterDAO = db.rosterDAO();
-        PlayerDAO playerDAO = db.playerDAO();
-        //AtomicReference<RosterEntity> value = new AtomicReference<>();
-
-        rosterDAO.loadRosterListByTeamCode(teamCode, 0)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-
-                    isSubRosterLoad = false;
-                    Log.e("사이즈2", String.valueOf(loadValue.size()));
                     for(RosterEntity rosterEntity : loadValue) {
-                        *//*JoinedPlayer player = playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode());*//*
-                        playerDAO.loadPlayerEntityByCode(rosterEntity.getPlayerCode())
-                                .subscribeOn(Schedulers.io())
-                                .doOnSuccess(player -> {
-                                    subPlayerList.add(player);
+                        db.playerDAO().loadPlayerEntityByCode(rosterEntity.getPlayerCode()).observe(this, player -> {
+                            mainPlayerList.add(player);
+                            MainRosterAdapter mainRosterAdapter2 = new MainRosterAdapter(getContext(), mainPlayerList);
+                            teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter2);
+                        });
+                    }
+                });
 
-                                    //if(subPlayerList.size() == loadValue.size())
-                                })
-                                .doOnError(error -> {
-                                    Log.e("loadSubRoster error 1:", error.getMessage());
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe();
+                db.rosterDAO().loadRosterListByTeamCode(teamCode, 0).observe(this, loadValue -> {
+                    subPlayerList.clear();
+
+                    if(loadValue.isEmpty()) {
+                        MainRosterAdapter subRosterAdapter2 = new MainRosterAdapter(getContext(), subPlayerList);
+                        teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter2);
                     }
 
-                    isSubRosterLoad = true;
+                    for(RosterEntity rosterEntity : loadValue) {
+                        db.playerDAO().loadPlayerEntityByCode(rosterEntity.getPlayerCode()).observe(this, player -> {
+                            subPlayerList.add(player);
 
-                    //Log.d("insertedID", loadValue.getUserId());
-                    //value.set(loadValue.get(0));
-                })
-                .doOnError(error -> {
-                    Log.e("loadSubRoster error 2:", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }*/
+                            MainRosterAdapter subRosterAdapter2 = new MainRosterAdapter(getContext(), subPlayerList);
+                            teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter2);
+                        });
+                    }
+                });
+
+            });
+        });
+    }
 
     @Override
     public void toSub() {
-        subPlayerList.add(mainPlayerList.remove(selectedIndex));
+        JoinedPlayer removed = mainPlayerList.remove(selectedIndex);
 
-        /*MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
-        MainRosterAdapter sub = new MainRosterAdapter(getContext(), subPlayerList);
-
-        teamMainRosterListView.setAdapter(main);
-        teamSubRosterListView.setAdapter(sub);*/
+        subPlayerList.add(removed);
     }
 
     @Override
     public void toMain() {
-        mainPlayerList.add(subPlayerList.remove(selectedIndex));
+        JoinedPlayer removed = subPlayerList.remove(selectedIndex);
 
-        /*MainRosterAdapter main = new MainRosterAdapter(getContext(), mainPlayerList);
-        MainRosterAdapter sub = new MainRosterAdapter(getContext(), subPlayerList);
-
-        teamMainRosterListView.setAdapter(main);
-        teamSubRosterListView.setAdapter(sub);*/
+        mainPlayerList.add(removed);
     }
 
     @Override
@@ -358,16 +220,10 @@ public class TeamRoster extends Fragment implements TeamRosterListener {
 
     @Override
     public void toFA() {
-
     }
 
     @Override
     public void onOffer() {
-        /*MainRosterAdapter mainRosterAdapter = new MainRosterAdapter(getContext(), mainPlayerList);
-        MainRosterAdapter subRosterAdapter = new MainRosterAdapter(getContext(), subPlayerList);
-
-        teamMainRosterListView.setAdapter((ListAdapter) mainRosterAdapter);
-        teamSubRosterListView.setAdapter((ListAdapter) subRosterAdapter);*/
     }
 
     @Override

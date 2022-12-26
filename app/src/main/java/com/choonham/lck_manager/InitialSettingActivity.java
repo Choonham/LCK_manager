@@ -29,8 +29,6 @@ public class InitialSettingActivity extends AppCompatActivity {
 
         userEntity = intent.getParcelableExtra("userEntity");
 
-        //Log.e("널", userEntity.getUserName());
-
         Bundle bundle = new Bundle();
         bundle.putParcelable("userEntity", userEntity);
         ///bundle.putParcelable("userEntity", userEntity);
@@ -45,7 +43,6 @@ public class InitialSettingActivity extends AppCompatActivity {
     }
 
     public void onFragmentChanged(int index, @Nullable Bundle data) {
-        Log.d("TAG", Integer.toString(index));
         if(index == 0) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, setNicknameAndSeasonFragment).commit();
         } else if(index == 1) {
