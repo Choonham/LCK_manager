@@ -70,7 +70,7 @@ public class LeagueRanking extends Fragment {
         leagueRankingListView.setAdapter(leagueRankingAdapter);
         pogPointListView.setAdapter(pogPointAdapter);
 
-        db.leagueRankingDAO().loadLeagueRanking().observe(getViewLifecycleOwner(), value -> {
+        db.leagueRankingDAO().loadLeagueRanking().observe(this, value -> {
             leagueRanking.addAll(value);
 
             LeagueRankingAdapter leagueRankingAdapter2 = new LeagueRankingAdapter(leagueRanking, getContext());
