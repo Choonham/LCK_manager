@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -157,6 +158,29 @@ public class MainView extends Fragment {
             Log.d("account: ", account.name);
         }
         */
+
+
+        /* 빈 공간 3번 탭하면 인게임 Activity로 넘어가도록 */
+        view.setOnTouchListener(new View.OnTouchListener() {
+            int clicked = 0;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    if(clicked == 3) {
+
+                        Intent intent = new Intent(getContext(), MatchPlay.class);
+                        startActivity(intent);
+
+                        clicked = 0;
+                    }
+                    clicked = clicked + 1;
+                }
+                return false;
+            }
+        });
+
         return view;
     }
 
