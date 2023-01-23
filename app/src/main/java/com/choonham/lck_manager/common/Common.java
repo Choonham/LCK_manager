@@ -36,6 +36,8 @@ public class Common {
     public static String REST_API_KEY = BuildConfig.REST_API_KEY;
     public static String REST_API_URL = BuildConfig.REST_API_URL;
 
+    // 2023.01.23 브런치 테스트용 주석
+
     String[] tempMainRosterList = {"Doran", "Peanut", "Chovy", "Ruler", "Lehands"};
     double[] tempMainRosterAvgList = {112.5, 115.5, 120.2, 117.2, 120.8};
     double[] tempMainRosterStabilityList = {5.1, 6.8, 9.3, 8.2, 1.3};
@@ -86,7 +88,7 @@ public class Common {
     static Common instance;
     private static Context contextForChecking;
 
-    private Common() {};
+    private Common() {}
 
     public static SharedPreferences getPreferences(Context context) {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
