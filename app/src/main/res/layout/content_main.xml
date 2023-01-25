@@ -6,29 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/main_container"
         tools:showIn="@layout/app_bar_main">
 
-    <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
-            android:layout_width="412dp"
-            android:layout_height="match_parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintHorizontal_bias="0.0">
-    </androidx.viewpager2.widget.ViewPager2>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:itemBackground="@color/nav_bottom_color"
-            app:menu="@menu/menu_bottom"
-            app:itemIconTint="@drawable/menu_selector_color"
-            app:itemTextColor="@drawable/menu_selector_color"
-            app:labelVisibilityMode="unlabeled"
-    />
+    <fragment android:layout_width="match_parent" android:layout_height="match_parent"
+              android:id="@+id/ContentViewFragment" android:name="com.choonham.lck_manager.ContentViewFragment"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

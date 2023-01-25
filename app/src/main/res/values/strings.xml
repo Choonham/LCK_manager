@@ -37,5 +37,5 @@
 
     <string name="server_client_id">331615894052-0ki8p24scal2tfm75uu2fg52fqe3qgjr.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">this is ban-pick fragment</string>
 </resources>

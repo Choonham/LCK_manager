@@ -34,6 +34,8 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private final ActivityTagEnum TAG = ActivityTagEnum.MAIN_ACTIVITY;
@@ -44,16 +46,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     GoogleSignInClient mGoogleSignInClient;
 
-    SQLiteDatabase database;
-
     SharedPreferences prefs;
 
     SharedPreferences userPreferences;
 
-    boolean isSeasonCodeLoaded = false;
-    boolean isTeamCodeLoaded = false;
-
     AppDatabase db;
+
+    ContentViewFragment contentViewFragment;
+
+    BanPickFragment banPickFragment;
+
+    InGameFragment inGameFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,89 +113,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        pager = findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(5);
+        // ContentViewFragment 제어 코드 삽입
+        contentViewFragment = ContentViewFragment.newInstance();
 
-        MyPagerAdapter adapter = new MyPagerAdapter(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, contentViewFragment).commit();
 
-        TransferWindow transferWindow = new TransferWindow();
-        TeamRoster teamRoster = new TeamRoster();
+        banPickFragment = BanPickFragment.newInstance();
+        inGameFragment = InGameFragment.newInstance();
 
-        MainView mainView = new MainView();
+    }
 
-        LeagueSchedule leagueSchedule = new LeagueSchedule();
-        LeagueRanking leagueRanking = new LeagueRanking();
-
-        adapter.addItem(transferWindow);
-        adapter.addItem(teamRoster);
-        adapter.addItem(mainView);
-        adapter.addItem(leagueSchedule);
-        adapter.addItem(leagueRanking);
-
-        pager.setAdapter(adapter);
-
-        pager.setCurrentItem(2);
-
-        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-
-        bottomNavigation.setSelectedItemId(R.id.tab3);
-
-        bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.tab1:
-                        pager.setCurrentItem(0);
-                        return true;
-
-                    case R.id.tab2:
-                        pager.setCurrentItem(1);
-                        return true;
-
-                    case R.id.tab3:
-                        pager.setCurrentItem(2);
-                        return true;
-
-                    case R.id.tab4:
-                        pager.setCurrentItem(3);
-                        return true;
-
-                    case R.id.tab5:
-                        pager.setCurrentItem(4);
-                        return true;
-                }
-
-                return false;
-            }
-        });
-
-        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        bottomNavigation.setSelectedItemId(R.id.tab1);
-                        break;
-
-                    case 1:
-                        bottomNavigation.setSelectedItemId(R.id.tab2);
-                        break;
-
-                    case 2:
-                        bottomNavigation.setSelectedItemId(R.id.tab3);
-                        break;
-
-                    case 3:
-                        bottomNavigation.setSelectedItemId(R.id.tab4);
-                        break;
-
-                    case 4:
-                        bottomNavigation.setSelectedItemId(R.id.tab5);
-                        break;
-                }
-            }
-        });
-
+    public void onFragmentChanged(int index, @Nullable Bundle data) {
+        if(index == 0) {
+            contentViewFragment.setArguments(data);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, contentViewFragment).commit();
+        } else if(index == 1) {
+            banPickFragment.setArguments(data);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, banPickFragment).commit();
+        } else if(index == 2) {
+            inGameFragment.setArguments(data);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, inGameFragment).commit();
+        }
     }
 
     @Override
@@ -231,70 +172,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-   /* public void getSeasonCode(Context context) {
-        UserDAO userDAO = db.userDAO();
-
-        userDAO.loadUserEntityById(1)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(loadValue -> {
-                    //Log.d("호호 시즌", String.valueOf(loadValue.getSeasonCode()));
-                    //Common.CURR_SEASON_CODE = loadValue.getSeasonCode();
-
-                    SharedPreferences userPreferences = Common.getPreferences(context);
-
-                    SharedPreferences.Editor editor = userPreferences.edit();
-
-                    editor.putInt("user_season", loadValue.getSeasonCode());
-
-                    editor.commit();
-
-                    isSeasonCodeLoaded = true;
-                })
-                .doOnError(error -> {
-                    Log.e("getSeasonCode error 2:", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }*/
-
-   /* public void loadTeamCodeByUserCode(Context context) {
-        UserDAO userDAO = db.userDAO();
-
-        userDAO.loadUserEntityById(1)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(userEntity -> {
-
-                    TeamDAO teamDAO = db.teamDAO();
-
-                    teamDAO.loadTeamDataByUserCode(userEntity.getApiUserCode())
-                            .subscribeOn(Schedulers.io())
-                            .doOnSuccess(loadValue -> {
-                                //Log.d("호호 팀", String.valueOf(loadValue.getApiTeamCode()));
-                                //Common.CURR_TEAM_CODE = loadValue.getApiTeamCode();
-
-                                SharedPreferences userPreferences = Common.getPreferences(context);
-
-                                SharedPreferences.Editor editor = userPreferences.edit();
-
-                                editor.putInt("user_team_code", loadValue.getApiTeamCode());
-
-                                editor.commit();
-
-                                isTeamCodeLoaded = true;
-                            })
-                            .doOnError(error -> {
-                                Log.e("loadMainRoster error 2:", error.getMessage());
-                            })
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
-                })
-                .doOnError(error -> {
-                    Log.e("loadMainRoster error 2:", error.getMessage());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }*/
 
 }
 
