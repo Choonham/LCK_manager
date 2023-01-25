@@ -20,6 +20,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.paging.Pager;
+import androidx.viewpager2.widget.ViewPager2;
 import com.choonham.lck_manager.common.Common;
 import com.choonham.lck_manager.dao.*;
 import com.choonham.lck_manager.entity.*;
@@ -50,6 +52,8 @@ public class MainView extends Fragment {
 
     boolean isMatchDataLoaded = false;
 
+    Fragment parent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_view, container, false);
@@ -58,6 +62,9 @@ public class MainView extends Fragment {
 
         db = AppDatabase.getInstance(getContext());
         matchDataList = new ArrayList<>();
+
+        MainActivity mainActivity = (MainActivity) parent.getActivity();
+        mainActivity.onFragmentChanged(1, null);
 
         //getMatchData();
 
@@ -241,6 +248,10 @@ public class MainView extends Fragment {
                     })
                     .subscribe();
         }
+    }
+
+    public void setParentFragment(Fragment parent) {
+        this.parent = parent;
     }
 
     /*private Single<List<JoinedNews>> selectNewsAndEffectByCode(AppDatabase db, int newsCode) {
