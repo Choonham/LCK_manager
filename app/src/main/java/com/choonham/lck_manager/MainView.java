@@ -63,9 +63,6 @@ public class MainView extends Fragment {
         db = AppDatabase.getInstance(getContext());
         matchDataList = new ArrayList<>();
 
-        MainActivity mainActivity = (MainActivity) parent.getActivity();
-        mainActivity.onFragmentChanged(1, null);
-
         //getMatchData();
 
         //while(!isMatchDataLoaded) {}
@@ -118,36 +115,8 @@ public class MainView extends Fragment {
         matchStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Single<NewsAndIssueEntity> tempData = selectNewsDataByCode(db);
-                tempData
-                        .subscribeOn(Schedulers.io())
-                        .doOnSuccess(data -> {
-                            Log.d("SELECT", data.getNewsContent());
-                        })
-                        .subscribe();*/
-
-                db.leagueRankingDAO().loadLeagueRankingList(userPreferences.getInt("user_season", 1)).observe(getViewLifecycleOwner(), loadValue -> {
-
-                    for(TeamRank teamEntity : loadValue) {
-                        LeagueRankingEntity leagueRankingEntity = new LeagueRankingEntity();
-                        leagueRankingEntity.setTeamCode(teamEntity.getTeam_code());
-                        leagueRankingEntity.setRank(teamEntity.getRank());
-
-                        db.leagueRankingDAO().insertLeagueRanking(leagueRankingEntity)
-                                .subscribeOn(Schedulers.io())
-                                .doOnSuccess(value -> {
-                                    Log.d("updateLeagueRankingEntity",  value.toString());
-                                })
-                                .doOnError(error -> {
-                                    Log.e("updateLeagueRankingList error 1:", error.getMessage());
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe();
-                    }
-                });
-
-
-                //updateLeagueRankingList(userPreferences.getInt("user_season", 1));
+                MainActivity mainActivity = (MainActivity) parent.getActivity();
+                mainActivity.onFragmentChanged(1, null);
             }
         });
 

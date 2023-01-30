@@ -38,5 +38,63 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.98"
                 android:id="@+id/guideline_v_2"/>
+        <com.google.android.material.tabs.TabLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_2"
+                app:layout_constraintBottom_toTopOf="@+id/in_game_frame" app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintHorizontal_bias="0.0"
+                android:id="@+id/in_game_tabLayout">
+
+            <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KDA / Gold"/>
+
+            <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vision / HP"/>
+
+            <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status"/>
+
+            <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Action"/>
+        </com.google.android.material.tabs.TabLayout>
+
+        <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/in_game_frame"
+                app:layout_constraintTop_toBottomOf="@+id/in_game_tabLayout"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_3">
+
+        </FrameLayout>
+        <ImageView
+                android:src="@drawable/lift_map"
+                android:layout_width="0dp"
+                android:layout_height="0dp" android:id="@+id/in_game_lift_map_image_view"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_2"/>
+        <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp" android:id="@+id/in_game_fog_layout"
+                app:layout_constraintTop_toTopOf="@+id/guideline_h_1"
+                app:layout_constraintStart_toStartOf="@+id/guideline_v_1"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_v_2"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_h_2" >
+
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
