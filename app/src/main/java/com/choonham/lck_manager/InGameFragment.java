@@ -1,15 +1,21 @@
 package com.choonham.lck_manager;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +25,16 @@ import com.google.android.material.tabs.TabLayout;
 public class InGameFragment extends Fragment {
 
     TabLayout tabLayout;
+    TextView realTimeView;
+    TextView playTimeView;
+
+    int realTimeSpend;
+
+    int playSecs =  0;
+    int playMin = 0;
+
+    Handler handler;
+
     public InGameFragment() {
         // Required empty public constructor
     }
@@ -41,7 +57,16 @@ public class InGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_in_game, container, false);
 
+        handler = new Handler(Looper.getMainLooper());
+
+        realTimeSpend = 0;
+
         ImageView map = rootView.findViewById(R.id.in_game_lift_map_image_view);
+
+        //realTimeView = rootView.findViewById(R.id.play_time_view_real);
+        playTimeView = rootView.findViewById(R.id.play_time_view);
+
+        runTimer();
 
         ViewTreeObserver vto = map.getViewTreeObserver();
 
@@ -55,12 +80,9 @@ public class InGameFragment extends Fragment {
                 FrameLayout fogLayout = rootView.findViewById(R.id.in_game_fog_layout);
                 fogLayout.addView(fogView);
 
-                Log.d("돌아", "돌아");
-
                 return true;
             }
         });
-
 
         InGameHpFragment hpFragment = new InGameHpFragment();
         InGameActionFragment actionFragment = new InGameActionFragment();
@@ -107,4 +129,40 @@ public class InGameFragment extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
+
+    private void runTimer() {
+        runTimer.run();
+    }
+
+    Runnable runTimer = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                /*int realHour = realTimeSpend / 216000;
+                int realMin = realTimeSpend / 3600;
+                int realSecs = (realTimeSpend % 3600) / 60;*/
+                int realMilSecs = realTimeSpend * 10 / 6;
+
+                /*String realMilSecsString = String.valueOf(realMilSecs);
+                String realMilSecsSub = realMilSecsString.length() > 2 ? realMilSecsString.substring(realMilSecsString.length() - 2) : realMilSecsString;
+
+                String realTime
+                        = String.format(Locale.getDefault(), "%d:%02d:%02d:", realHour, realMin, realSecs) + realMilSecsSub;*/
+
+                //realTimeView.setText(realTime);
+
+                playSecs =  (realTimeSpend % 600) / 10;
+                playMin = realTimeSpend / 600;
+
+                String playTime
+                        = String.format(Locale.getDefault(), "%02d:%02d", playMin, playSecs);
+
+                playTimeView.setText(playTime);
+
+                realTimeSpend++;
+            } finally {
+                handler.postDelayed(runTimer, 10);
+            }
+        }
+    };
 }
