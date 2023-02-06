@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,8 @@ public class InGameFragment extends Fragment {
     TabLayout tabLayout;
     TextView realTimeView;
     TextView playTimeView;
+
+    TextView tempText;
 
     int realTimeSpend;
 
@@ -65,8 +68,13 @@ public class InGameFragment extends Fragment {
 
         //realTimeView = rootView.findViewById(R.id.play_time_view_real);
         playTimeView = rootView.findViewById(R.id.play_time_view);
-
+        tempText = rootView.findViewById(R.id.temp_text);
         runTimer();
+
+        MapFogView fogView = new MapFogView(getContext());
+
+        FrameLayout fogLayout = rootView.findViewById(R.id.in_game_fog_layout);
+        fogLayout.addView(fogView);
 
         ViewTreeObserver vto = map.getViewTreeObserver();
 
@@ -75,11 +83,8 @@ public class InGameFragment extends Fragment {
             public boolean onPreDraw() {
                 map.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                MapFogView fogView = new MapFogView(getContext(), 1, map.getMeasuredWidth(), map.getMeasuredHeight());
-
-                FrameLayout fogLayout = rootView.findViewById(R.id.in_game_fog_layout);
-                fogLayout.addView(fogView);
-
+                fogView.drawFog(map.getMeasuredWidth(), map.getMeasuredHeight());
+                tempText.setText(map.getMeasuredWidth() + "/" + map.getMeasuredHeight());
                 return true;
             }
         });
