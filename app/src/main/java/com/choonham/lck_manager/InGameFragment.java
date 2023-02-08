@@ -14,9 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.choonham.lck_manager.map_object.Inhibitor;
-import com.choonham.lck_manager.map_object.Nexus;
-import com.choonham.lck_manager.map_object.Turret;
+import com.choonham.lck_manager.map_object.*;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Locale;
@@ -111,8 +109,21 @@ public class InGameFragment extends Fragment {
 
                 Nexus  nexus = new Nexus("blueNexus", (float) (map.getMeasuredWidth() * 0.1), (float) (map.getMeasuredHeight() * 0.87), (int) (diagonal * 0.18), 0);
 
+                Dragon dragon = new Dragon("dragon", (float) (map.getMeasuredWidth() * 0.69), (float) (map.getMeasuredHeight() * 0.68),0, 0);
+
+                Ward ward1 = new Ward("ward1", (float) (map.getMeasuredWidth() * 0.50), (float) (map.getMeasuredHeight() * 0.50), 50, 0);
+                Ward ward2 = new Ward("ward2", (float) (map.getMeasuredWidth() * 0.37), (float) (map.getMeasuredHeight() * 0.30), 50, 0);
+                Ward ward3 = new Ward("ward3", (float) (map.getMeasuredWidth() * 0.25), (float) (map.getMeasuredHeight() * 0.20), 50, 0);
+
+                Ward ward4 = new Ward("ward4", (float) (map.getMeasuredWidth() * 0.75), (float) (map.getMeasuredHeight() * 0.75), 200, 0);
+
                 fogView.setVision(nexus);
                 fogView.drawIcon(nexus);
+
+                fogView.setVision(ward1);
+                fogView.setVision(ward2);
+                fogView.setVision(ward3);
+                fogView.setVision(ward4);
 
                 fogView.setVision(topTurret1);
                 fogView.setVision(topTurret2);
@@ -130,6 +141,11 @@ public class InGameFragment extends Fragment {
                 fogView.drawIcon(midInhibitor);
                 fogView.drawIcon(bottomInhibitor);
 
+                fogView.drawIcon(ward1);
+                fogView.drawIcon(ward2);
+                fogView.drawIcon(ward3);
+                fogView.drawIcon(ward4);
+
                 fogView.drawIcon(topTurret1);
                 fogView.drawIcon(topTurret2);
                 fogView.drawIcon(topTurret3);
@@ -141,6 +157,8 @@ public class InGameFragment extends Fragment {
                 fogView.drawIcon(bottomTurret1);
                 fogView.drawIcon(bottomTurret2);
                 fogView.drawIcon(bottomTurret3);
+
+                fogView.drawIcon(dragon);
 
                 return true;
             }
