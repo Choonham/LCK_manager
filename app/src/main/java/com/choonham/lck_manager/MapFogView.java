@@ -11,6 +11,8 @@ public class MapFogView extends View {
     private int height = 0;
 
     private Canvas temp;
+    private Canvas temp2;
+
     private Paint paint;
     private Paint p = new Paint();
     private Paint transparentPaint;
@@ -30,6 +32,8 @@ public class MapFogView extends View {
 
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         temp = new Canvas(bitmap);
+        temp2 = new Canvas(bitmap);
+
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.fog_color, null));
 
@@ -48,11 +52,14 @@ public class MapFogView extends View {
     }
 
     public void setVision(MapObject mo) {
-        temp.drawCircle(mo.x + mo.visionDistance / 2, mo.y + mo.visionDistance / 2, mo.visionDistance, transparentPaint);
+        temp.drawCircle((float) (mo.x), (float) (mo.y), mo.visionDistance, transparentPaint);
     }
 
     public void drawIcon(MapObject mo) {
+        Paint tempPaint = new Paint();
+        tempPaint.setColor(getResources().getColor(R.color.white, null));
 
+        temp2.drawRect(mo.x -10, mo.y -10, mo.x, mo.y, tempPaint);
     }
 
 }

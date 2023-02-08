@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.choonham.lck_manager.map_object.Inhibitor;
+import com.choonham.lck_manager.map_object.Nexus;
+import com.choonham.lck_manager.map_object.Turret;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Locale;
@@ -37,6 +40,8 @@ public class InGameFragment extends Fragment {
     int playMin = 0;
 
     Handler handler;
+
+    double diagonal;
 
     public InGameFragment() {
         // Required empty public constructor
@@ -85,6 +90,58 @@ public class InGameFragment extends Fragment {
 
                 fogView.drawFog(map.getMeasuredWidth(), map.getMeasuredHeight());
                 tempText.setText(map.getMeasuredWidth() + "/" + map.getMeasuredHeight());
+
+                diagonal = Math.sqrt(Math.pow(map.getMeasuredWidth(), 2) + Math.pow(map.getMeasuredHeight(), 2));
+
+                Inhibitor topInhibitor = new Inhibitor("blueTopInhibitor", (float) (map.getMeasuredWidth() * 0.09), (float) (map.getMeasuredHeight() * 0.73), 0, 0);
+                Inhibitor midInhibitor = new Inhibitor("bluemidInhibitor", (float) (map.getMeasuredWidth() * 0.23), (float) (map.getMeasuredHeight() * 0.75), 0, 0);
+                Inhibitor bottomInhibitor = new Inhibitor("bluebottomInhibitor", (float) (map.getMeasuredWidth() * 0.24), (float) (map.getMeasuredHeight() * 0.90), 0, 0);
+
+                Turret topTurret1 = new Turret("topTurret1", (float) (map.getMeasuredWidth() * 0.12), (float) (map.getMeasuredHeight() * 0.29), 100, 0);
+                Turret topTurret2 = new Turret("topTurret2", (float) (map.getMeasuredWidth() * 0.13), (float) (map.getMeasuredHeight() * 0.52), 100, 0);
+                Turret topTurret3 = new Turret("topTurret3", (float) (map.getMeasuredWidth() * 0.09), (float) (map.getMeasuredHeight() * 0.68), 100, 0);
+
+                Turret midTurret1 = new Turret("midTurret1", (float) (map.getMeasuredWidth() * 0.42), (float) (map.getMeasuredHeight() * 0.54), 100, 0);
+                Turret midTurret2 = new Turret("midTurret2", (float) (map.getMeasuredWidth() * 0.36), (float) (map.getMeasuredHeight() * 0.65), 100, 0);
+                Turret midTurret3 = new Turret("midTurret3", (float) (map.getMeasuredWidth() * 0.26), (float) (map.getMeasuredHeight() * 0.72), 100, 0);
+
+                Turret bottomTurret1 = new Turret("bottomTurret1", (float) (map.getMeasuredWidth() * 0.75), (float) (map.getMeasuredHeight() * 0.93), 100, 0);
+                Turret bottomTurret2 = new Turret("bottomTurret2", (float) (map.getMeasuredWidth() * 0.49), (float) (map.getMeasuredHeight() * 0.89), 100, 0);
+                Turret bottomTurret3 = new Turret("bottomTurret3", (float) (map.getMeasuredWidth() * 0.30), (float) (map.getMeasuredHeight() * 0.91), 100, 0);
+
+                Nexus  nexus = new Nexus("blueNexus", (float) (map.getMeasuredWidth() * 0.1), (float) (map.getMeasuredHeight() * 0.87), (int) (diagonal * 0.18), 0);
+
+                fogView.setVision(nexus);
+                fogView.drawIcon(nexus);
+
+                fogView.setVision(topTurret1);
+                fogView.setVision(topTurret2);
+                fogView.setVision(topTurret3);
+
+                fogView.setVision(midTurret1);
+                fogView.setVision(midTurret2);
+                fogView.setVision(midTurret3);
+
+                fogView.setVision(bottomTurret1);
+                fogView.setVision(bottomTurret2);
+                fogView.setVision(bottomTurret3);
+
+                fogView.drawIcon(topInhibitor);
+                fogView.drawIcon(midInhibitor);
+                fogView.drawIcon(bottomInhibitor);
+
+                fogView.drawIcon(topTurret1);
+                fogView.drawIcon(topTurret2);
+                fogView.drawIcon(topTurret3);
+
+                fogView.drawIcon(midTurret1);
+                fogView.drawIcon(midTurret2);
+                fogView.drawIcon(midTurret3);
+
+                fogView.drawIcon(bottomTurret1);
+                fogView.drawIcon(bottomTurret2);
+                fogView.drawIcon(bottomTurret3);
+
                 return true;
             }
         });

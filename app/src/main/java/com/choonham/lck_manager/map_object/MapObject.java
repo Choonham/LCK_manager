@@ -4,25 +4,19 @@ public class MapObject {
 
     public String objectName;
 
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 
     public int visionDistance;
 
     // 0: red, 1: blue
     public int teamSide;
 
-    public MapObject(String objectName, int x, int y, int visionDistance, int teamSide) {
+    public MapObject(String objectName, float x, float y, int visionDistance, int teamSide) {
         this.objectName = objectName;
         this.visionDistance = visionDistance;
         this.teamSide = teamSide;
-
-        if(teamSide == 1) {
-            this.x = y;
-            this.y = x;
-        } else {
-            this.x = x;
-            this.y = y;
-        }
+        this.x = x;
+        this.y = y;
     }
 }
