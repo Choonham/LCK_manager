@@ -41,6 +41,8 @@ public class InGameFragment extends Fragment {
 
     double diagonal;
 
+    MapFogView fogView;
+
     public InGameFragment() {
         // Required empty public constructor
     }
@@ -74,7 +76,7 @@ public class InGameFragment extends Fragment {
         tempText = rootView.findViewById(R.id.temp_text);
         runTimer();
 
-        MapFogView fogView = new MapFogView(getContext());
+        fogView = new MapFogView(getContext());
 
         FrameLayout fogLayout = rootView.findViewById(R.id.in_game_fog_layout);
         fogLayout.addView(fogView);
@@ -89,76 +91,7 @@ public class InGameFragment extends Fragment {
                 fogView.drawFog(map.getMeasuredWidth(), map.getMeasuredHeight());
                 tempText.setText(map.getMeasuredWidth() + "/" + map.getMeasuredHeight());
 
-                diagonal = Math.sqrt(Math.pow(map.getMeasuredWidth(), 2) + Math.pow(map.getMeasuredHeight(), 2));
-
-                Inhibitor topInhibitor = new Inhibitor("blueTopInhibitor", (float) (map.getMeasuredWidth() * 0.09), (float) (map.getMeasuredHeight() * 0.73), 0, 0);
-                Inhibitor midInhibitor = new Inhibitor("bluemidInhibitor", (float) (map.getMeasuredWidth() * 0.23), (float) (map.getMeasuredHeight() * 0.75), 0, 0);
-                Inhibitor bottomInhibitor = new Inhibitor("bluebottomInhibitor", (float) (map.getMeasuredWidth() * 0.24), (float) (map.getMeasuredHeight() * 0.90), 0, 0);
-
-                Turret topTurret1 = new Turret("topTurret1", (float) (map.getMeasuredWidth() * 0.12), (float) (map.getMeasuredHeight() * 0.29), 100, 0);
-                Turret topTurret2 = new Turret("topTurret2", (float) (map.getMeasuredWidth() * 0.13), (float) (map.getMeasuredHeight() * 0.52), 100, 0);
-                Turret topTurret3 = new Turret("topTurret3", (float) (map.getMeasuredWidth() * 0.09), (float) (map.getMeasuredHeight() * 0.68), 100, 0);
-
-                Turret midTurret1 = new Turret("midTurret1", (float) (map.getMeasuredWidth() * 0.42), (float) (map.getMeasuredHeight() * 0.54), 100, 0);
-                Turret midTurret2 = new Turret("midTurret2", (float) (map.getMeasuredWidth() * 0.36), (float) (map.getMeasuredHeight() * 0.65), 100, 0);
-                Turret midTurret3 = new Turret("midTurret3", (float) (map.getMeasuredWidth() * 0.26), (float) (map.getMeasuredHeight() * 0.72), 100, 0);
-
-                Turret bottomTurret1 = new Turret("bottomTurret1", (float) (map.getMeasuredWidth() * 0.75), (float) (map.getMeasuredHeight() * 0.93), 100, 0);
-                Turret bottomTurret2 = new Turret("bottomTurret2", (float) (map.getMeasuredWidth() * 0.49), (float) (map.getMeasuredHeight() * 0.89), 100, 0);
-                Turret bottomTurret3 = new Turret("bottomTurret3", (float) (map.getMeasuredWidth() * 0.30), (float) (map.getMeasuredHeight() * 0.91), 100, 0);
-
-                Nexus  nexus = new Nexus("blueNexus", (float) (map.getMeasuredWidth() * 0.1), (float) (map.getMeasuredHeight() * 0.87), (int) (diagonal * 0.18), 0);
-
-                Dragon dragon = new Dragon("dragon", (float) (map.getMeasuredWidth() * 0.69), (float) (map.getMeasuredHeight() * 0.68),0, 0);
-
-                Ward ward1 = new Ward("ward1", (float) (map.getMeasuredWidth() * 0.50), (float) (map.getMeasuredHeight() * 0.50), 50, 0);
-                Ward ward2 = new Ward("ward2", (float) (map.getMeasuredWidth() * 0.37), (float) (map.getMeasuredHeight() * 0.30), 50, 0);
-                Ward ward3 = new Ward("ward3", (float) (map.getMeasuredWidth() * 0.25), (float) (map.getMeasuredHeight() * 0.20), 50, 0);
-
-                Ward ward4 = new Ward("ward4", (float) (map.getMeasuredWidth() * 0.75), (float) (map.getMeasuredHeight() * 0.75), 200, 0);
-
-                fogView.setVision(nexus);
-                fogView.drawIcon(nexus);
-
-                fogView.setVision(ward1);
-                fogView.setVision(ward2);
-                fogView.setVision(ward3);
-                fogView.setVision(ward4);
-
-                fogView.setVision(topTurret1);
-                fogView.setVision(topTurret2);
-                fogView.setVision(topTurret3);
-
-                fogView.setVision(midTurret1);
-                fogView.setVision(midTurret2);
-                fogView.setVision(midTurret3);
-
-                fogView.setVision(bottomTurret1);
-                fogView.setVision(bottomTurret2);
-                fogView.setVision(bottomTurret3);
-
-                fogView.drawIcon(topInhibitor);
-                fogView.drawIcon(midInhibitor);
-                fogView.drawIcon(bottomInhibitor);
-
-                fogView.drawIcon(ward1);
-                fogView.drawIcon(ward2);
-                fogView.drawIcon(ward3);
-                fogView.drawIcon(ward4);
-
-                fogView.drawIcon(topTurret1);
-                fogView.drawIcon(topTurret2);
-                fogView.drawIcon(topTurret3);
-
-                fogView.drawIcon(midTurret1);
-                fogView.drawIcon(midTurret2);
-                fogView.drawIcon(midTurret3);
-
-                fogView.drawIcon(bottomTurret1);
-                fogView.drawIcon(bottomTurret2);
-                fogView.drawIcon(bottomTurret3);
-
-                fogView.drawIcon(dragon);
+                setMapObjects(map.getMeasuredWidth(),  map.getMeasuredHeight(), 0);
 
                 return true;
             }
@@ -208,6 +141,90 @@ public class InGameFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void setMapObjects(int width, int height, int playerSide) {
+        diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+
+        Inhibitor topInhibitorBlue = new Inhibitor("blueTopInhibitor", (float) (width * 0.09), (float) (height * 0.73), 0, 0, playerSide);
+        Inhibitor midInhibitorBlue = new Inhibitor("blueMidInhibitor", (float) (width * 0.23), (float) (height * 0.75), 0, 0, playerSide);
+        Inhibitor bottomInhibitorBlue = new Inhibitor("blueBottomInhibitor", (float) (width * 0.24), (float) (height * 0.90), 0, 0, playerSide);
+
+        Turret topTurret1Blue = new Turret("BlueTopTurret1", (float) (width * 0.12), (float) (height * 0.29), 100, 0, playerSide);
+        Turret topTurret2Blue = new Turret("BlueTopTurret2", (float) (width * 0.13), (float) (height * 0.52), 100, 0, playerSide);
+        Turret topTurret3Blue = new Turret("BlueTopTurret3", (float) (width * 0.09), (float) (height * 0.68), 100, 0, playerSide);
+
+        Turret midTurret1Blue = new Turret("BlueMidTurret1", (float) (width * 0.42), (float) (height * 0.54), 100, 0, playerSide);
+        Turret midTurret2Blue = new Turret("BlueMidTurret2", (float) (width * 0.36), (float) (height * 0.65), 100, 0, playerSide);
+        Turret midTurret3Blue = new Turret("BlueMidTurret3", (float) (width * 0.26), (float) (height * 0.72), 100, 0, playerSide);
+
+        Turret bottomTurret1Blue = new Turret("BlueBottomTurret1", (float) (width * 0.75), (float) (height * 0.93), 100, 0, playerSide);
+        Turret bottomTurret2Blue = new Turret("BlueBottomTurret2", (float) (width * 0.49), (float) (height * 0.89), 100, 0, playerSide);
+        Turret bottomTurret3Blue = new Turret("BlueBottomTurret3Blue", (float) (width * 0.30), (float) (height * 0.91), 100, 0, playerSide);
+
+        Nexus  nexusBlue = new Nexus("blueNexus", (float) (width * 0.1), (float) (height * 0.87), (int) (diagonal * 0.18), 0, playerSide);
+
+        Inhibitor topInhibitorRed = new Inhibitor("redTopInhibitor", (float) (width * 0.75), (float) (height * 0.11), 0, 1, playerSide);
+        Inhibitor midInhibitorRed = new Inhibitor("redMidInhibitor", (float) (width * 0.78), (float) (height * 0.22), 0, 1, playerSide);
+        Inhibitor bottomInhibitorRed = new Inhibitor("redBottomInhibitor", (float) (width * 0.91), (float) (height * 0.35), 0, 1, playerSide);
+
+        Turret topTurret1Red = new Turret("RedTopTurret1", (float) (width * 0.33), (float) (height * 0.10), 100, 1, playerSide);
+        Turret topTurret2Red = new Turret("RedTopTurret2", (float) (width * 0.65), (float) (height * 0.13), 100, 1, playerSide);
+        Turret topTurret3Red = new Turret("RedTopTurret3", (float) (width * 0.71), (float) (height * 0.12), 100, 1, playerSide);
+
+        Turret midTurret1Red = new Turret("RedMidTurret1", (float) (width * 0.62), (float) (height * 0.41), 100, 1, playerSide);
+        Turret midTurret2Red = new Turret("RedMidTurret2", (float) (width * 0.67), (float) (height * 0.31), 100, 1, playerSide);
+        Turret midTurret3Red = new Turret("RedMidTurret3", (float) (width * 0.75), (float) (height * 0.26), 100, 1, playerSide);
+
+        Turret bottomTurret1Red = new Turret("RedBottomTurret1", (float) (width * 0.97), (float) (height * 0.67), 100, 1, playerSide);
+        Turret bottomTurret2Red = new Turret("RedBottomTurret2", (float) (width * 0.90), (float) (height * 0.43), 100, 1, playerSide);
+        Turret bottomTurret3Red = new Turret("RedBottomTurret3", (float) (width * 0.91), (float) (height * 0.30), 100, 1, playerSide);
+
+        Nexus  nexusRed = new Nexus("redNexus", (float) (width * 0.87), (float) (height * 0.13), (int) (diagonal * 0.18), 1, playerSide);
+
+        Dragon dragon = new Dragon("dragon", (float) (width * 0.69), (float) (height * 0.68),0, 0);
+
+        fogView.drawIcon(nexusBlue);
+
+        fogView.drawIcon(topInhibitorBlue);
+        fogView.drawIcon(midInhibitorBlue);
+        fogView.drawIcon(bottomInhibitorBlue);
+
+        fogView.drawIcon(topTurret1Blue);
+        fogView.drawIcon(topTurret2Blue);
+        fogView.drawIcon(topTurret3Blue);
+
+        fogView.drawIcon(midTurret1Blue);
+        fogView.drawIcon(midTurret2Blue);
+        fogView.drawIcon(midTurret3Blue);
+
+        fogView.drawIcon(bottomTurret1Blue);
+        fogView.drawIcon(bottomTurret2Blue);
+        fogView.drawIcon(bottomTurret3Blue);
+
+        fogView.drawIcon(nexusRed);
+
+        fogView.drawIcon(topInhibitorRed);
+        fogView.drawIcon(midInhibitorRed);
+        fogView.drawIcon(bottomInhibitorRed);
+
+        fogView.drawIcon(topTurret1Red);
+        fogView.drawIcon(topTurret2Red);
+        fogView.drawIcon(topTurret3Red);
+
+        fogView.drawIcon(midTurret1Red);
+        fogView.drawIcon(midTurret2Red);
+        fogView.drawIcon(midTurret3Red);
+
+        fogView.drawIcon(bottomTurret1Red);
+        fogView.drawIcon(bottomTurret2Red);
+        fogView.drawIcon(bottomTurret3Red);
+
+        fogView.drawIcon(dragon);
+    }
+
+    private void moveChampion(Champion champion) {
+
     }
 
     private void runTimer() {

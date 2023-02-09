@@ -54,12 +54,10 @@ public class MapFogView extends View {
         this.onDrawCanvas .drawBitmap(bitmap, 0, 0, p);
     }
 
-    public void setVision(MapObject mo) {
-        temp.drawCircle((float) (mo.x), (float) (mo.y), mo.visionDistance, transparentPaint);
-    }
-
     public void drawIcon(MapObject mo) {
         Paint tempPaint = new Paint();
+
+        temp.drawCircle((float) (mo.x), (float) (mo.y), mo.visionDistance, transparentPaint);
 
         Bitmap turretImage = BitmapFactory.decodeResource(r, R.drawable.turret);
         Bitmap dragonImage = BitmapFactory.decodeResource(r, R.drawable.dragon);
@@ -81,8 +79,6 @@ public class MapFogView extends View {
         } else {
             temp2.drawRect(mo.x -10, mo.y -10, mo.x, mo.y, tempPaint);
         }
-
-
     }
 
 }
