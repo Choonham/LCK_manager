@@ -4,7 +4,7 @@ public class Ward extends MapObject{
 
     private int playerSide;
 
-    public Ward(String objectName, float x, float y, int visionDistance, int teamSide, int playerSide) {
+    public Ward(String objectName, int x, int y, int visionDistance, int teamSide, int playerSide) {
         super(objectName, x, y, visionDistance, teamSide);
 
         this.playerSide = playerSide;

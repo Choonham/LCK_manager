@@ -57,7 +57,7 @@ public class MapFogView extends View {
     public void drawIcon(MapObject mo) {
         Paint tempPaint = new Paint();
 
-        temp.drawCircle((float) (mo.x), (float) (mo.y), mo.visionDistance, transparentPaint);
+        temp.drawCircle((float) ((mo.x / 100) * this.width), (float) ((mo.y / 100) * this.height), mo.visionDistance, transparentPaint);
 
         Bitmap turretImage = BitmapFactory.decodeResource(r, R.drawable.turret);
         Bitmap dragonImage = BitmapFactory.decodeResource(r, R.drawable.dragon);
@@ -66,8 +66,8 @@ public class MapFogView extends View {
 
         tempPaint.setColor(getResources().getColor(R.color.white, null));
 
-        Rect src = new Rect((int) (mo.x - 50), (int) (mo.y -50), (int) mo.x+50, (int) mo.y+50);
-        //temp2.drawRect(mo.x -10, mo.y -10, mo.x, mo.y, tempPaint);
+        Rect src = new Rect((int) (((mo.x / 100) * this.width) - 50), (int) (((mo.y / 100) * this.height) -50), (int) ((mo.x / 100) * this.width) +50, (int) ((mo.y / 100) * this.height)+50);
+        //temp2.drawRect((mo.x / 100) -10, (mo.y / 100) -10, (mo.x / 100), (mo.y / 100), tempPaint);
         if(mo instanceof Turret) {
             temp2.drawBitmap(turretImage, null, src, null);
         } else if(mo instanceof Ward) {
@@ -77,7 +77,7 @@ public class MapFogView extends View {
         } else if(mo instanceof Dragon) {
             temp2.drawBitmap(dragonImage, null, src, null);
         } else {
-            temp2.drawRect(mo.x -10, mo.y -10, mo.x, mo.y, tempPaint);
+            temp2.drawRect(((mo.x / 100) * this.width) - 10, ((mo.y / 100) * this.height) -10, ((mo.x / 100) * this.width), ((mo.y / 100) * this.height), tempPaint);
         }
     }
 

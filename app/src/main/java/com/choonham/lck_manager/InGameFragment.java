@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import com.choonham.lck_manager.map_object.*;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +45,8 @@ public class InGameFragment extends Fragment {
 
     MapFogView fogView;
 
+    MapObject [][] coordinate;
+
     public InGameFragment() {
         // Required empty public constructor
     }
@@ -64,6 +68,14 @@ public class InGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_in_game, container, false);
+
+        coordinate = new MapObject[100][100];
+
+        for(int i = 0; i < 100; i++) {
+            for(int j = 0; j < 100; j++) {
+                coordinate[i][j] = null;
+            }
+        }
 
         handler = new Handler(Looper.getMainLooper());
 
@@ -143,46 +155,85 @@ public class InGameFragment extends Fragment {
         return rootView;
     }
 
+    private void setCoordinates(ArrayList<MapObject> mapObjectList) {
+        for (MapObject tempMapObject : mapObjectList) {
+            coordinate[tempMapObject.x][tempMapObject.y] = tempMapObject;
+        }
+    }
+
     private void setMapObjects(int width, int height, int playerSide) {
         diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
 
-        Inhibitor topInhibitorBlue = new Inhibitor("blueTopInhibitor", (float) (width * 0.09), (float) (height * 0.73), 0, 0, playerSide);
-        Inhibitor midInhibitorBlue = new Inhibitor("blueMidInhibitor", (float) (width * 0.23), (float) (height * 0.75), 0, 0, playerSide);
-        Inhibitor bottomInhibitorBlue = new Inhibitor("blueBottomInhibitor", (float) (width * 0.24), (float) (height * 0.90), 0, 0, playerSide);
+        ArrayList<MapObject> mapObjectList = new ArrayList<MapObject>();
 
-        Turret topTurret1Blue = new Turret("BlueTopTurret1", (float) (width * 0.12), (float) (height * 0.29), 100, 0, playerSide);
-        Turret topTurret2Blue = new Turret("BlueTopTurret2", (float) (width * 0.13), (float) (height * 0.52), 100, 0, playerSide);
-        Turret topTurret3Blue = new Turret("BlueTopTurret3", (float) (width * 0.09), (float) (height * 0.68), 100, 0, playerSide);
+        Inhibitor topInhibitorBlue = new Inhibitor("blueTopInhibitor", 9, 73, 0, 0, playerSide);
+        mapObjectList.add(topInhibitorBlue);
 
-        Turret midTurret1Blue = new Turret("BlueMidTurret1", (float) (width * 0.42), (float) (height * 0.54), 100, 0, playerSide);
-        Turret midTurret2Blue = new Turret("BlueMidTurret2", (float) (width * 0.36), (float) (height * 0.65), 100, 0, playerSide);
-        Turret midTurret3Blue = new Turret("BlueMidTurret3", (float) (width * 0.26), (float) (height * 0.72), 100, 0, playerSide);
+        Inhibitor midInhibitorBlue = new Inhibitor("blueMidInhibitor", 23, 75, 0, 0, playerSide);
+        mapObjectList.add(midInhibitorBlue);
 
-        Turret bottomTurret1Blue = new Turret("BlueBottomTurret1", (float) (width * 0.75), (float) (height * 0.93), 100, 0, playerSide);
-        Turret bottomTurret2Blue = new Turret("BlueBottomTurret2", (float) (width * 0.49), (float) (height * 0.89), 100, 0, playerSide);
-        Turret bottomTurret3Blue = new Turret("BlueBottomTurret3Blue", (float) (width * 0.30), (float) (height * 0.91), 100, 0, playerSide);
+        Inhibitor bottomInhibitorBlue = new Inhibitor("blueBottomInhibitor", 24, 90, 0, 0, playerSide);
+        mapObjectList.add(bottomInhibitorBlue);
 
-        Nexus  nexusBlue = new Nexus("blueNexus", (float) (width * 0.1), (float) (height * 0.87), (int) (diagonal * 0.18), 0, playerSide);
+        Turret topTurret1Blue = new Turret("BlueTopTurret1", 12, 29, 100, 0, playerSide);
+        mapObjectList.add(topTurret1Blue);
 
-        Inhibitor topInhibitorRed = new Inhibitor("redTopInhibitor", (float) (width * 0.75), (float) (height * 0.11), 0, 1, playerSide);
-        Inhibitor midInhibitorRed = new Inhibitor("redMidInhibitor", (float) (width * 0.78), (float) (height * 0.22), 0, 1, playerSide);
-        Inhibitor bottomInhibitorRed = new Inhibitor("redBottomInhibitor", (float) (width * 0.91), (float) (height * 0.35), 0, 1, playerSide);
+        Turret topTurret2Blue = new Turret("BlueTopTurret2", 13, 52, 100, 0, playerSide);
+        mapObjectList.add(topTurret2Blue);
 
-        Turret topTurret1Red = new Turret("RedTopTurret1", (float) (width * 0.33), (float) (height * 0.10), 100, 1, playerSide);
-        Turret topTurret2Red = new Turret("RedTopTurret2", (float) (width * 0.65), (float) (height * 0.13), 100, 1, playerSide);
-        Turret topTurret3Red = new Turret("RedTopTurret3", (float) (width * 0.71), (float) (height * 0.12), 100, 1, playerSide);
+        Turret topTurret3Blue = new Turret("BlueTopTurret3", 9, 68, 100, 0, playerSide);
+        mapObjectList.add(topTurret3Blue);
 
-        Turret midTurret1Red = new Turret("RedMidTurret1", (float) (width * 0.62), (float) (height * 0.41), 100, 1, playerSide);
-        Turret midTurret2Red = new Turret("RedMidTurret2", (float) (width * 0.67), (float) (height * 0.31), 100, 1, playerSide);
-        Turret midTurret3Red = new Turret("RedMidTurret3", (float) (width * 0.75), (float) (height * 0.26), 100, 1, playerSide);
+        Turret midTurret1Blue = new Turret("BlueMidTurret1", 42, 54, 100, 0, playerSide);
+        Turret midTurret2Blue = new Turret("BlueMidTurret2", 36, 65, 100, 0, playerSide);
+        Turret midTurret3Blue = new Turret("BlueMidTurret3", 26, 72, 100, 0, playerSide);
+        mapObjectList.add(midTurret1Blue);
+        mapObjectList.add(midTurret2Blue);
+        mapObjectList.add(midTurret3Blue);
 
-        Turret bottomTurret1Red = new Turret("RedBottomTurret1", (float) (width * 0.97), (float) (height * 0.67), 100, 1, playerSide);
-        Turret bottomTurret2Red = new Turret("RedBottomTurret2", (float) (width * 0.90), (float) (height * 0.43), 100, 1, playerSide);
-        Turret bottomTurret3Red = new Turret("RedBottomTurret3", (float) (width * 0.91), (float) (height * 0.30), 100, 1, playerSide);
+        Turret bottomTurret1Blue = new Turret("BlueBottomTurret1", 75, 93, 100, 0, playerSide);
+        Turret bottomTurret2Blue = new Turret("BlueBottomTurret2", 49, 89, 100, 0, playerSide);
+        Turret bottomTurret3Blue = new Turret("BlueBottomTurret3Blue", 30, 91, 100, 0, playerSide);
+        mapObjectList.add(bottomTurret1Blue);
+        mapObjectList.add(bottomTurret2Blue);
+        mapObjectList.add(bottomTurret3Blue);
 
-        Nexus  nexusRed = new Nexus("redNexus", (float) (width * 0.87), (float) (height * 0.13), (int) (diagonal * 0.18), 1, playerSide);
+        Nexus  nexusBlue = new Nexus("blueNexus", 10, 87, (int) (diagonal * 0.18), 0, playerSide);
+        mapObjectList.add(nexusBlue);
 
-        Dragon dragon = new Dragon("dragon", (float) (width * 0.69), (float) (height * 0.68),0, 0);
+        Inhibitor topInhibitorRed = new Inhibitor("redTopInhibitor", 75, 11, 0, 1, playerSide);
+        Inhibitor midInhibitorRed = new Inhibitor("redMidInhibitor", 78, 22, 0, 1, playerSide);
+        Inhibitor bottomInhibitorRed = new Inhibitor("redBottomInhibitor", 91, 35, 0, 1, playerSide);
+        mapObjectList.add(topInhibitorRed);
+        mapObjectList.add(midInhibitorRed);
+        mapObjectList.add(bottomInhibitorRed);
+
+        Turret topTurret1Red = new Turret("RedTopTurret1", 33, 10, 100, 1, playerSide);
+        Turret topTurret2Red = new Turret("RedTopTurret2", 65, 13, 100, 1, playerSide);
+        Turret topTurret3Red = new Turret("RedTopTurret3", 71, 12, 100, 1, playerSide);
+        mapObjectList.add(topTurret1Red);
+        mapObjectList.add(topTurret2Red);
+        mapObjectList.add(topTurret3Red);
+
+        Turret midTurret1Red = new Turret("RedMidTurret1", 62, 41, 100, 1, playerSide);
+        Turret midTurret2Red = new Turret("RedMidTurret2", 67, 31, 100, 1, playerSide);
+        Turret midTurret3Red = new Turret("RedMidTurret3", 75, 26, 100, 1, playerSide);
+        mapObjectList.add(midTurret1Red);
+        mapObjectList.add(midTurret2Red);
+        mapObjectList.add(midTurret3Red);
+
+        Turret bottomTurret1Red = new Turret("RedBottomTurret1", 97, 67, 100, 1, playerSide);
+        Turret bottomTurret2Red = new Turret("RedBottomTurret2", 90, 43, 100, 1, playerSide);
+        Turret bottomTurret3Red = new Turret("RedBottomTurret3", 91, 30, 100, 1, playerSide);
+        mapObjectList.add(bottomTurret1Red);
+        mapObjectList.add(bottomTurret2Red);
+        mapObjectList.add(bottomTurret3Red);
+
+        Nexus  nexusRed = new Nexus("redNexus", 87, 13, (int) (diagonal * 0.18), 1, playerSide);
+        mapObjectList.add(nexusRed);
+
+        Dragon dragon = new Dragon("dragon", 69, 68,0, 0);
+        mapObjectList.add(dragon);
 
         fogView.drawIcon(nexusBlue);
 
@@ -221,9 +272,15 @@ public class InGameFragment extends Fragment {
         fogView.drawIcon(bottomTurret3Red);
 
         fogView.drawIcon(dragon);
+
+        setCoordinates(mapObjectList);
     }
 
     private void moveChampion(Champion champion) {
+
+    }
+
+    private void updateResources() {
 
     }
 
