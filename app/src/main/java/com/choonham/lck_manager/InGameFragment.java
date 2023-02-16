@@ -18,6 +18,7 @@ import com.choonham.lck_manager.map_object.*;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -47,6 +48,8 @@ public class InGameFragment extends Fragment {
 
     MapObject [][] coordinate;
 
+    HashMap<String, MapPoint> pointMap;
+
     public InGameFragment() {
         // Required empty public constructor
     }
@@ -70,6 +73,7 @@ public class InGameFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_in_game, container, false);
 
         coordinate = new MapObject[100][100];
+        pointMap = new HashMap<>();
 
         for(int i = 0; i < 100; i++) {
             for(int j = 0; j < 100; j++) {
@@ -276,7 +280,7 @@ public class InGameFragment extends Fragment {
         setCoordinates(mapObjectList);
     }
 
-    private void moveChampion(Champion champion) {
+    private void moveChampion(Champion champion, MapPoint point) {
 
     }
 
