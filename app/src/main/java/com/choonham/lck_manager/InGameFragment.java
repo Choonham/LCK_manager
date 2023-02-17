@@ -17,10 +17,7 @@ import android.view.ViewGroup;
 import com.choonham.lck_manager.map_object.*;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,11 +41,16 @@ public class InGameFragment extends Fragment {
 
     double diagonal;
 
+    int playerSide = 0;
+
+    List<MapObject> playerSideObjectList;
+
     MapFogView fogView;
 
     MapObject [][] coordinate;
 
     HashMap<String, MapPoint> pointMap;
+    HashMap<String, MapObject> objectMap;
 
     public InGameFragment() {
         // Required empty public constructor
@@ -74,6 +76,8 @@ public class InGameFragment extends Fragment {
 
         coordinate = new MapObject[100][100];
         pointMap = new HashMap<>();
+        objectMap = new HashMap<>();
+        playerSideObjectList = new ArrayList<>();
 
         for(int i = 0; i < 100; i++) {
             for(int j = 0; j < 100; j++) {
@@ -103,11 +107,11 @@ public class InGameFragment extends Fragment {
             @Override
             public boolean onPreDraw() {
                 map.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                fogView.drawFog(map.getMeasuredWidth(), map.getMeasuredHeight());
+                fogView.setParam(map.getMeasuredWidth(), map.getMeasuredHeight());
+                fogView.drawFog();
                 tempText.setText(map.getMeasuredWidth() + "/" + map.getMeasuredHeight());
 
-                setMapObjects(map.getMeasuredWidth(),  map.getMeasuredHeight(), 0);
+                setMapObjects(map.getMeasuredWidth(),  map.getMeasuredHeight(), playerSide);
 
                 return true;
             }
@@ -159,125 +163,126 @@ public class InGameFragment extends Fragment {
         return rootView;
     }
 
-    private void setCoordinates(ArrayList<MapObject> mapObjectList) {
-        for (MapObject tempMapObject : mapObjectList) {
-            coordinate[tempMapObject.x][tempMapObject.y] = tempMapObject;
+    private void setCoordinates(HashMap<String, MapObject> objectMap) {
+        for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
+            coordinate[set.getValue().x][set.getValue().y] = set.getValue();
         }
+    }
+
+    private void checkInVision(HashMap<String, MapObject> objectMap) {
+        for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
+            MapObject tempObject = set.getValue();
+            if(tempObject.teamSide == playerSide) {
+                tempObject.inVisision = 1;
+            } else {
+                for(MapObject playerSideObject : playerSideObjectList) {
+                    if(inCircle(playerSideObject.x, playerSideObject.y, tempObject.x, tempObject.y, playerSideObject.visionDistance)) {
+                        tempObject.inVisision = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean inCircle(int a, int b, int x, int y, int radius) {
+        int dx = Math.abs(x - a);
+        int dy = Math.abs(y - b);
+        return ( dx*dx + dy*dy <= radius*radius );
     }
 
     private void setMapObjects(int width, int height, int playerSide) {
         diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
 
-        ArrayList<MapObject> mapObjectList = new ArrayList<MapObject>();
-
         Inhibitor topInhibitorBlue = new Inhibitor("blueTopInhibitor", 9, 73, 0, 0, playerSide);
-        mapObjectList.add(topInhibitorBlue);
-
+        objectMap.put(topInhibitorBlue.objectName, topInhibitorBlue);
         Inhibitor midInhibitorBlue = new Inhibitor("blueMidInhibitor", 23, 75, 0, 0, playerSide);
-        mapObjectList.add(midInhibitorBlue);
-
+        objectMap.put(midInhibitorBlue.objectName, midInhibitorBlue);
         Inhibitor bottomInhibitorBlue = new Inhibitor("blueBottomInhibitor", 24, 90, 0, 0, playerSide);
-        mapObjectList.add(bottomInhibitorBlue);
+        objectMap.put(bottomInhibitorBlue.objectName, bottomInhibitorBlue);
 
         Turret topTurret1Blue = new Turret("BlueTopTurret1", 12, 29, 100, 0, playerSide);
-        mapObjectList.add(topTurret1Blue);
+        objectMap.put(topTurret1Blue.objectName, topTurret1Blue);
 
         Turret topTurret2Blue = new Turret("BlueTopTurret2", 13, 52, 100, 0, playerSide);
-        mapObjectList.add(topTurret2Blue);
+        objectMap.put(topTurret2Blue.objectName, topTurret2Blue);
 
         Turret topTurret3Blue = new Turret("BlueTopTurret3", 9, 68, 100, 0, playerSide);
-        mapObjectList.add(topTurret3Blue);
+        objectMap.put(topTurret3Blue.objectName, topTurret3Blue);
 
         Turret midTurret1Blue = new Turret("BlueMidTurret1", 42, 54, 100, 0, playerSide);
         Turret midTurret2Blue = new Turret("BlueMidTurret2", 36, 65, 100, 0, playerSide);
         Turret midTurret3Blue = new Turret("BlueMidTurret3", 26, 72, 100, 0, playerSide);
-        mapObjectList.add(midTurret1Blue);
-        mapObjectList.add(midTurret2Blue);
-        mapObjectList.add(midTurret3Blue);
+        objectMap.put(midTurret1Blue.objectName, midTurret1Blue);
+        objectMap.put(midTurret2Blue.objectName, midTurret2Blue);
+        objectMap.put(midTurret3Blue.objectName, midTurret3Blue);
 
         Turret bottomTurret1Blue = new Turret("BlueBottomTurret1", 75, 93, 100, 0, playerSide);
         Turret bottomTurret2Blue = new Turret("BlueBottomTurret2", 49, 89, 100, 0, playerSide);
         Turret bottomTurret3Blue = new Turret("BlueBottomTurret3Blue", 30, 91, 100, 0, playerSide);
-        mapObjectList.add(bottomTurret1Blue);
-        mapObjectList.add(bottomTurret2Blue);
-        mapObjectList.add(bottomTurret3Blue);
+        objectMap.put(bottomTurret1Blue.objectName, bottomTurret1Blue);
+        objectMap.put(bottomTurret2Blue.objectName, bottomTurret2Blue);
+        objectMap.put(bottomTurret3Blue.objectName, bottomTurret3Blue);
 
         Nexus  nexusBlue = new Nexus("blueNexus", 10, 87, (int) (diagonal * 0.18), 0, playerSide);
-        mapObjectList.add(nexusBlue);
+        objectMap.put(nexusBlue.objectName, nexusBlue);
 
         Inhibitor topInhibitorRed = new Inhibitor("redTopInhibitor", 75, 11, 0, 1, playerSide);
         Inhibitor midInhibitorRed = new Inhibitor("redMidInhibitor", 78, 22, 0, 1, playerSide);
         Inhibitor bottomInhibitorRed = new Inhibitor("redBottomInhibitor", 91, 35, 0, 1, playerSide);
-        mapObjectList.add(topInhibitorRed);
-        mapObjectList.add(midInhibitorRed);
-        mapObjectList.add(bottomInhibitorRed);
+        objectMap.put(topInhibitorRed.objectName, topInhibitorRed);
+        objectMap.put(midInhibitorRed.objectName, midInhibitorRed);
+        objectMap.put(bottomInhibitorRed.objectName, bottomInhibitorRed);
 
         Turret topTurret1Red = new Turret("RedTopTurret1", 33, 10, 100, 1, playerSide);
         Turret topTurret2Red = new Turret("RedTopTurret2", 65, 13, 100, 1, playerSide);
         Turret topTurret3Red = new Turret("RedTopTurret3", 71, 12, 100, 1, playerSide);
-        mapObjectList.add(topTurret1Red);
-        mapObjectList.add(topTurret2Red);
-        mapObjectList.add(topTurret3Red);
+        objectMap.put(topTurret1Red.objectName, topTurret1Red);
+        objectMap.put(topTurret2Red.objectName, topTurret2Red);
+        objectMap.put(topTurret3Red.objectName, topTurret3Red);
 
         Turret midTurret1Red = new Turret("RedMidTurret1", 62, 41, 100, 1, playerSide);
         Turret midTurret2Red = new Turret("RedMidTurret2", 67, 31, 100, 1, playerSide);
         Turret midTurret3Red = new Turret("RedMidTurret3", 75, 26, 100, 1, playerSide);
-        mapObjectList.add(midTurret1Red);
-        mapObjectList.add(midTurret2Red);
-        mapObjectList.add(midTurret3Red);
+        objectMap.put(midTurret1Red.objectName, midTurret1Red);
+        objectMap.put(midTurret2Red.objectName, midTurret2Red);
+        objectMap.put(midTurret3Red.objectName, midTurret3Red);
 
         Turret bottomTurret1Red = new Turret("RedBottomTurret1", 97, 67, 100, 1, playerSide);
         Turret bottomTurret2Red = new Turret("RedBottomTurret2", 90, 43, 100, 1, playerSide);
         Turret bottomTurret3Red = new Turret("RedBottomTurret3", 91, 30, 100, 1, playerSide);
-        mapObjectList.add(bottomTurret1Red);
-        mapObjectList.add(bottomTurret2Red);
-        mapObjectList.add(bottomTurret3Red);
+        objectMap.put(bottomTurret1Red.objectName, bottomTurret1Red);
+        objectMap.put(bottomTurret2Red.objectName, bottomTurret2Red);
+        objectMap.put(bottomTurret3Red.objectName, bottomTurret3Red);
 
         Nexus  nexusRed = new Nexus("redNexus", 87, 13, (int) (diagonal * 0.18), 1, playerSide);
-        mapObjectList.add(nexusRed);
+        objectMap.put(nexusRed.objectName, nexusRed);
 
         Dragon dragon = new Dragon("dragon", 69, 68,0, 0);
-        mapObjectList.add(dragon);
+        objectMap.put(dragon.objectName, dragon);
 
-        fogView.drawIcon(nexusBlue);
+        setCoordinates(objectMap);
 
-        fogView.drawIcon(topInhibitorBlue);
-        fogView.drawIcon(midInhibitorBlue);
-        fogView.drawIcon(bottomInhibitorBlue);
+        drawMapObjects(objectMap);
 
-        fogView.drawIcon(topTurret1Blue);
-        fogView.drawIcon(topTurret2Blue);
-        fogView.drawIcon(topTurret3Blue);
+        setPlayerSideObject(objectMap);
+    }
 
-        fogView.drawIcon(midTurret1Blue);
-        fogView.drawIcon(midTurret2Blue);
-        fogView.drawIcon(midTurret3Blue);
+    private void drawMapObjects(HashMap<String, MapObject> objectMap) {
+        for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
+            fogView.setVision(set.getValue());
+        }
+        for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
+            fogView.drawIcon(set.getValue());
+        }
+    }
 
-        fogView.drawIcon(bottomTurret1Blue);
-        fogView.drawIcon(bottomTurret2Blue);
-        fogView.drawIcon(bottomTurret3Blue);
-
-        fogView.drawIcon(nexusRed);
-
-        fogView.drawIcon(topInhibitorRed);
-        fogView.drawIcon(midInhibitorRed);
-        fogView.drawIcon(bottomInhibitorRed);
-
-        fogView.drawIcon(topTurret1Red);
-        fogView.drawIcon(topTurret2Red);
-        fogView.drawIcon(topTurret3Red);
-
-        fogView.drawIcon(midTurret1Red);
-        fogView.drawIcon(midTurret2Red);
-        fogView.drawIcon(midTurret3Red);
-
-        fogView.drawIcon(bottomTurret1Red);
-        fogView.drawIcon(bottomTurret2Red);
-        fogView.drawIcon(bottomTurret3Red);
-
-        fogView.drawIcon(dragon);
-
-        setCoordinates(mapObjectList);
+    private void setPlayerSideObject(HashMap<String, MapObject> objectMap) {
+        playerSideObjectList.clear();
+        for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
+            if(set.getValue().teamSide == playerSide) {
+                playerSideObjectList.add(set.getValue());
+            }
+        }
     }
 
     private void moveChampion(Champion champion, MapPoint point) {
@@ -285,7 +290,10 @@ public class InGameFragment extends Fragment {
     }
 
     private void updateResources() {
-
+        fogView.clearResources();
+        fogView.drawFog();
+        drawMapObjects(objectMap);
+        checkInVision(objectMap);
     }
 
     private void runTimer() {
@@ -316,6 +324,10 @@ public class InGameFragment extends Fragment {
                         = String.format(Locale.getDefault(), "%02d:%02d", playMin, playSecs);
 
                 playTimeView.setText(playTime);
+
+                if(playSecs > 100) {
+                    updateResources();
+                }
 
                 realTimeSpend++;
             } finally {

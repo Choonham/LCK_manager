@@ -12,11 +12,18 @@ public class MapObject {
     // 0: red, 1: blue
     public int teamSide;
 
-    public MapObject(String objectName, int x, int y, int visionDistance, int teamSide) {
+    // 0: dead, 1: alive
+    public int status;
+
+    public int inVisision;
+
+    public MapObject(String objectName, int x, int y, int visionDistance, int teamSide, int playerSide) {
         this.objectName = objectName;
         this.visionDistance = visionDistance;
         this.teamSide = teamSide;
         this.x = x;
         this.y = y;
+        this.status = 1;
+        this.inVisision = 0;
     }
 }
