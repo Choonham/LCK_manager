@@ -52,6 +52,10 @@ public class InGameFragment extends Fragment {
     HashMap<String, MapPoint> pointMap;
     HashMap<String, MapObject> objectMap;
 
+    FrameLayout fogLayout;
+
+
+
     public InGameFragment() {
         // Required empty public constructor
     }
@@ -94,11 +98,10 @@ public class InGameFragment extends Fragment {
         //realTimeView = rootView.findViewById(R.id.play_time_view_real);
         playTimeView = rootView.findViewById(R.id.play_time_view);
         tempText = rootView.findViewById(R.id.temp_text);
-        runTimer();
 
         fogView = new MapFogView(getContext());
 
-        FrameLayout fogLayout = rootView.findViewById(R.id.in_game_fog_layout);
+        fogLayout = rootView.findViewById(R.id.in_game_fog_layout);
         fogLayout.addView(fogView);
 
         ViewTreeObserver vto = map.getViewTreeObserver();
@@ -106,13 +109,18 @@ public class InGameFragment extends Fragment {
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
+                diagonal = Math.sqrt(Math.pow(map.getMeasuredWidth(), 2) + Math.pow(map.getMeasuredHeight(), 2));
+
                 map.getViewTreeObserver().removeOnPreDrawListener(this);
-                fogView.setParam(map.getMeasuredWidth(), map.getMeasuredHeight());
+                fogView.setParam(map.getMeasuredWidth(), map.getMeasuredHeight(), (int) diagonal);
                 fogView.drawFog();
-                tempText.setText(map.getMeasuredWidth() + "/" + map.getMeasuredHeight());
+                //tempText.setText(map.getMeasuredWidth() + "/" + map.getMeasuredHeight());
+
+                fogView.setLoadingImg();
 
                 setMapObjects(map.getMeasuredWidth(),  map.getMeasuredHeight(), playerSide);
 
+                runTimer();
                 return true;
             }
         });
@@ -187,43 +195,43 @@ public class InGameFragment extends Fragment {
     private boolean inCircle(int a, int b, int x, int y, int radius) {
         int dx = Math.abs(x - a);
         int dy = Math.abs(y - b);
+
         return ( dx*dx + dy*dy <= radius*radius );
     }
 
     private void setMapObjects(int width, int height, int playerSide) {
-        diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
 
         Inhibitor topInhibitorBlue = new Inhibitor("blueTopInhibitor", 9, 73, 0, 0, playerSide);
         objectMap.put(topInhibitorBlue.objectName, topInhibitorBlue);
         Inhibitor midInhibitorBlue = new Inhibitor("blueMidInhibitor", 23, 75, 0, 0, playerSide);
         objectMap.put(midInhibitorBlue.objectName, midInhibitorBlue);
-        Inhibitor bottomInhibitorBlue = new Inhibitor("blueBottomInhibitor", 24, 90, 0, 0, playerSide);
+        Inhibitor bottomInhibitorBlue = new Inhibitor("blueBottomInhibitor", 24, 90, 0,0, playerSide);
         objectMap.put(bottomInhibitorBlue.objectName, bottomInhibitorBlue);
 
-        Turret topTurret1Blue = new Turret("BlueTopTurret1", 12, 29, 100, 0, playerSide);
+        Turret topTurret1Blue = new Turret("BlueTopTurret1", 12, 29, 4, 0, playerSide);
         objectMap.put(topTurret1Blue.objectName, topTurret1Blue);
 
-        Turret topTurret2Blue = new Turret("BlueTopTurret2", 13, 52, 100, 0, playerSide);
+        Turret topTurret2Blue = new Turret("BlueTopTurret2", 13, 52, 4, 0, playerSide);
         objectMap.put(topTurret2Blue.objectName, topTurret2Blue);
 
-        Turret topTurret3Blue = new Turret("BlueTopTurret3", 9, 68, 100, 0, playerSide);
+        Turret topTurret3Blue = new Turret("BlueTopTurret3", 9, 68, 4, 0, playerSide);
         objectMap.put(topTurret3Blue.objectName, topTurret3Blue);
 
-        Turret midTurret1Blue = new Turret("BlueMidTurret1", 42, 54, 100, 0, playerSide);
-        Turret midTurret2Blue = new Turret("BlueMidTurret2", 36, 65, 100, 0, playerSide);
-        Turret midTurret3Blue = new Turret("BlueMidTurret3", 26, 72, 100, 0, playerSide);
+        Turret midTurret1Blue = new Turret("BlueMidTurret1", 42, 54, 4, 0, playerSide);
+        Turret midTurret2Blue = new Turret("BlueMidTurret2", 36, 65, 4, 0, playerSide);
+        Turret midTurret3Blue = new Turret("BlueMidTurret3", 26, 72, 4, 0, playerSide);
         objectMap.put(midTurret1Blue.objectName, midTurret1Blue);
         objectMap.put(midTurret2Blue.objectName, midTurret2Blue);
         objectMap.put(midTurret3Blue.objectName, midTurret3Blue);
 
-        Turret bottomTurret1Blue = new Turret("BlueBottomTurret1", 75, 93, 100, 0, playerSide);
-        Turret bottomTurret2Blue = new Turret("BlueBottomTurret2", 49, 89, 100, 0, playerSide);
-        Turret bottomTurret3Blue = new Turret("BlueBottomTurret3Blue", 30, 91, 100, 0, playerSide);
+        Turret bottomTurret1Blue = new Turret("BlueBottomTurret1", 75, 93, 4, 0, playerSide);
+        Turret bottomTurret2Blue = new Turret("BlueBottomTurret2", 49, 89, 4, 0, playerSide);
+        Turret bottomTurret3Blue = new Turret("BlueBottomTurret3Blue", 30, 91, 4, 0, playerSide);
         objectMap.put(bottomTurret1Blue.objectName, bottomTurret1Blue);
         objectMap.put(bottomTurret2Blue.objectName, bottomTurret2Blue);
         objectMap.put(bottomTurret3Blue.objectName, bottomTurret3Blue);
 
-        Nexus  nexusBlue = new Nexus("blueNexus", 10, 87, (int) (diagonal * 0.18), 0, playerSide);
+        Nexus  nexusBlue = new Nexus("blueNexus", 10, 87, 18, 0, playerSide);
         objectMap.put(nexusBlue.objectName, nexusBlue);
 
         Inhibitor topInhibitorRed = new Inhibitor("redTopInhibitor", 75, 11, 0, 1, playerSide);
@@ -233,28 +241,28 @@ public class InGameFragment extends Fragment {
         objectMap.put(midInhibitorRed.objectName, midInhibitorRed);
         objectMap.put(bottomInhibitorRed.objectName, bottomInhibitorRed);
 
-        Turret topTurret1Red = new Turret("RedTopTurret1", 33, 10, 100, 1, playerSide);
-        Turret topTurret2Red = new Turret("RedTopTurret2", 65, 13, 100, 1, playerSide);
-        Turret topTurret3Red = new Turret("RedTopTurret3", 71, 12, 100, 1, playerSide);
+        Turret topTurret1Red = new Turret("RedTopTurret1", 33, 10, 4, 1, playerSide);
+        Turret topTurret2Red = new Turret("RedTopTurret2", 65, 13, 4, 1, playerSide);
+        Turret topTurret3Red = new Turret("RedTopTurret3", 71, 12, 4, 1, playerSide);
         objectMap.put(topTurret1Red.objectName, topTurret1Red);
         objectMap.put(topTurret2Red.objectName, topTurret2Red);
         objectMap.put(topTurret3Red.objectName, topTurret3Red);
 
-        Turret midTurret1Red = new Turret("RedMidTurret1", 62, 41, 100, 1, playerSide);
-        Turret midTurret2Red = new Turret("RedMidTurret2", 67, 31, 100, 1, playerSide);
-        Turret midTurret3Red = new Turret("RedMidTurret3", 75, 26, 100, 1, playerSide);
+        Turret midTurret1Red = new Turret("RedMidTurret1", 62, 41, 4, 1, playerSide);
+        Turret midTurret2Red = new Turret("RedMidTurret2", 67, 31, 4, 1, playerSide);
+        Turret midTurret3Red = new Turret("RedMidTurret3", 75, 26, 4, 1, playerSide);
         objectMap.put(midTurret1Red.objectName, midTurret1Red);
         objectMap.put(midTurret2Red.objectName, midTurret2Red);
         objectMap.put(midTurret3Red.objectName, midTurret3Red);
 
-        Turret bottomTurret1Red = new Turret("RedBottomTurret1", 97, 67, 100, 1, playerSide);
-        Turret bottomTurret2Red = new Turret("RedBottomTurret2", 90, 43, 100, 1, playerSide);
-        Turret bottomTurret3Red = new Turret("RedBottomTurret3", 91, 30, 100, 1, playerSide);
+        Turret bottomTurret1Red = new Turret("RedBottomTurret1", 97, 67, 4, 1, playerSide);
+        Turret bottomTurret2Red = new Turret("RedBottomTurret2", 90, 43, 4, 1, playerSide);
+        Turret bottomTurret3Red = new Turret("RedBottomTurret3", 91, 30, 4, 1, playerSide);
         objectMap.put(bottomTurret1Red.objectName, bottomTurret1Red);
         objectMap.put(bottomTurret2Red.objectName, bottomTurret2Red);
         objectMap.put(bottomTurret3Red.objectName, bottomTurret3Red);
 
-        Nexus  nexusRed = new Nexus("redNexus", 87, 13, (int) (diagonal * 0.18), 1, playerSide);
+        Nexus  nexusRed = new Nexus("redNexus", 87, 13, 18, 1, playerSide);
         objectMap.put(nexusRed.objectName, nexusRed);
 
         Dragon dragon = new Dragon("dragon", 69, 68,0, 0);
@@ -262,9 +270,17 @@ public class InGameFragment extends Fragment {
 
         setCoordinates(objectMap);
 
+        fogView.clearResources();
+
         drawMapObjects(objectMap);
 
         setPlayerSideObject(objectMap);
+
+        UpdateMapThread thread = new UpdateMapThread();
+        thread.start();
+
+        fogLayout.removeAllViews();
+        fogLayout.addView(fogView);
     }
 
     private void drawMapObjects(HashMap<String, MapObject> objectMap) {
@@ -280,6 +296,7 @@ public class InGameFragment extends Fragment {
         playerSideObjectList.clear();
         for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
             if(set.getValue().teamSide == playerSide) {
+                set.getValue().inVisision = 1;
                 playerSideObjectList.add(set.getValue());
             }
         }
@@ -292,30 +309,20 @@ public class InGameFragment extends Fragment {
     private void updateResources() {
         fogView.clearResources();
         fogView.drawFog();
-        drawMapObjects(objectMap);
         checkInVision(objectMap);
+        drawMapObjects(objectMap);
     }
 
     private void runTimer() {
         runTimer.run();
     }
 
+
     Runnable runTimer = new Runnable() {
         @Override
         public void run() {
             try {
-                /*int realHour = realTimeSpend / 216000;
-                int realMin = realTimeSpend / 3600;
-                int realSecs = (realTimeSpend % 3600) / 60;*/
                 int realMilSecs = realTimeSpend * 10 / 6;
-
-                /*String realMilSecsString = String.valueOf(realMilSecs);
-                String realMilSecsSub = realMilSecsString.length() > 2 ? realMilSecsString.substring(realMilSecsString.length() - 2) : realMilSecsString;
-
-                String realTime
-                        = String.format(Locale.getDefault(), "%d:%02d:%02d:", realHour, realMin, realSecs) + realMilSecsSub;*/
-
-                //realTimeView.setText(realTime);
 
                 playSecs =  (realTimeSpend % 600) / 10;
                 playMin = realTimeSpend / 600;
@@ -325,8 +332,9 @@ public class InGameFragment extends Fragment {
 
                 playTimeView.setText(playTime);
 
-                if(playSecs > 100) {
-                    updateResources();
+                if(playSecs % 10 == 5 || playSecs == 0) {
+                    fogLayout.removeAllViews();
+                    fogLayout.addView(fogView);
                 }
 
                 realTimeSpend++;
@@ -335,4 +343,23 @@ public class InGameFragment extends Fragment {
             }
         }
     };
+
+    class UpdateMapThread extends Thread {
+        public void run() {
+            while(true) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateResources();
+                    }
+                });
+
+                try{
+                    Thread.sleep(10000);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+        }
+    }
 }

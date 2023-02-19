@@ -17,7 +17,7 @@ public class MapObject {
 
     public int inVisision;
 
-    public MapObject(String objectName, int x, int y, int visionDistance, int teamSide, int playerSide) {
+    public MapObject(String objectName, int x, int y, int visionDistance, int teamSide) {
         this.objectName = objectName;
         this.visionDistance = visionDistance;
         this.teamSide = teamSide;

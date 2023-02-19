@@ -13,6 +13,7 @@ public class MapFogView extends View {
 
     private int width;
     private int height;
+    private int diagonal;
 
     private Canvas temp;
     private Canvas temp2;
@@ -32,9 +33,10 @@ public class MapFogView extends View {
         this.r = context.getResources();
     }
 
-    public void setParam(int width, int height) {
+    public void setParam(int width, int height, int diagonal) {
         this.width = width;
         this.height = height;
+        this.diagonal = diagonal;
 
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         temp = new Canvas(bitmap);
@@ -52,6 +54,13 @@ public class MapFogView extends View {
         transparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
+    public void setLoadingImg() {
+        Rect src = new Rect(0, 0, this.width, this.height);
+        Bitmap loadingImage = BitmapFactory.decodeResource(r, R.drawable.loading_image);
+
+        temp2.drawBitmap(loadingImage, null, src, null);
+    }
+
     public void clearResources() {
         temp.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         temp2.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
@@ -65,7 +74,7 @@ public class MapFogView extends View {
     }
 
     public void setVision(MapObject mo) {
-        temp.drawCircle((float) ((mo.x * 0.01) * this.width), (float) ((mo.y * 0.01) * this.height), mo.visionDistance, transparentPaint);
+        temp.drawCircle((float) ((mo.x * 0.01) * this.width), (float) ((mo.y * 0.01) * this.height), (float) (this.diagonal * (mo.visionDistance * 0.01)), transparentPaint);
     }
 
     public void drawIcon(MapObject mo) {
