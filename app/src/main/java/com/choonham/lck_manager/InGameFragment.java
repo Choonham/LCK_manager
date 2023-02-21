@@ -49,7 +49,7 @@ public class InGameFragment extends Fragment {
 
     MapObject [][] coordinate;
 
-    HashMap<String, MapPoint> pointMap;
+    HashMap<String, int[]> pointMap;
     HashMap<String, MapObject> objectMap;
 
     FrameLayout fogLayout;
@@ -77,6 +77,8 @@ public class InGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_in_game, container, false);
+
+        initPointMap();
 
         coordinate = new MapObject[100][100];
         pointMap = new HashMap<>();
@@ -174,6 +176,40 @@ public class InGameFragment extends Fragment {
     private void setCoordinates(HashMap<String, MapObject> objectMap) {
         for (Map.Entry<String, MapObject> set : objectMap.entrySet()) {
             coordinate[set.getValue().x][set.getValue().y] = set.getValue();
+        }
+    }
+
+    private void initPointMap() {
+        String[] pointNameArray = {
+                "res_b_top", "res_b_jg", "res_b_mid", "res_b_ad", "res_b_sup",
+                "res_r_top", "res_r_jg", "res_r_mid", "res_r_ad", "res_r_sup",
+                "b_t_4", "b_t_3", "b_t_2", "b_t_1", "b_t_0",
+                "r_t_4", "r_t_3", "r_t_2", "r_t_1", "r_t_0",
+                "t_b_b", "t_b_m", "t_b_r", "t_b_v",
+                "b_m_4", "b_m_3", "b_m_2", "b_m_1", "b_m_0",
+                "r_m_4", "r_m_3", "r_m_2", "r_m_1", "r_m_0",
+                "m_b_t", "m_b_b",
+                "b_b_4", "b_b_3", "b_b_2", "b_b_1", "b_b_0",
+                "r_b_4", "r_b_3", "r_b_2", "r_b_1", "r_b_0",
+                "b_b_b", "b_b_m", "b_b_r", "b_b_v"
+        };
+
+        int[][] pointArray = {
+                {2, 89}, {5, 91}, {3, 94}, {4, 96}, {9, 96},
+                {91, 5}, {89, 8}, {93, 7}, {96, 8}, {95, 11},
+                {8, 79}, {10, 59}, {12, 39}, {16, 22}, {21, 18},
+                {81, 10}, {63, 11}, {44, 11}, {26, 13}, {21, 18},
+                {13, 19}, {18, 15}, {21, 12}, {15, 12},
+                {79, 19}, {31, 68}, {39, 59}, {48, 50}, {53, 48},
+                {82, 18}, {73, 28}, {65, 35}, {68, 43}, {53, 48},
+                {46, 42}, {59, 53},
+                {17, 90}, {40, 90}, {60, 90}, {83, 87}, {89, 81},
+                {91, 20}, {92, 36}, {94, 53}, {94, 73}, {89, 81},
+                {88, 89}, {91, 85}, {95, 80}, {96, 88}
+        };
+
+        for(int i = 0; i < pointArray.length; i++) {
+            pointMap.put(pointNameArray[i], pointArray[i]);
         }
     }
 
@@ -302,8 +338,21 @@ public class InGameFragment extends Fragment {
         }
     }
 
-    private void moveChampion(Champion champion, MapPoint point) {
+    private void moveChampion(Champion champion, int[] point) {
+        int x1 = champion.x;
+        int x2 = point[0];
 
+        int y1 = champion.y;
+        int y2 = point[1];
+
+        int x, y;
+        int a;
+
+        ArrayList<Integer[]> pathList = new ArrayList<>();
+
+        if(x1 != x2){
+            a = (y2 - y1) / (x2 - x1);
+        }
     }
 
     private void updateResources() {
